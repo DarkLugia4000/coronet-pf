@@ -13,26 +13,18 @@
   <style>
     :root {
       color-scheme: dark;
-
-      /* -- DARKER PURPLE PALETTE -- */
-      --bg: #05010a; /* Almost black */
+      --bg: #05010a;
       --panel: #0e0516;
       --text: #f1e9ff;
       --muted: #a390c4;
       --line: rgba(186, 150, 255, 0.08);
-      
       --accent: #9d46ff;
       --accent-glow: rgba(157, 70, 255, 0.25);
       --accent2: #6b22e0;
-
       --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
-      --shadow2: 0 10px 30px rgba(0, 0, 0, 0.4);
-
       --radius: 20px;
-
-      /* Fonts */
-      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --sans: "Inter", system-ui, -apple-system, sans-serif;
+      --mono: "JetBrains Mono", monospace;
+      --sans: "Inter", sans-serif;
     }
 
     * { box-sizing: border-box; }
@@ -44,21 +36,15 @@
       color: var(--text);
       line-height: 1.6;
       background-color: var(--bg);
-      overflow-x: hidden;
-      
-      /* --- BACKGROUND EFFECTS --- */
-      /* 1. The moving nebula gradients */
       background: 
         radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
         radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
         radial-gradient(1400px 1000px at 50% 100%, rgba(120, 50, 220, 0.08), transparent 70%),
         linear-gradient(180deg, #05010a 0%, #090212 40%, #030005 100%);
-      
       background-size: 200% 200%;
       animation: bgDrift 20s ease infinite alternate;
     }
 
-    /* 2. The Tech Grid Overlay */
     body::after {
       content: "";
       position: fixed;
@@ -79,19 +65,17 @@
     a { color: inherit; text-decoration: none; transition: color 0.2s; }
     a:hover { color: #fff; }
 
-    /* Layout */
     .page {
       max-width: 800px;
       margin: 0 auto;
-      padding: 80px 20px 100px; /* Increased top padding since nav is gone */
+      padding: 80px 20px 100px;
       position: relative;
     }
 
-    /* The Glass Panel */
     .scroll-shell {
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: rgba(14, 5, 22, 0.65); /* Darker glass */
+      background: rgba(14, 5, 22, 0.65);
       box-shadow: var(--shadow);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -99,7 +83,6 @@
       position: relative;
     }
 
-    /* Top glow line */
     .scroll-shell::before {
       content: "";
       position: absolute;
@@ -111,346 +94,88 @@
 
     .inner { padding: 40px; }
 
-    /* Header Area */
-    .topline {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding-bottom: 20px;
-    }
+    .topline { display: flex; flex-direction: column; gap: 4px; padding-bottom: 20px; }
+    .brand { display: inline-flex; gap: 12px; align-items: center; }
 
-    .brand {
-      display: inline-flex;
-      gap: 12px;
-      align-items: center;
-    }
+    .dot-wrapper { position: relative; display: flex; align-items: center; justify-content: center; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); z-index: 2; box-shadow: 0 0 10px var(--accent-glow); }
+    .ping { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); opacity: 0.5; animation: pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+    @keyframes pulse { 75%, 100% { transform: scale(2.5); opacity: 0; } }
 
-    /* Pulsing Server Status Dot */
-    .dot-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    h1 { margin: 0; font-size: clamp(24px, 5vw, 32px); font-weight: 700; letter-spacing: -0.03em; color: #fff; }
+    .meta { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .tagline { margin: 10px 0 0; color: var(--muted); max-width: 60ch; font-size: 16px; line-height: 1.6; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text); font-weight: 500; font-size: 14px; transition: all 0.2s ease; cursor: pointer; }
+    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); border-color: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+    .btn.primary:hover { background: var(--accent2); box-shadow: 0 0 15px var(--accent-glow); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .chip { font-family: var(--mono); font-size: 11px; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); background: rgba(0,0,0,0.2); transition: border-color 0.2s; cursor: default; }
+    .chip:hover { border-color: var(--muted); color: var(--text); }
+
+    .divider { height: 1px; margin: 32px 0; background: linear-gradient(90deg, transparent, var(--line), transparent); }
+
+    h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .project-list { display: grid; gap: 16px; }
+
+    .project { position: relative; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 100%); padding: 20px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; overflow: hidden; }
+    .project:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 8px 24px rgba(0,0,0,0.25); background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); }
+    .project.expanded { border-color: var(--accent); background: rgba(22, 10, 34, 0.8); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+
+    .project-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .header-left { display: flex; flex-direction: column; }
+    .project h3 { margin: 0; font-size: 18px; font-weight: 600; color: #fff; }
+    .project-meta { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 4px; }
     
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      z-index: 2;
-      box-shadow: 0 0 10px var(--accent-glow);
-    }
+    .chevron { color: var(--muted); transition: transform 0.3s ease; flex-shrink: 0; }
+    .project.expanded .chevron { transform: rotate(180deg); color: var(--accent); }
 
-    .ping {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.5;
-      animation: pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-    }
+    .project .desc { font-size: 14px; color: var(--muted); margin: 8px 0 0 0; line-height: 1.5; }
 
-    @keyframes pulse {
-      75%, 100% { transform: scale(2.5); opacity: 0; }
-    }
+    .project-details { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease-out; opacity: 0.5; }
+    .project.expanded .project-details { grid-template-rows: 1fr; opacity: 1; }
+    .details-inner { overflow: hidden; }
+    .detail-content { padding-top: 16px; border-top: 1px dashed var(--line); margin-top: 16px; }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(24px, 5vw, 32px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: #fff;
-    }
+    .links { display: flex; gap: 16px; font-size: 13px; font-weight: 500; }
+    .links a { display: flex; align-items: center; gap: 4px; color: var(--text); padding: 6px 12px; background: rgba(255,255,255,0.05); border-radius: 6px; transition: background 0.2s; }
+    .links a:hover { color: #fff; background: var(--accent); text-decoration: none; }
 
-    .meta {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .fineprint { margin-top: 40px; color: var(--muted); font-size: 12px; text-align: center; opacity: 0.5; font-family: var(--mono); }
 
-    .tagline {
-      margin: 10px 0 0;
-      color: var(--muted);
-      max-width: 60ch;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    /* Buttons */
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.03);
-      color: var(--text);
-      font-weight: 500;
-      font-size: 14px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      background: rgba(255,255,255,0.08);
-      border-color: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .btn.primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-
-    .btn.primary:hover {
-      background: var(--accent2);
-      box-shadow: 0 0 15px var(--accent-glow);
-    }
-
-    /* Chips */
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 24px;
-    }
-
-    .chip {
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--line);
-      color: var(--muted);
-      background: rgba(0,0,0,0.2);
-      transition: border-color 0.2s;
-      cursor: default;
-    }
-
-    .chip:hover {
-      border-color: var(--muted);
-      color: var(--text);
-    }
-
-    /* Divider */
-    .divider {
-      height: 1px;
-      margin: 32px 0;
-      background: linear-gradient(90deg, transparent, var(--line), transparent);
-    }
-
-    /* Projects */
-    h2 {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .project-list {
-      display: grid;
-      gap: 16px;
-    }
-
-    /* --- EXPANDABLE PROJECT CARDS --- */
-    .project {
-      position: relative;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 100%);
-      padding: 20px;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      cursor: pointer; /* Indicates clickability */
-      overflow: hidden;
-    }
-
-    .project:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
-    }
-
-    /* Active state for expansion */
-    .project.expanded {
-      border-color: var(--accent);
-      background: rgba(22, 10, 34, 0.8);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-    }
-
-    .project-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center; /* Center arrow */
-      flex-wrap: nowrap;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .header-left {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .project h3 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 600;
-      color: #fff;
-    }
-
-    .project-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--accent);
-      margin-top: 4px;
-    }
-
-    /* The Chevron Icon */
-    .chevron {
-      color: var(--muted);
-      transition: transform 0.3s ease;
-      flex-shrink: 0;
-    }
-
-    .project.expanded .chevron {
-      transform: rotate(180deg);
-      color: var(--accent);
-    }
-
-    .project .desc {
-      font-size: 14px;
-      color: var(--muted);
-      margin: 8px 0 0 0;
-      line-height: 1.5;
-    }
-
-    /* Expandable Area Logic */
-    .project-details {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease-out;
-      opacity: 0.5;
-    }
-
-    .project.expanded .project-details {
-      grid-template-rows: 1fr;
-      opacity: 1;
-    }
-
-    .details-inner {
-      overflow: hidden;
-    }
-
-    .detail-content {
-      padding-top: 16px;
-      border-top: 1px dashed var(--line);
-      margin-top: 16px;
-    }
-
-    .links {
-      display: flex;
-      gap: 16px;
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .links a {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--text);
-      padding: 6px 12px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    
-    .links a:hover {
-      color: #fff;
-      background: var(--accent);
-      text-decoration: none;
-    }
-
-    /* Mobile Adjustments */
-    @media (max-width: 600px) {
-      .page { padding-top: 40px; }
-      .inner { padding: 24px; }
-    }
-
-    .fineprint {
-      margin-top: 40px;
-      color: var(--muted);
-      font-size: 12px;
-      text-align: center;
-      opacity: 0.5;
-      font-family: var(--mono);
-    }
+    @media (max-width: 600px) { .page { padding-top: 40px; } .inner { padding: 24px; } }
   </style>
 </head>
 
 <body>
-
   <div class="page">
     <div class="scroll-shell">
       <div class="inner">
         
         <header class="topline">
           <div class="brand">
-            <div class="dot-wrapper">
-              <span class="ping"></span>
-              <span class="dot"></span>
-            </div>
+            <div class="dot-wrapper"><span class="ping"></span><span class="dot"></span></div>
             <h1>Josue-Marie Nonguierma</h1>
           </div>
-          <div class="meta">
-             Hamburg, DE <span aria-hidden="true">/</span> Computer Science Student
-          </div>
+          <div class="meta">Hamburg, DE <span aria-hidden="true">/</span> Computer Science Student</div>
         </header>
 
-        <p class="tagline">
-          I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.
-        </p>
+        <p class="tagline">I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.</p>
 
         <div class="actions">
           <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
             GitHub
           </a>
-          <a class="btn" href="#" target="_blank" rel="noreferrer">
-            CV
-          </a>
-          <a class="btn" href="mailto:josuenonguierma3@gmail.com">
-            Email
-          </a>
+          <a class="btn" href="#" target="_blank" rel="noreferrer">CV</a>
+          <a class="btn" href="mailto:josuenonguierma3@gmail.com">Email</a>
         </div>
 
         <div class="chips">
-          <span class="chip">Linux</span>
-          <span class="chip">Docker</span>
-          <span class="chip">Networking</span>
-          <span class="chip">Python</span>
-          <span class="chip">C++</span>
-          <span class="chip">C</span>
+          <span class="chip">Linux</span><span class="chip">Docker</span><span class="chip">Networking</span><span class="chip">Python</span><span class="chip">C++</span><span class="chip">C</span>
         </div>
 
         <div class="divider"></div>
@@ -467,17 +192,13 @@
                 </div>
                 <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </div>
-              
-              <p class="desc">
-                Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.
-              </p>
-
+              <p class="desc">Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.</p>
               <div class="project-details">
                 <div class="details-inner">
                   <div class="detail-content">
                     <div class="links">
-                      <a href="#" target="_blank">Read Write-up &rarr;</a>
-                      <a href="https://coronet.dev/lab" target="_blank">Config &rarr;</a>
+                      <a href="lab/index.html">View Infrastructure &rarr;</a>
+                      <a href="https://github.com/DarkLugia4000/Pokemon-Battle-Sim" target="_blank">Config &rarr;</a>
                     </div>
                   </div>
                 </div>
@@ -492,17 +213,11 @@
                 </div>
                 <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </div>
-
-              <p class="desc">
-                Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.
-              </p>
-
+              <p class="desc">Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.</p>
               <div class="project-details">
                 <div class="details-inner">
                   <div class="detail-content">
-                    <div class="links">
-                      <a href="#" target="_blank">View Repo &rarr;</a>
-                    </div>
+                    <div class="links"><a href="#" target="_blank">View Repo &rarr;</a></div>
                   </div>
                 </div>
               </div>
@@ -516,17 +231,11 @@
                 </div>
                 <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </div>
-
-              <p class="desc">
-                Forge/CurseForge deployment with reproducible mod resolution, backups, and stable upgrades.
-              </p>
-
+              <p class="desc">Forge/CurseForge deployment with reproducible mod resolution, backups, and stable upgrades.</p>
               <div class="project-details">
                 <div class="details-inner">
                   <div class="detail-content">
-                    <div class="links">
-                      <a href="#" target="_blank">Read Write-up &rarr;</a>
-                    </div>
+                    <div class="links"><a href="#" target="_blank">Read Write-up &rarr;</a></div>
                   </div>
                 </div>
               </div>
@@ -535,20 +244,14 @@
           </div>
         </section>
 
-        <div class="fineprint">
-          &copy; <span id="y"></span> Josue-Marie Nonguierma
-        </div>
+        <div class="fineprint">&copy; <span id="y"></span> Josue-Marie Nonguierma</div>
       </div>
     </div>
   </div>
 
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
-
-    function toggleProject(element) {
-      // Toggle the 'expanded' class on the clicked element
-      element.classList.toggle('expanded');
-    }
+    function toggleProject(element) { element.classList.toggle('expanded'); }
   </script>
 </body>
 </html>
