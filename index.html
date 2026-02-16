@@ -1,649 +1,204 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <!--
-    ============================
-    Document Metadata + Setup
-    ============================
-
-    The <head> contains information ABOUT the page, not the visible page content.
-    Browsers use this for:
-    - character encoding (UTF-8)
-    - responsive layout rules (viewport)
-    - title shown in the tab
-    - description used by search engines / previews
-    - styles (CSS)
-  -->
-
-  <!-- Use UTF-8 so all characters (including accents/emojis) render correctly. -->
-  <meta charset="utf-8" />
-
-  <!--
-    Responsive viewport:
-    - width=device-width tells the browser to match the device's screen width
-    - initial-scale=1 ensures the initial zoom is "normal"
-    Without this, mobile browsers may render the page zoomed out and tiny.
-  -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- The text that appears in the browser tab and in some search results. -->
-  <title>coronet.dev</title>
-
-  <!--
-    Short description for SEO / link previews.
-    Avoid generic text like "Portfolio". Use what you want to be "found for".
-  -->
-  <meta name="description" content="Computer science student building reliable systems, automation, and containerized service stacks." />
-
-  <style>
-    /*
-      ============================
-      Theme Variables (CSS Custom Properties)
-      ============================
-
-      We define a palette and reusable "tokens" here:
-      - --bg, --panel, --text: core colors
-      - --accent, --accent2: brand accents
-      - --line: subtle borders
-      - --shadow, --radius: repeated visual styling
-      - --mono, --sans: consistent font stacks
-
-      This makes it easy to adjust the entire design by changing a few values.
-    */
-    :root {
-    color-scheme: dark;
-
-    /* Core background: very deep violet, almost black */
-    --bg: #0f0616;
-
-    /* Panel surfaces: slightly lighter than background */
-    --panel: #160a22;
-
-    /* Primary readable text */
-    --text: #f1e9ff;
-
-    /* Muted secondary text */
-    --muted: #b8a6d6;
-
-    /* Subtle border lines */
-    --line: rgba(186, 150, 255, 0.15);
-
-    /* Accent system */
-    --accent: #b05cff;     /* bright violet */
-    --accent2: #7c2cff;    /* deeper saturated purple */
-
-    /* Shadows */
-    --shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
-
-    --radius: 18px;
-
-    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-    }
-
-    body {
-  margin: 0;
-  font-family: var(--sans);
-  color: var(--text);
-  line-height: 1.55;
-
-  background:
-    radial-gradient(1200px 900px at 15% 10%, rgba(130, 70, 255, 0.25), transparent 65%),
-    radial-gradient(1000px 800px at 85% 20%, rgba(90, 30, 180, 0.25), transparent 60%),
-    radial-gradient(1400px 1000px at 50% 100%, rgba(160, 90, 255, 0.15), transparent 70%),
-    linear-gradient(180deg, #0e0416 0%, #12061d 40%, #0c0314 100%);
-}
-
-
-
-    /*
-      ============================
-      Light Mode Overrides
-      ============================
-
-      If the user's system/browser prefers a light theme, we swap the variables.
-      This keeps the exact same layout but with a light palette.
-    */
-    @media (prefers-color-scheme: light) {
-      :root{
-        --bg: #f7f8fb;
-        --panel: #ffffff;
-        --text: #0c1222;
-        --muted: #4a556f;
-        --line: rgba(12,18,34,0.10);
-        --shadow: 0 12px 40px rgba(0,0,0,0.12);
-
-        /*
-          Accents stay vivid even in light mode.
-          If you want a different feel in light mode, adjust these too.
-        */
-        --accent: #6a34ff;
-        --accent2: #2f7cff;
-      }
-    }
-
-    /*
-      ============================
-      Global Reset + Base Layout
-      ============================
-
-      box-sizing: border-box makes width/height calculations intuitive:
-      padding/borders don't unexpectedly expand elements.
-    */
-    * { box-sizing: border-box; }
-
-    /* Make the document fill the height of the viewport. */
-    html, body { height: 100%; }
-
-    body {
-      /* Remove default margin around the page. */
-      margin: 0;
-
-      /* Use the consistent sans-serif font stack defined above. */
-      font-family: var(--sans);
-
-      /*
-        Background:
-        - Two subtle radial gradients add depth and keep the page from feeling flat.
-        - Then we layer the base background color underneath.
-        If you change your theme, make sure these gradients match your palette.
-      */
-      background:
-        radial-gradient(1200px 800px at 20% 10%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%),
-        radial-gradient(900px 700px at 90% 20%, color-mix(in oklab, var(--accent2) 14%, transparent), transparent 55%),
-        var(--bg);
-
-      /* Foreground text color. */
-      color: var(--text);
-
-      /* Comfortable line height for readability. */
-      line-height: 1.55;
-    }
-
-    /*
-      Link styling:
-      We keep links the same color as text to look clean and modern.
-      Hover adds underline to signal clickability.
-    */
-    a { color: inherit; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    /*
-      ============================
-      Page Container
-      ============================
-
-      .wrap centers content, limits maximum width, and adds padding around edges.
-      This keeps the layout readable on very wide screens.
-    */
-    .wrap {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 56px 20px 70px;
-    }
-
-    /*
-      ============================
-      Header / Hero Section
-      ============================
-
-      The header is the "top card" with your name, tagline, skill chips, and buttons.
-    */
-    header {
-      display: grid;
-      gap: 18px;
-      padding: 26px;
-
-      border: 1px solid var(--line);
-
-      /*
-        color-mix creates a semi-translucent panel effect.
-        backdrop-filter adds a glass blur effect behind it.
-        (On browsers without support, it just looks like a normal panel.)
-      */
-      background: color-mix(in oklab, var(--panel) 86%, transparent);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-    }
-
-    /*
-      .topline holds:
-      - your name on the left
-      - your location/role on the right
-      It wraps nicely on narrow screens.
-    */
-    .topline {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    /*
-      .brand holds the gradient dot + your name.
-      It's a small visual signature to make the header feel intentional.
-    */
-    .brand {
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    /*
-      The dot is a tiny brand marker.
-      Gradient uses accent colors for a quick "identity" without a logo.
-    */
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-
-      /*
-        A soft ring around the dot adds depth.
-        color-mix keeps it subtle.
-      */
-      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
-    }
-
-    /* Main heading: your name. clamp() makes it responsive without media queries. */
-    h1 {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 40px);
-      letter-spacing: -0.02em;
-    }
-
-    /* Tagline paragraph below your name. */
-    .tagline {
-      margin: 0;
-      color: var(--muted);
-      max-width: 70ch; /* limit line length for readability */
-      font-size: 16px;
-    }
-
-    /*
-      ============================
-      Skill Chips
-      ============================
-
-      Small badges that communicate your stack at a glance.
-      Keep them accurate and not overly long.
-    */
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .chip {
-      font-family: var(--mono);
-      font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-
-      /* Slightly muted chip text so it doesn't compete with headlines. */
-      color: color-mix(in oklab, var(--text) 82%, var(--muted));
-
-      /* Slight panel background so chips don't feel like plain text. */
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-    }
-
-    /*
-      ============================
-      Action Buttons
-      ============================
-
-      "GitHub / CV / Email" calls to action.
-      These should be obvious and tappable on mobile.
-    */
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-
-      font-weight: 600;
-      font-size: 14px;
-      text-decoration: none;
-
-      /*
-        Micro-interaction:
-        Subtle transitions make the UI feel responsive without being flashy.
-      */
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(0,0,0,0.25);
-    }
-
-    /* Primary button uses accent gradient and more prominent border. */
-    .btn.primary {
-      border-color: color-mix(in oklab, var(--accent) 55%, var(--line));
-      background: linear-gradient(
-        135deg,
-        color-mix(in oklab, var(--accent) 28%, var(--panel)),
-        color-mix(in oklab, var(--accent2) 12%, var(--panel))
-      );
-    }
-
-    /*
-      ============================
-      Main Content Layout
-      ============================
-
-      The main area contains sections: projects, about, contact.
-    */
-    main {
-      margin-top: 22px;
-      display: grid;
-      gap: 18px;
-    }
-
-    section {
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: color-mix(in oklab, var(--panel) 90%, transparent);
-      box-shadow: var(--shadow);
-    }
-
-    /*
-      Section headings:
-      Uppercase + spacing makes them feel like UI labels.
-      Keeps the look minimal and consistent.
-    */
-    h2 {
-      margin: 0 0 12px;
-      font-size: 16px;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: color-mix(in oklab, var(--text) 76%, var(--muted));
-    }
-
-    /*
-      ============================
-      Projects Grid + Cards
-      ============================
-
-      .grid becomes 2 columns on wider screens.
-      Each card is a project entry.
-    */
-    .grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .card {
-      padding: 16px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-      display: grid;
-      gap: 8px;
-
-      /* Hover interaction so cards feel clickable even if only the links are. */
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
-      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
-    }
-
-    .card .title {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: baseline;
-    }
-
-    .card h3 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-    }
-
-    /* Small metadata line (tech stack, context, etc.). */
-    .meta {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* Descriptive paragraph text. */
-    .desc {
-      margin: 0;
-      color: color-mix(in oklab, var(--text) 88%, var(--muted));
-    }
-
-    /* Row of links under each card (repo, write-up, demo, etc.). */
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 4px;
-    }
-
-    /*
-      ============================
-      Footer
-      ============================
-
-      Simple centered footer with the current year set by JS below.
-    */
-    footer {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      text-align: center;
-    }
-
-    /*
-      ============================
-      Two-Column Layout for Desktop
-      ============================
-
-      On wider screens:
-      - left column: Projects
-      - right column: About
-      On smaller screens, it collapses into a single column.
-    */
-    .two-col {
-      display: grid;
-      gap: 14px;
-    }
-
-    @media (min-width: 820px) {
-      .two-col {
-        grid-template-columns: 1.2fr 0.8fr;
-      }
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <!--
-    ============================
-    Visible Page Content
-    ============================
-
-    Everything inside <body> is what the user actually sees.
-  -->
-  <div class="wrap">
-    <!--
-      Header:
-      Contains your name, role/location, short mission statement, skills, and calls to action.
-    -->
-    <header>
-      <div class="topline">
-        <div class="brand">
-          <!-- Decorative dot; aria-hidden since it carries no informational meaning. -->
-          <span class="dot" aria-hidden="true"></span>
-          <h1>Josue-Marie Nonguierma</h1>
+<!-- 1) Add this CSS inside your existing <style> block (near the Projects styles is fine) -->
+<style>
+  /* ============================
+     Projects Accordion (Expanding Tabs)
+     ============================ */
+
+  .accordion {
+    display: grid;
+    gap: 12px;
+  }
+
+  details.acc {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: color-mix(in oklab, var(--panel) 92%, transparent);
+    overflow: clip;
+    box-shadow: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  }
+
+  details.acc:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
+    box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+  }
+
+  /* Remove the default marker so we can draw our own */
+  summary.acc-head {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+    user-select: none;
+  }
+  summary.acc-head::-webkit-details-marker { display: none; }
+
+  /* Focus style for keyboard users */
+  summary.acc-head:focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--accent) 60%, transparent);
+    outline-offset: 3px;
+    border-radius: 12px;
+  }
+
+  .acc-title {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .acc-title h3 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .acc-title .meta {
+    margin: 0;
+  }
+
+  /* Chevron icon */
+  .chev {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: color-mix(in oklab, var(--panel) 88%, transparent);
+    display: grid;
+    place-items: center;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+
+  details[open] .chev {
+    transform: rotate(90deg);
+    border-color: color-mix(in oklab, var(--accent) 35%, var(--line));
+  }
+
+  .chev svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Expanded body */
+  .acc-body {
+    padding: 0 16px 16px;
+    border-top: 1px solid color-mix(in oklab, var(--line) 80%, transparent);
+  }
+
+  .acc-body .desc {
+    margin: 12px 0 0;
+  }
+
+  .acc-body .links {
+    margin-top: 10px;
+  }
+
+  /* Optional: slightly “active” surface when open */
+  details[open].acc {
+    background: color-mix(in oklab, var(--panel) 88%, transparent);
+  }
+</style>
+
+<!-- 2) Replace your Projects section content with this (swap only the inner part) -->
+<section>
+  <h2>Projects</h2>
+
+  <div class="accordion" id="projects-acc">
+    <details class="acc" open>
+      <summary class="acc-head">
+        <div class="acc-title">
+          <h3>Coronet Homelab</h3>
+          <div class="meta">Docker · Tailscale · Reverse Proxy</div>
         </div>
 
-        <!-- Small context label. Keep it short and factual. -->
-        <div class="meta">Hamburg, DE · Computer Science Student</div>
-      </div>
+        <span class="chev" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M10 7l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </summary>
 
-      <!-- One-paragraph summary: what you build and what your focus is. -->
-      <p class="tagline">
-        I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.
-      </p>
-
-      <!-- Skills list: fast scanning for recruiters/hiring managers. -->
-      <div class="chips" aria-label="skills">
-        <span class="chip">Linux</span>
-        <span class="chip">Docker Compose</span>
-        <span class="chip">Networking</span>
-        <span class="chip">Python</span>
-        <span class="chip">C++</span>
-        <span class="chip">C</span>
-      </div>
-
-      <!-- Buttons for important external actions. Replace placeholders with real links. -->
-      <div class="actions">
-        <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">GitHub</a>
-
-        <!-- CV: replace href="#" with a real URL (example: "./cv.pdf" or a Google Drive link). -->
-        <a class="btn" href="#" target="_blank" rel="noreferrer">CV</a>
-
-        <!-- Email: mailto opens the default email client with your address. -->
-        <a class="btn" href="mailto:josuenonguierma3@gmail.com">Email</a>
-      </div>
-    </header>
-
-    <!-- Main site content. -->
-    <main>
-      <!-- Two-column region: Projects (left) + About (right) on desktop. -->
-      <div class="two-col">
-        <section>
-          <h2>Projects</h2>
-
-          <!-- Grid of project cards. Keep it to 3–5 total for clarity. -->
-          <div class="grid">
-            <article class="card">
-              <div class="title">
-                <h3>Coronet Homelab</h3>
-                <div class="meta">Docker · Tailscale · Reverse Proxy</div>
-              </div>
-
-              <p class="desc">
-                Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.
-              </p>
-
-              <!-- Replace these placeholders with real links: write-up, repo, screenshots, etc. -->
-              <div class="links">
-                <a href="#" target="_blank" rel="noreferrer">Write-up</a>
-                <a href="#" target="_blank" rel="noreferrer">Config</a>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="title">
-                <h3>Pokémon Battle Engine (Gen II)</h3>
-                <div class="meta">C · Python</div>
-              </div>
-
-              <p class="desc">
-                Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.
-              </p>
-
-              <div class="links">
-                <a href="#" target="_blank" rel="noreferrer">Repo</a>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="title">
-                <h3>Modded Minecraft Server</h3>
-                <div class="meta">Docker · Java · Scripting</div>
-              </div>
-
-              <p class="desc">
-                Forge/CurseForge deployment with reproducible mod resolution and stable upgrades.
-              </p>
-
-              <div class="links">
-                <a href="#" target="_blank" rel="noreferrer">Write-up</a>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section>
-          <h2>About Me</h2>
-
-          <p class="desc">
-            I like systems that stay upright under routine chaos: power cycles, updates, flaky networks, and human error.
-            My current focus is building service stacks that are observable, recoverable, and easy to operate.
-          </p>
-
-          <!-- External profile links. Replace LinkedIn placeholder with your real profile URL. -->
-          <div class="links" style="margin-top:12px;">
-            <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="#" target="_blank" rel="noreferrer">Blog</a>
-          </div>
-        </section>
-      </div>
-
-      <!-- Contact section: keep it simple and actionable. -->
-      <section>
-        <h2>Contact</h2>
-
+      <div class="acc-body">
         <p class="desc">
-          Email is the best way to reach me.
+          Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.
         </p>
 
-        <div class="links" style="margin-top:10px;">
-          <a class="btn" href="mailto:josuenonguierma3@gmail.com">josuenonguierma3@gmail.com</a>
+        <div class="links">
+          <a href="#" target="_blank" rel="noreferrer">Write-up</a>
+          <a href="#" target="_blank" rel="noreferrer">Config</a>
         </div>
-      </section>
-    </main>
+      </div>
+    </details>
 
-    <!-- Footer: current year is filled in by JavaScript below. -->
-    <footer>
-      © <span id="y"></span> coronet.dev
-    </footer>
+    <details class="acc">
+      <summary class="acc-head">
+        <div class="acc-title">
+          <h3>Pokémon Battle Engine (Gen II)</h3>
+          <div class="meta">C · Python</div>
+        </div>
+
+        <span class="chev" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M10 7l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </summary>
+
+      <div class="acc-body">
+        <p class="desc">
+          Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.
+        </p>
+
+        <div class="links">
+          <a href="#" target="_blank" rel="noreferrer">Repo</a>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary class="acc-head">
+        <div class="acc-title">
+          <h3>Modded Minecraft Server</h3>
+          <div class="meta">Docker · Java · Scripting</div>
+        </div>
+
+        <span class="chev" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M10 7l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </summary>
+
+      <div class="acc-body">
+        <p class="desc">
+          Forge/CurseForge deployment with reproducible mod resolution and stable upgrades.
+        </p>
+
+        <div class="links">
+          <a href="#" target="_blank" rel="noreferrer">Write-up</a>
+        </div>
+      </div>
+    </details>
   </div>
+</section>
 
-  <script>
-    /*
-      ============================
-      Tiny JavaScript Enhancement
-      ============================
+<!-- 3) Optional: add this JS near your existing footer-year script to enforce “one open at a time” -->
+<script>
+  (function () {
+    const root = document.getElementById("projects-acc");
+    if (!root) return;
 
-      This script sets the footer year automatically to the current year.
-      That avoids needing to manually update the page every January.
+    root.addEventListener("toggle", (e) => {
+      const opened = e.target;
+      if (!(opened instanceof HTMLDetailsElement)) return;
+      if (!opened.open) return;
 
-      Steps:
-      1) Find the <span id="y"> element in the footer
-      2) Replace its text with the current year
-    */
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+      for (const d of root.querySelectorAll("details.acc")) {
+        if (d !== opened) d.open = false;
+      }
+    });
+  })();
+</script>
