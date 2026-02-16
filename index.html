@@ -272,6 +272,62 @@
             white-space: nowrap;
         }
 
+        /* --- TAB SYSTEM STYLES --- */
+        .tabs-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden; /* Prevent container scroll, force child scroll */
+        }
+        
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid var(--line);
+            background: rgba(0,0,0,0.2);
+            padding: 0 16px;
+            gap: 2px;
+            flex-shrink: 0; /* Keep header visible */
+        }
+        
+        .tab-btn {
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-family: var(--sans);
+            font-size: 12px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+        
+        /* Fix for scrollbar jumping: 
+           1. Use 'overflow-y: auto' here so scrollbar is inside content area.
+           2. 'scrollbar-gutter: stable' reserves space for the scrollbar so layout doesn't shift.
+        */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            overflow-y: auto; 
+            flex-grow: 1;
+            scrollbar-gutter: stable; /* Crucial fix for layout shift */
+            height: 100%; /* Ensure it fills parent */
+        }
+        
+        .tab-content.active { 
+            display: block; 
+            animation: fadeIn 0.15s ease-out; /* Faster, smoother anim */
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+
         /* --- CONTENT COMPONENT STYLES (Used inside config strings) --- */
         /* Accordion Menu */
         .menu-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
@@ -420,19 +476,59 @@
                     type: 'file',
                     initX: 120, initY: 150,
                     content: `
-                        <p><strong>Josue-Marie Nonguierma</strong><br>Computer Science Student // Hamburg, DE</p>
-                        <p>I am a self-taught technologist passionate about backend infrastructure, automation, and reliable systems. My work focuses on taking complex services and making them boringly stable through containerization and strict networking principles.</p>
-                        <p style="color: var(--muted); font-size: 13px;">Currently exploring: Rust, Kubernetes, and Advanced Networking.</p>
-                        
-                        <div class="bio-actions">
-                            <div class="btn-row">
-                                <a href="https://github.com/DarkLugia4000" target="_blank" class="btn-social btn-github">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                                    GitHub
-                                </a>
-                                <a href="#" target="_blank" class="btn-social btn-cv">CV</a>
+                        <div class="tabs-container">
+                            <div class="tabs-header">
+                                <button class="tab-btn active" onclick="switchTab(this, 'tab-overview')">Overview</button>
+                                <button class="tab-btn" onclick="switchTab(this, 'tab-experience')">Experience</button>
+                                <button class="tab-btn" onclick="switchTab(this, 'tab-education')">Education</button>
+                                <button class="tab-btn" onclick="switchTab(this, 'tab-hobbies')">Hobbies</button>
                             </div>
-                            <a href="mailto:josuenonguierma3@gmail.com" class="btn-social btn-email">Email</a>
+                            
+                            <div class="tab-content active" id="tab-overview">
+                                <p><strong>Josue-Marie Nonguierma</strong><br>Computer Science Student // Hamburg, DE</p>
+                                <p>I am a self-taught technologist passionate about backend infrastructure, automation, and reliable systems. My work focuses on taking complex services and making them boringly stable through containerization and strict networking principles.</p>
+                                <p style="color: var(--muted); font-size: 13px;">Currently exploring: Rust, Kubernetes, and Advanced Networking.</p>
+                                
+                                <div class="bio-actions">
+                                    <div class="btn-row">
+                                        <a href="https://github.com/DarkLugia4000" target="_blank" class="btn-social btn-github">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                            GitHub
+                                        </a>
+                                        <a href="#" target="_blank" class="btn-social btn-cv">CV</a>
+                                    </div>
+                                    <a href="mailto:josuenonguierma3@gmail.com" class="btn-social btn-email">Email</a>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="tab-experience">
+                                <h3>Professional Experience</h3>
+                                <p style="color: var(--muted); font-size: 13px;">Currently studying, but highly active in homelab management and open-source contributions.</p>
+                                <hr style="border-color: var(--line); margin: 15px 0;">
+                                <div style="margin-bottom: 20px;">
+                                    <strong>Homelab Administrator</strong>
+                                    <div style="font-size: 12px; color: var(--accent);">2022 - Present</div>
+                                    <p style="font-size: 13px; margin-top: 5px;">Managing a hybrid cloud/local infrastructure servicing media, DNS, and game servers for family & friends.</p>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="tab-education">
+                                <h3>Education</h3>
+                                <div style="margin-bottom: 20px;">
+                                    <strong>Computer Science</strong>
+                                    <div style="font-size: 12px; color: var(--accent);">Hamburg, DE</div>
+                                    <p style="font-size: 13px; margin-top: 5px;">Focus on Systems Engineering, Network Security, and Distributed Systems.</p>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="tab-personal">
+                                <h3>Interests</h3>
+                                <div style="margin-bottom: 20px;">
+                                    <strong>Personal Interests</strong>
+                                    <p style="font-size: 13px; margin-top: 5px;">Pokemon (& Competitive), Writing, Worldbuilding, Homelabbing</p>
+                                    <p style="font-size: 13px; margin-top: 5px;">Pokemon: Lugia </p>
+                                </div>
+                            </div>
                         </div>
                     `
                 },
@@ -556,6 +652,9 @@
                 win.style.left = app.initX + 'px';
                 win.style.top = app.initY + 'px';
                 
+                // Add padding:0 to content for profile window to accommodate tabs layout
+                const contentStyle = key === 'profile' ? 'padding: 0;' : '';
+                
                 win.innerHTML = `
                     <div class="window-header">
                         <div class="win-controls">
@@ -565,7 +664,7 @@
                         </div>
                         <div class="win-title">${app.title}</div>
                     </div>
-                    <div class="window-content content-inner">
+                    <div class="window-content content-inner" style="${contentStyle}">
                         ${app.content}
                     </div>
                 `;
@@ -613,6 +712,23 @@
                 if(item !== element) item.classList.remove('active');
             });
             element.classList.toggle('active');
+        }
+        
+        // --- NEW: Tab Switching Logic ---
+        function switchTab(btn, contentId) {
+            // 1. Find the parent container (the specific window content)
+            const container = btn.closest('.tabs-container');
+            
+            // 2. Deactivate all buttons in this header
+            const header = btn.closest('.tabs-header');
+            header.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            // 3. Hide all content panes in this container
+            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            // 4. Activate clicked button and target content
+            btn.classList.add('active');
+            container.querySelector('#' + contentId).classList.add('active');
         }
 
         // Initialize drag logic for ALL windows (static and dynamic)
