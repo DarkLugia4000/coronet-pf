@@ -11,27 +11,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
+        /* ========================================
+           CSS VARIABLES (THEME CONFIGURATION)
+           ========================================
+           Edit these hex codes to change the global color scheme.
+        */
         :root {
             color-scheme: dark;
             
+            /* Backgrounds */
             --bg: #05010a;
             --panel: #0e0516;
+            --glass: rgba(14, 5, 22, 0.75); /* Window transparency color */
+            
+            /* Typography */
             --text: #f1e9ff;
             --muted: #a390c4;
-            --line: rgba(186, 150, 255, 0.08);
             
-            --accent: #9d46ff;
+            /* Accents */
+            --line: rgba(186, 150, 255, 0.08); /* Border colors */
+            --accent: #9d46ff;                 /* Main Purple */
             --accent-glow: rgba(157, 70, 255, 0.25);
             
+            /* UI Elements */
             --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
             --radius: 16px;
             
+            /* Fonts */
             --mono: "JetBrains Mono", monospace;
             --sans: "Inter", sans-serif;
             
-            --glass: rgba(14, 5, 22, 0.75);
-            
-            /* Window Controls */
+            /* Window Controls Colors */
             --btn-close: #ff5f57;
             --btn-max: #28c840;
             --btn-min: #ffbd2e;
@@ -40,6 +50,7 @@
 
         * { box-sizing: border-box; }
 
+        /* --- GLOBAL LAYOUT --- */
         body {
             margin: 0;
             padding: 0;
@@ -49,6 +60,7 @@
             overflow: hidden;
             background-color: var(--bg);
             
+            /* Animated Background Gradient */
             background: 
                 radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
                 radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
@@ -57,6 +69,7 @@
             animation: bgDrift 30s ease infinite alternate;
         }
 
+        /* Tech Grid Overlay Pattern */
         body::after {
             content: "";
             position: fixed;
@@ -81,22 +94,24 @@
             position: relative;
         }
 
-        /* --- WINDOW SYSTEM --- */
+        /* --- WINDOW SYSTEM STYLES --- */
         .window {
             position: absolute;
-            background: #0e0516e6;
+            background: #0e0516e6; /* High opacity for readability */
             border: 1px solid var(--line);
             border-radius: 12px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.7);
             backdrop-filter: blur(20px);
-            display: none; /* Hidden by default */
+            display: none; /* Hidden by default, toggled via JS */
             flex-direction: column;
             width: 500px;
             min-height: 200px;
             overflow: hidden;
+            /* Smooth transitions for maximizing */
             transition: opacity 0.2s, width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Maximized State: Fills the screen */
         .window.maximized {
             top: 0 !important;
             left: 0 !important;
@@ -116,11 +131,12 @@
             cursor: grab;
             user-select: none;
             gap: 16px;
-            flex-shrink: 0; /* Header doesn't shrink */
+            flex-shrink: 0;
         }
 
         .window-header:active { cursor: grabbing; }
 
+        /* Window Traffic Lights */
         .win-controls { display: flex; gap: 8px; }
 
         .win-btn {
@@ -139,16 +155,10 @@
         }
         
         .win-btn:hover { color: #000; opacity: 1; transform: scale(1.1); }
-        
         .win-btn.close { background: var(--btn-close); }
-        .win-btn.max { background: var(--btn-max); border-radius: 3px; width: 12px; height: 12px;} /* Square for maximize */
+        .win-btn.max { background: var(--btn-max); border-radius: 3px; width: 12px; height: 12px;}
         .win-btn.min { background: var(--btn-min); }
-        
-        .win-btn.disabled { 
-            background: var(--btn-disabled); 
-            cursor: default; 
-            pointer-events: none;
-        }
+        .win-btn.disabled { background: var(--btn-disabled); cursor: default; pointer-events: none; }
         .win-btn.disabled:hover { transform: none; }
 
         .win-title {
@@ -158,7 +168,7 @@
             color: #fff;
             text-align: center;
             flex-grow: 1;
-            margin-right: 52px;
+            margin-right: 52px; /* Balance controls for center alignment */
         }
 
         .window-content {
@@ -169,7 +179,7 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Scroll handled by children */
+            overflow: hidden;
         }
 
         .content-inner { 
@@ -178,77 +188,37 @@
             height: 100%;
         }
 
-        /* --- NEW BUTTON STYLES (Bio Window) --- */
-        .bio-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .btn-row {
-            display: flex;
-            gap: 10px;
-        }
-        .btn-social {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: 12px; /* Slightly softer corners */
-            font-weight: 600;
-            font-size: 13px;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s, filter 0.2s, background 0.2s;
-            border: none;
-            cursor: pointer;
-            font-family: var(--sans);
-        }
-        .btn-social:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .btn-github {
-            background-color: var(--accent); /* #9d46ff */
-            color: #fff;
-            flex: 2; /* Takes up more space */
-        }
-        .btn-github:hover {
-            filter: brightness(1.15);
-        }
-        .btn-cv {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--line);
-            color: var(--text);
-            flex: 1;
-        }
-        .btn-cv:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255,255,255,0.2);
-        }
-        .btn-email {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--line);
-            color: var(--text);
-            width: 100%;
-            justify-content: center; 
-        }
-        .btn-email:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-
         /* --- FILE EXPLORER STYLES --- */
         #explorerWin {
             width: 600px;
             height: 400px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); 
+            /* Initial centering handled by JS */
             display: flex;
         }
-        #explorerWin.loaded { transform: none; }
+
+        .explorer-sidebar {
+            width: 150px;
+            min-width: 150px;
+            border-right: 1px solid var(--line);
+            background: rgba(0,0,0,0.2);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .side-link { 
+            font-size: 13px; 
+            color: var(--muted); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            cursor: default;
+        }
+        .side-link:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .side-link.active { color: #fff; background: rgba(255,255,255,0.08); font-weight: 500; }
 
         .file-grid {
             display: grid;
@@ -302,126 +272,60 @@
             white-space: nowrap;
         }
 
-        /* --- JOURNAL & CONTENT STYLES --- */
+        /* --- CONTENT COMPONENT STYLES (Used inside config strings) --- */
+        /* Accordion Menu */
         .menu-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-        
-        .project-item {
-            border: 1px solid var(--line);
-            border-radius: 10px;
-            background: rgba(255,255,255,0.02);
-            overflow: hidden;
-            transition: all 0.2s;
-        }
+        .project-item { border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,0.02); overflow: hidden; transition: all 0.2s; }
         .project-item:hover { border-color: var(--accent); background: rgba(255,255,255,0.04); }
-
-        .project-head {
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
+        .project-head { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; }
         .project-head span { color: #fff; }
         .chevron { color: var(--muted); transition: transform 0.3s; width: 16px; height: 16px;}
-        
-        .project-body {
-            height: 0;
-            padding: 0 16px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            font-size: 13px;
-            color: var(--muted);
-            border-top: 1px dashed transparent;
-            line-height: 1.5;
-        }
-        
-        .project-item.active .project-body {
-            height: auto;
-            padding: 12px 16px;
-            opacity: 1;
-            border-top-color: var(--line);
-        }
+        .project-body { height: 0; padding: 0 16px; opacity: 0; transition: all 0.3s ease; font-size: 13px; color: var(--muted); border-top: 1px dashed transparent; line-height: 1.5; }
+        .project-item.active .project-body { height: auto; padding: 12px 16px; opacity: 1; border-top-color: var(--line); }
         .project-item.active .chevron { transform: rotate(180deg); color: var(--accent); }
 
-        .action-link {
-            display: inline-flex;
-            align-items: center;
-            margin-top: 12px;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 12px;
-            font-family: var(--mono);
-            border: 1px solid var(--line);
-            padding: 4px 10px;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
+        /* Links & Buttons */
+        .action-link { display: inline-flex; align-items: center; margin-top: 12px; color: var(--accent); text-decoration: none; font-size: 12px; font-family: var(--mono); border: 1px solid var(--line); padding: 4px 10px; border-radius: 4px; transition: background 0.2s; }
         .action-link:hover { background: rgba(157, 70, 255, 0.1); }
 
+        /* Tags */
         .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-        .tag {
-            font-family: var(--mono);
-            font-size: 10px;
-            padding: 4px 8px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--line);
-            border-radius: 4px;
-            color: var(--muted);
-        }
+        .tag { font-family: var(--mono); font-size: 10px; padding: 4px 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 4px; color: var(--muted); }
         .tag.highlight { border-color: var(--accent); color: var(--accent); background: rgba(157, 70, 255, 0.1); }
 
-        /* Terminal Style */
-        .terminal-view {
-            background: #00000044;
-            padding: 12px;
-            border-radius: 6px;
-            font-family: var(--mono);
-            font-size: 12px;
-            border: 1px solid var(--line);
-        }
+        /* Terminal View */
+        .terminal-view { background: #00000044; padding: 12px; border-radius: 6px; font-family: var(--mono); font-size: 12px; border: 1px solid var(--line); }
         .cmd-line { display: flex; gap: 8px; margin-bottom: 4px; }
         .prompt { color: var(--btn-max); }
         .cmd { color: #fff; }
         .output { color: var(--muted); margin-bottom: 12px; display: block; padding-left: 20px;}
 
-        /* Sidebar within File Explorer */
-        .explorer-sidebar {
-            width: 150px;
-            min-width: 150px;
-            border-right: 1px solid var(--line);
-            background: rgba(0,0,0,0.2);
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .side-link { 
-            font-size: 13px; 
-            color: var(--muted); 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-            padding: 6px 8px;
-            border-radius: 6px;
-            cursor: default;
-        }
-        .side-link:hover { color: #fff; background: rgba(255,255,255,0.03); }
-        .side-link.active { color: #fff; background: rgba(255,255,255,0.08); font-weight: 500; }
+        /* Bio Buttons */
+        .bio-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .btn-row { display: flex; gap: 10px; }
+        .btn-social { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 12px; font-weight: 600; font-size: 13px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, filter 0.2s, background 0.2s; border: none; cursor: pointer; font-family: var(--sans); }
+        .btn-social:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .btn-github { background-color: var(--accent); color: #fff; flex: 2; }
+        .btn-github:hover { filter: brightness(1.15); }
+        .btn-cv { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--text); flex: 1; }
+        .btn-cv:hover { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.2); }
+        .btn-email { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--text); width: 100%; justify-content: center; }
+        .btn-email:hover { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.2); }
 
     </style>
 </head>
 <body>
 
-    <div class="desktop-container">
-
-        <!-- FILE EXPLORER (The "Root" Window) -->
+    <div class="desktop-container" id="desktop">
+        <!-- 
+            FILE EXPLORER (The "Root" Window) 
+            This is the only hardcoded window because it acts as the system root.
+            Content inside .file-grid is generated via JS.
+        -->
         <div id="explorerWin" class="window" style="z-index: 5;">
             <div class="window-header">
                 <div class="win-controls">
-                    <button class="win-btn disabled"></button>
+                    <button class="win-btn disabled" title="System Root"></button>
                     <button class="win-btn min"></button> 
                     <button class="win-btn max" onclick="toggleMaximize('explorerWin')">↗</button>
                 </div>
@@ -429,204 +333,243 @@
             </div>
             
             <div class="window-content" style="flex-direction: row;">
-                <!-- Mini Sidebar -->
+                <!-- Decorative Sidebar -->
                 <div class="explorer-sidebar">
-                    <div class="side-link">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>
-                        Network
-                    </div>
-                    <div class="side-link active">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                        Home
-                    </div>
-                    <div class="side-link">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                        Documents
-                    </div>
-                    <div class="side-link">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        Downloads
-                    </div>
+                    <div class="side-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg> Network</div>
+                    <div class="side-link active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Home</div>
+                    <div class="side-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> Documents</div>
+                    <div class="side-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Downloads</div>
                 </div>
 
-                <div class="file-grid">
-                    
-                    <!-- 1. Projects Program -->
-                    <div class="file-item" onclick="openWindow('journalWin')">
-                        <svg class="file-icon folder" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                        <span class="file-name">Projects.app</span>
-                    </div>
-
-                    <!-- 2. About Me File -->
-                    <div class="file-item" onclick="openWindow('aboutWin')">
-                        <svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span class="file-name">profile.md</span>
-                    </div>
-
-                    <!-- 3. Skills File -->
-                    <div class="file-item" onclick="openWindow('stackWin')">
-                        <svg class="file-icon exec" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line><rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect></svg>
-                        <span class="file-name">skills.sh</span>
-                    </div>
-
-                    <!-- 4. Contact File -->
-                    <div class="file-item" onclick="openWindow('contactWin')">
-                        <svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        <span class="file-name">contact.json</span>
-                    </div>
-
-                </div>
+                <!-- Icons will be injected here by JS -->
+                <div class="file-grid" id="fileGrid"></div>
             </div>
         </div>
 
-        <!-- JOURNAL WINDOW (Projects) -->
-        <div id="journalWin" class="window" style="top: 80px; left: 100px;">
-            <div class="window-header">
-                <div class="win-controls">
-                    <button class="win-btn close" onclick="closeWindow('journalWin')"></button>
-                    <button class="win-btn min"></button>
-                    <button class="win-btn max" onclick="toggleMaximize('journalWin')">↗</button>
-                </div>
-                <div class="win-title">Engineering Journal</div>
-            </div>
-            <div class="window-content content-inner">
-                <h2>Featured Case Studies</h2>
-                <ul class="menu-list">
-                    <li class="project-item" onclick="toggleMenu(this)">
-                        <div class="project-head">
-                            <span>Coronet Infrastructure</span>
-                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                        </div>
-                        <div class="project-body">
-                            Secure, self-hosted infrastructure stack. Split-DNS via Cloudflare/AdGuard, mesh networking with Tailscale.
-                            <br>
-                            <a href="#" target="_blank" class="action-link">Read Breakdown &rarr;</a>
-                        </div>
-                    </li>
-                    <li class="project-item" onclick="toggleMenu(this)">
-                        <div class="project-head">
-                            <span>Pokémon Battle Engine</span>
-                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                        </div>
-                        <div class="project-body">
-                            Generation II battle mechanics in C/Python. Bit-perfect accuracy for damage calculation.
-                            <br>
-                            <a href="#" target="_blank" class="action-link">View Repo &rarr;</a>
-                        </div>
-                    </li>
-                    <li class="project-item" onclick="toggleMenu(this)">
-                        <div class="project-head">
-                            <span>Minecraft DevOps</span>
-                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                        </div>
-                        <div class="project-body">
-                            Containerized Fabric server (1.20.4). Automated backups via Restic and secure ingress tunnel.
-                            <br>
-                            <a href="#" target="_blank" class="action-link">View Config &rarr;</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- BIO WINDOW -->
-        <div id="aboutWin" class="window" style="top: 120px; left: 150px;">
-            <div class="window-header">
-                <div class="win-controls">
-                    <button class="win-btn close" onclick="closeWindow('aboutWin')"></button>
-                    <button class="win-btn min"></button>
-                    <button class="win-btn max" onclick="toggleMaximize('aboutWin')">↗</button>
-                </div>
-                <div class="win-title">profile.md</div>
-            </div>
-            <div class="window-content content-inner">
-                <p><strong>Josue-Marie Nonguierma</strong><br>Computer Science Student // Hamburg, DE</p>
-                <p>I am a self-taught technologist passionate about backend infrastructure, automation, and reliable systems. My work focuses on taking complex services and making them boringly stable through containerization and strict networking principles.</p>
-                <p style="color: var(--muted); font-size: 13px;">Currently exploring: Rust, Kubernetes, and Advanced Networking.</p>
-                
-                <!-- NEW BUTTON GROUP -->
-                <div class="bio-actions">
-                    <div class="btn-row">
-                        <a href="https://github.com/DarkLugia4000" target="_blank" class="btn-social btn-github">
-                            <!-- Simple GitHub Icon -->
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                            GitHub
-                        </a>
-                        <a href="#" target="_blank" class="btn-social btn-cv">CV</a>
-                    </div>
-                    <a href="mailto:josuenonguierma3@gmail.com" class="btn-social btn-email">Email</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- SKILLS WINDOW -->
-        <div id="stackWin" class="window" style="top: 150px; left: 200px;">
-            <div class="window-header">
-                <div class="win-controls">
-                    <button class="win-btn close" onclick="closeWindow('stackWin')"></button>
-                    <button class="win-btn min"></button>
-                    <button class="win-btn max" onclick="toggleMaximize('stackWin')">↗</button>
-                </div>
-                <div class="win-title">skills_matrix.sh</div>
-            </div>
-            <div class="window-content content-inner">
-                <div class="terminal-view">
-                    <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat languages</span></div>
-                    <span class="output">Python, C, C++, Java, Bash, SQL</span>
-                    
-                    <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat infrastructure</span></div>
-                    <span class="output">Docker, Nginx Proxy Mgr, Tailscale, Cloudflare</span>
-                    
-                    <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat tools</span></div>
-                    <span class="output">Git, Linux, Prometheus, Grafana, Ansible</span>
-                </div>
-                <a href="lab/index.html" class="action-link">View Infrastructure Doc &rarr;</a>
-            </div>
-        </div>
-
-        <!-- CONTACT WINDOW -->
-        <div id="contactWin" class="window" style="top: 180px; left: 250px;">
-            <div class="window-header">
-                <div class="win-controls">
-                    <button class="win-btn close" onclick="closeWindow('contactWin')"></button>
-                    <button class="win-btn min"></button>
-                    <button class="win-btn max" onclick="toggleMaximize('contactWin')">↗</button>
-                </div>
-                <div class="win-title">contact.json</div>
-            </div>
-            <div class="window-content content-inner">
-                <p>Open for collaboration on open-source projects or infrastructure discussions.</p>
-                <a href="mailto:josuenonguierma3@gmail.com" class="action-link" style="text-align:center;">josuenonguierma3@gmail.com</a>
-            </div>
-        </div>
-
+        <!-- 
+            OTHER WINDOWS 
+            These are injected by JS based on SYSTEM_CONFIG.
+        -->
     </div>
 
     <script>
-        // --- Init: Center Explorer ---
-        window.onload = () => {
-            const explorer = document.getElementById('explorerWin');
-            // Remove the centering transform after a moment to allow dragging to work properly
-            // The initial CSS transform centers it, but messes up 'left/top' calculations for drag
-            // so we calculate absolute positions and remove the transform.
-            
-            const rect = explorer.getBoundingClientRect();
-            explorer.style.left = rect.left + 'px';
-            explorer.style.top = rect.top + 'px';
-            explorer.style.transform = 'none'; 
-            explorer.classList.add('loaded');
+        /*
+         ===================================================================
+         USER CONFIGURATION
+         ===================================================================
+         Edit the SYSTEM_CONFIG object below to change your files and windows.
+         
+         - 'apps' is an object where the key (e.g., 'journal') is a unique ID.
+         - 'title': Text shown in the window header.
+         - 'icon':  SVG path data or class for the file icon. 
+                    (Use 'folder' or 'exec' for predefined colors, or remove for default).
+         - 'fileLabel': The text shown under the icon in Explorer.
+         - 'initX/Y': Initial position of the window.
+         - 'content': The HTML content inside the window. Supports backticks `` for multi-line HTML.
+        */
+
+        const SYSTEM_CONFIG = {
+            apps: {
+                // 1. Projects / Journal
+                journal: {
+                    title: 'Engineering Journal',
+                    fileLabel: 'Projects.app',
+                    type: 'folder', // 'folder', 'exec', or empty for text file
+                    initX: 80, initY: 100,
+                    content: `
+                        <h2>Featured Case Studies</h2>
+                        <ul class="menu-list">
+                            <li class="project-item" onclick="toggleMenu(this)">
+                                <div class="project-head">
+                                    <span>Coronet Infrastructure</span>
+                                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                                </div>
+                                <div class="project-body">
+                                    Secure, self-hosted infrastructure stack. Split-DNS via Cloudflare/AdGuard, mesh networking with Tailscale.
+                                    <br><a href="https://coronet.io/lab/index.html" target="_blank" class="action-link">Read Breakdown &rarr;</a>
+                                </div>
+                            </li>
+                            <li class="project-item" onclick="toggleMenu(this)">
+                                <div class="project-head">
+                                    <span>Pokémon Battle Engine</span>
+                                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                                </div>
+                                <div class="project-body">
+                                    Generation II battle mechanics in C/Python. Bit-perfect accuracy for damage calculation.
+                                    <br><a href="#" target="_blank" class="action-link">View Repo &rarr;</a>
+                                </div>
+                            </li>
+                            <li class="project-item" onclick="toggleMenu(this)">
+                                <div class="project-head">
+                                    <span>Minecraft DevOps</span>
+                                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                                </div>
+                                <div class="project-body">
+                                    Containerized Fabric server (1.20.4). Automated backups via Restic and secure ingress tunnel.
+                                    <br><a href="#" target="_blank" class="action-link">View Config &rarr;</a>
+                                </div>
+                            </li>
+                        </ul>
+                    `
+                },
+
+                // 2. Profile / Bio
+                profile: {
+                    title: 'profile.md',
+                    fileLabel: 'profile.md',
+                    type: 'file',
+                    initX: 120, initY: 150,
+                    content: `
+                        <p><strong>Josue-Marie Nonguierma</strong><br>Computer Science Student // Hamburg, DE</p>
+                        <p>I am a self-taught technologist passionate about backend infrastructure, automation, and reliable systems. My work focuses on taking complex services and making them boringly stable through containerization and strict networking principles.</p>
+                        <p style="color: var(--muted); font-size: 13px;">Currently exploring: Rust, Kubernetes, and Advanced Networking.</p>
+                        
+                        <div class="bio-actions">
+                            <div class="btn-row">
+                                <a href="https://github.com/DarkLugia4000" target="_blank" class="btn-social btn-github">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                    GitHub
+                                </a>
+                                <a href="#" target="_blank" class="btn-social btn-cv">CV</a>
+                            </div>
+                            <a href="mailto:josuenonguierma3@gmail.com" class="btn-social btn-email">Email</a>
+                        </div>
+                    `
+                },
+
+                // 3. Skills / Stack
+                skills: {
+                    title: 'skills_matrix.sh',
+                    fileLabel: 'skills.sh',
+                    type: 'exec',
+                    initX: 150, initY: 200,
+                    content: `
+                        <div class="terminal-view">
+                            <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat languages</span></div>
+                            <span class="output">Python, C, C++, Java, Bash, SQL</span>
+                            
+                            <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat infrastructure</span></div>
+                            <span class="output">Docker, Nginx Proxy Mgr, Tailscale, Cloudflare</span>
+                            
+                            <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat tools</span></div>
+                            <span class="output">Git, Linux, Prometheus, Grafana, Ansible</span>
+                        </div>
+                        <a href="lab/index.html" class="action-link">View Infrastructure Doc &rarr;</a>
+                    `
+                },
+
+                // 4. Contact
+                contact: {
+                    title: 'contact.json',
+                    fileLabel: 'contact.json',
+                    type: 'file',
+                    initX: 180, initY: 250,
+                    content: `
+                        <p>Open for collaboration on open-source projects or infrastructure discussions.</p>
+                        <a href="mailto:josuenonguierma3@gmail.com" class="action-link" style="text-align:center;">josuenonguierma3@gmail.com</a>
+                    `
+                }
+            }
+        };
+
+        /*
+         ===================================================================
+         SYSTEM LOGIC (DO NOT EDIT UNLESS YOU KNOW WHAT YOU'RE DOING)
+         ===================================================================
+        */
+
+        const ICONS = {
+            folder: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>',
+            file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
+            exec: '<polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line><rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>'
         };
 
         let zIndexCounter = 10;
 
+        window.onload = () => {
+            initExplorer();
+            renderWindows();
+            initDraggables();
+            centerExplorer();
+        };
+
+        function centerExplorer() {
+            const explorer = document.getElementById('explorerWin');
+            const rect = explorer.getBoundingClientRect();
+            // Convert viewport centering to absolute positioning for drag compatibility
+            explorer.style.left = rect.left + 'px';
+            explorer.style.top = rect.top + 'px';
+            // Remove the CSS translate that forces centering so drag works
+            explorer.style.transform = 'none'; 
+        }
+
+        // Generate File Grid items based on Config
+        function initExplorer() {
+            const grid = document.getElementById('fileGrid');
+            grid.innerHTML = ''; // Clear existing
+
+            for (const [key, app] of Object.entries(SYSTEM_CONFIG.apps)) {
+                // Determine icon SVG
+                let iconSvg = ICONS.file; // Default
+                if(app.type === 'folder') iconSvg = ICONS.folder;
+                if(app.type === 'exec') iconSvg = ICONS.exec;
+
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.onclick = () => openWindow(key + 'Win');
+                
+                item.innerHTML = `
+                    <svg class="file-icon ${app.type || ''}" viewBox="0 0 24 24" fill="${app.type === 'folder' ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5">
+                        ${iconSvg}
+                    </svg>
+                    <span class="file-name">${app.fileLabel}</span>
+                `;
+                grid.appendChild(item);
+            }
+        }
+
+        // Generate Windows HTML based on Config
+        function renderWindows() {
+            const container = document.getElementById('desktop');
+            
+            for (const [key, app] of Object.entries(SYSTEM_CONFIG.apps)) {
+                const winId = key + 'Win';
+                const win = document.createElement('div');
+                win.id = winId;
+                win.className = 'window';
+                win.style.left = app.initX + 'px';
+                win.style.top = app.initY + 'px';
+                
+                win.innerHTML = `
+                    <div class="window-header">
+                        <div class="win-controls">
+                            <button class="win-btn close" onclick="closeWindow('${winId}')"></button>
+                            <button class="win-btn min"></button>
+                            <button class="win-btn max" onclick="toggleMaximize('${winId}')">↗</button>
+                        </div>
+                        <div class="win-title">${app.title}</div>
+                    </div>
+                    <div class="window-content content-inner">
+                        ${app.content}
+                    </div>
+                `;
+                container.appendChild(win);
+            }
+        }
+
+        // --- Window Management Logic ---
+
         function openWindow(id) {
             const win = document.getElementById(id);
-            win.style.display = 'flex';
-            bringToFront(win);
+            if(win) {
+                win.style.display = 'flex';
+                bringToFront(win);
+            }
         }
 
         function closeWindow(id) {
-            document.getElementById(id).style.display = 'none';
+            const win = document.getElementById(id);
+            if(win) win.style.display = 'none';
         }
 
         function bringToFront(element) {
@@ -648,43 +591,45 @@
             }
         }
 
-        // --- Draggable Logic ---
-        document.querySelectorAll('.window').forEach(win => {
-            const header = win.querySelector('.window-header');
-            
-            win.addEventListener('mousedown', () => bringToFront(win));
-
-            header.onmousedown = function(e) {
-                e.preventDefault();
-                if (win.classList.contains('maximized')) return;
-
-                let startX = e.clientX;
-                let startY = e.clientY;
-                let startLeft = win.offsetLeft;
-                let startTop = win.offsetTop;
-
-                function onMouseMove(event) {
-                    let dx = event.clientX - startX;
-                    let dy = event.clientY - startY;
-                    win.style.left = (startLeft + dx) + 'px';
-                    win.style.top = (startTop + dy) + 'px';
-                }
-
-                document.addEventListener('mousemove', onMouseMove);
-                document.onmouseup = function() {
-                    document.removeEventListener('mousemove', onMouseMove);
-                    document.onmouseup = null;
-                };
-            };
-            
-            header.ondragstart = function() { return false; };
-        });
-
         function toggleMenu(element) {
+            // Close others if single-expand is desired
             document.querySelectorAll('.project-item').forEach(item => {
                 if(item !== element) item.classList.remove('active');
             });
             element.classList.toggle('active');
+        }
+
+        // Initialize drag logic for ALL windows (static and dynamic)
+        function initDraggables() {
+            document.querySelectorAll('.window').forEach(win => {
+                const header = win.querySelector('.window-header');
+                
+                win.addEventListener('mousedown', () => bringToFront(win));
+
+                header.onmousedown = function(e) {
+                    e.preventDefault();
+                    if (win.classList.contains('maximized')) return;
+
+                    let startX = e.clientX;
+                    let startY = e.clientY;
+                    let startLeft = win.offsetLeft;
+                    let startTop = win.offsetTop;
+
+                    function onMouseMove(event) {
+                        let dx = event.clientX - startX;
+                        let dy = event.clientY - startY;
+                        win.style.left = (startLeft + dx) + 'px';
+                        win.style.top = (startTop + dy) + 'px';
+                    }
+
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.onmouseup = function() {
+                        document.removeEventListener('mousemove', onMouseMove);
+                        document.onmouseup = null;
+                    };
+                };
+                header.ondragstart = function() { return false; };
+            });
         }
     </script>
 </body>
