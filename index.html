@@ -1,257 +1,691 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Josue-Marie | Coronet.dev</title>
-  <meta name="description" content="Computer science student building reliable systems, automation, and containerized service stacks." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #05010a;
-      --panel: #0e0516;
-      --text: #f1e9ff;
-      --muted: #a390c4;
-      --line: rgba(186, 150, 255, 0.08);
-      --accent: #9d46ff;
-      --accent-glow: rgba(157, 70, 255, 0.25);
-      --accent2: #6b22e0;
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
-      --radius: 20px;
-      --mono: "JetBrains Mono", monospace;
-      --sans: "Inter", sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-
-    body {
-      margin: 0;
-      font-family: var(--sans);
-      color: var(--text);
-      line-height: 1.6;
-      background-color: var(--bg);
-      background: 
-        radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
-        radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
-        radial-gradient(1400px 1000px at 50% 100%, rgba(120, 50, 220, 0.08), transparent 70%),
-        linear-gradient(180deg, #05010a 0%, #090212 40%, #030005 100%);
-      background-size: 200% 200%;
-      animation: bgDrift 20s ease infinite alternate;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-image: 
-        linear-gradient(rgba(180, 150, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(180, 150, 255, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    @keyframes bgDrift {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 10% 10%; }
-    }
-
-    a { color: inherit; text-decoration: none; transition: color 0.2s; }
-    a:hover { color: #fff; }
-
-    .page {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 80px 20px 100px;
-      position: relative;
-    }
-
-    .scroll-shell {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(14, 5, 22, 0.65);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .scroll-shell::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.5;
-    }
-
-    .inner { padding: 40px; }
-
-    .topline { display: flex; flex-direction: column; gap: 4px; padding-bottom: 20px; }
-    .brand { display: inline-flex; gap: 12px; align-items: center; }
-
-    .dot-wrapper { position: relative; display: flex; align-items: center; justify-content: center; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); z-index: 2; box-shadow: 0 0 10px var(--accent-glow); }
-    .ping { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); opacity: 0.5; animation: pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
-    @keyframes pulse { 75%, 100% { transform: scale(2.5); opacity: 0; } }
-
-    h1 { margin: 0; font-size: clamp(24px, 5vw, 32px); font-weight: 700; letter-spacing: -0.03em; color: #fff; }
-    .meta { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
-    .tagline { margin: 10px 0 0; color: var(--muted); max-width: 60ch; font-size: 16px; line-height: 1.6; }
-
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text); font-weight: 500; font-size: 14px; transition: all 0.2s ease; cursor: pointer; }
-    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); border-color: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-    .btn.primary:hover { background: var(--accent2); box-shadow: 0 0 15px var(--accent-glow); }
-
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-    .chip { font-family: var(--mono); font-size: 11px; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); background: rgba(0,0,0,0.2); transition: border-color 0.2s; cursor: default; }
-    .chip:hover { border-color: var(--muted); color: var(--text); }
-
-    .divider { height: 1px; margin: 32px 0; background: linear-gradient(90deg, transparent, var(--line), transparent); }
-
-    h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-    .project-list { display: grid; gap: 16px; }
-
-    .project { position: relative; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 100%); padding: 20px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; overflow: hidden; }
-    .project:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 8px 24px rgba(0,0,0,0.25); background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); }
-    .project.expanded { border-color: var(--accent); background: rgba(22, 10, 34, 0.8); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
-
-    .project-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .header-left { display: flex; flex-direction: column; }
-    .project h3 { margin: 0; font-size: 18px; font-weight: 600; color: #fff; }
-    .project-meta { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 4px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Josue-Marie | CV & Blog</title>
     
-    .chevron { color: var(--muted); transition: transform 0.3s ease; flex-shrink: 0; }
-    .project.expanded .chevron { transform: rotate(180deg); color: var(--accent); }
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    .project .desc { font-size: 14px; color: var(--muted); margin: 8px 0 0 0; line-height: 1.5; }
-
-    .project-details { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease-out; opacity: 0.5; }
-    .project.expanded .project-details { grid-template-rows: 1fr; opacity: 1; }
-    .details-inner { overflow: hidden; }
-    .detail-content { padding-top: 16px; border-top: 1px dashed var(--line); margin-top: 16px; }
-
-    .links { display: flex; gap: 16px; font-size: 13px; font-weight: 500; }
-    .links a { display: flex; align-items: center; gap: 4px; color: var(--text); padding: 6px 12px; background: rgba(255,255,255,0.05); border-radius: 6px; transition: background 0.2s; }
-    .links a:hover { color: #fff; background: var(--accent); text-decoration: none; }
-
-    .fineprint { margin-top: 40px; color: var(--muted); font-size: 12px; text-align: center; opacity: 0.5; font-family: var(--mono); }
-
-    @media (max-width: 600px) { .page { padding-top: 40px; } .inner { padding: 24px; } }
-  </style>
-</head>
-
-<body>
-  <div class="page">
-    <div class="scroll-shell">
-      <div class="inner">
-        
-        <header class="topline">
-          <div class="brand">
-            <div class="dot-wrapper"><span class="ping"></span><span class="dot"></span></div>
-            <h1>Josue-Marie Nonguierma</h1>
-          </div>
-          <div class="meta">Hamburg, DE <span aria-hidden="true">/</span> Computer Science Student</div>
-        </header>
-
-        <p class="tagline">I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.</p>
-
-      <div class="actions">
-          <a class="btn primary" href="https://github.com/DarkLugia4000">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-            GitHub
-          </a>
-          <a class="btn" href="#">CV</a>
-          <a class="btn" href="mailto:josuenonguierma3@gmail.com">Email</a>
-        </div>
-
-        <div class="chips">
-          <span class="chip">Linux</span><span class="chip">Docker</span><span class="chip">Networking</span><span class="chip">Python</span><span class="chip">C++</span><span class="chip">C</span>
-        </div>
-
-        <div class="divider"></div>
-
-        <section id="projects">
-          <h2>Projects (Click to Expand)</h2>
-          <div class="project-list">
+    <style>
+        :root {
+            color-scheme: dark;
             
-            <article class="project" onclick="toggleProject(this)">
-              <div class="project-header">
-                <div class="header-left">
-                  <h3>Coronet Homelab</h3>
-                  <span class="project-meta">Docker · Tailscale · Traefik</span>
+            --bg: #05010a;
+            --panel: #0e0516;
+            --text: #f1e9ff;
+            --muted: #a390c4;
+            --line: rgba(186, 150, 255, 0.08);
+            
+            --accent: #9d46ff;
+            --accent-glow: rgba(157, 70, 255, 0.25);
+            
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+            --radius: 16px;
+            
+            --mono: "JetBrains Mono", monospace;
+            --sans: "Inter", sans-serif;
+            
+            --glass: rgba(14, 5, 22, 0.75);
+            
+            /* Window Controls */
+            --btn-close: #ff5f57;
+            --btn-max: #28c840;
+            --btn-min: #ffbd2e;
+            --btn-disabled: #3a3a3a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--sans);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg);
+            
+            background: 
+                radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
+                radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
+                linear-gradient(180deg, #05010a 0%, #090212 40%, #030005 100%);
+            background-size: 200% 200%;
+            animation: bgDrift 30s ease infinite alternate;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(180, 150, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 150, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes bgDrift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 15% 15%; }
+        }
+
+        .desktop-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        /* --- WINDOW SYSTEM --- */
+        .window {
+            position: absolute;
+            background: #0e0516e6;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            width: 500px;
+            min-height: 200px;
+            overflow: hidden;
+            transition: opacity 0.2s, width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .window.maximized {
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 0;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .window-header {
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            cursor: grab;
+            user-select: none;
+            gap: 16px;
+            flex-shrink: 0; /* Header doesn't shrink */
+        }
+
+        .window-header:active { cursor: grabbing; }
+
+        .win-controls { display: flex; gap: 8px; }
+
+        .win-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: rgba(0,0,0,0.5);
+            transition: transform 0.1s, opacity 0.2s;
+            cursor: pointer;
+        }
+        
+        .win-btn:hover { color: #000; opacity: 1; transform: scale(1.1); }
+        
+        .win-btn.close { background: var(--btn-close); }
+        .win-btn.max { background: var(--btn-max); border-radius: 3px; width: 12px; height: 12px;} /* Square for maximize */
+        .win-btn.min { background: var(--btn-min); }
+        
+        .win-btn.disabled { 
+            background: var(--btn-disabled); 
+            cursor: default; 
+            pointer-events: none;
+        }
+        .win-btn.disabled:hover { transform: none; }
+
+        .win-title {
+            font-family: var(--sans);
+            font-weight: 600;
+            font-size: 13px;
+            color: #fff;
+            text-align: center;
+            flex-grow: 1;
+            margin-right: 52px;
+        }
+
+        .window-content {
+            padding: 0;
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.6;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Scroll handled by children */
+        }
+
+        .content-inner { 
+            padding: 24px; 
+            overflow-y: auto; 
+            height: 100%;
+        }
+
+        /* --- NEW BUTTON STYLES (Bio Window) --- */
+        .bio-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-social {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 12px; /* Slightly softer corners */
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s, filter 0.2s, background 0.2s;
+            border: none;
+            cursor: pointer;
+            font-family: var(--sans);
+        }
+        .btn-social:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .btn-github {
+            background-color: var(--accent); /* #9d46ff */
+            color: #fff;
+            flex: 2; /* Takes up more space */
+        }
+        .btn-github:hover {
+            filter: brightness(1.15);
+        }
+        .btn-cv {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--line);
+            color: var(--text);
+            flex: 1;
+        }
+        .btn-cv:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .btn-email {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--line);
+            color: var(--text);
+            width: 100%;
+            justify-content: center; 
+        }
+        .btn-email:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+
+        /* --- FILE EXPLORER STYLES --- */
+        #explorerWin {
+            width: 600px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            display: flex;
+        }
+        #explorerWin.loaded { transform: none; }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 90px);
+            grid-auto-rows: 90px;
+            justify-content: start;
+            gap: 12px;
+            padding: 20px;
+            align-content: start;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.1s;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .file-item:hover { background: rgba(255,255,255,0.08); }
+        .file-item:active { background: rgba(157, 70, 255, 0.2); }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            color: var(--muted);
+            transition: color 0.2s;
+        }
+        
+        .file-item:hover .file-icon { color: var(--text); }
+        .file-icon.folder { color: #5f8de5; fill: rgba(95, 141, 229, 0.2); }
+        .file-icon.exec { color: var(--accent); }
+
+        .file-name {
+            font-size: 11px;
+            color: var(--text);
+            font-weight: 500;
+            line-height: 1.2;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- JOURNAL & CONTENT STYLES --- */
+        .menu-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+        
+        .project-item {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.02);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .project-item:hover { border-color: var(--accent); background: rgba(255,255,255,0.04); }
+
+        .project-head {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .project-head span { color: #fff; }
+        .chevron { color: var(--muted); transition: transform 0.3s; width: 16px; height: 16px;}
+        
+        .project-body {
+            height: 0;
+            padding: 0 16px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            color: var(--muted);
+            border-top: 1px dashed transparent;
+            line-height: 1.5;
+        }
+        
+        .project-item.active .project-body {
+            height: auto;
+            padding: 12px 16px;
+            opacity: 1;
+            border-top-color: var(--line);
+        }
+        .project-item.active .chevron { transform: rotate(180deg); color: var(--accent); }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 12px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 12px;
+            font-family: var(--mono);
+            border: 1px solid var(--line);
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .action-link:hover { background: rgba(157, 70, 255, 0.1); }
+
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            color: var(--muted);
+        }
+        .tag.highlight { border-color: var(--accent); color: var(--accent); background: rgba(157, 70, 255, 0.1); }
+
+        /* Terminal Style */
+        .terminal-view {
+            background: #00000044;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: var(--mono);
+            font-size: 12px;
+            border: 1px solid var(--line);
+        }
+        .cmd-line { display: flex; gap: 8px; margin-bottom: 4px; }
+        .prompt { color: var(--btn-max); }
+        .cmd { color: #fff; }
+        .output { color: var(--muted); margin-bottom: 12px; display: block; padding-left: 20px;}
+
+        /* Sidebar within File Explorer */
+        .explorer-sidebar {
+            width: 150px;
+            min-width: 150px;
+            border-right: 1px solid var(--line);
+            background: rgba(0,0,0,0.2);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .side-link { 
+            font-size: 13px; 
+            color: var(--muted); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            cursor: default;
+        }
+        .side-link:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .side-link.active { color: #fff; background: rgba(255,255,255,0.08); font-weight: 500; }
+
+    </style>
+</head>
+<body>
+
+    <div class="desktop-container">
+
+        <!-- FILE EXPLORER (The "Root" Window) -->
+        <div id="explorerWin" class="window" style="z-index: 5;">
+            <div class="window-header">
+                <div class="win-controls">
+                    <button class="win-btn disabled"></button>
+                    <button class="win-btn min"></button> 
+                    <button class="win-btn max" onclick="toggleMaximize('explorerWin')">↗</button>
                 </div>
-                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-              </div>
-              <p class="desc">Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.</p>
-              <div class="project-details">
-                <div class="details-inner">
-                  <div class="detail-content">
-                    <div class="links">
-                      <a href="lab/index.html">View Infrastructure &rarr;</a>
-                      <a href="https://github.com/DarkLugia4000/Pokemon-Battle-Sim">Config &rarr;</a>
+                <div class="win-title">File System</div>
+            </div>
+            
+            <div class="window-content" style="flex-direction: row;">
+                <!-- Mini Sidebar -->
+                <div class="explorer-sidebar">
+                    <div class="side-link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>
+                        Network
                     </div>
-                  </div>
+                    <div class="side-link active">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        Home
+                    </div>
+                    <div class="side-link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        Documents
+                    </div>
+                    <div class="side-link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Downloads
+                    </div>
                 </div>
-              </div>
-            </article>
 
-            <article class="project" onclick="toggleProject(this)">
-              <div class="project-header">
-                <div class="header-left">
-                   <h3>Pokémon Battle Engine</h3>
-                   <span class="project-meta">C · Python · Unit Testing</span>
-                </div>
-                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-              </div>
-              <p class="desc">Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.</p>
-              <div class="project-details">
-                <div class="details-inner">
-                  <div class="detail-content">
-                    <div class="links"><a href="#">View Repo &rarr;</a></div>
-                  </div>
-                </div>
-              </div>
-            </article>
+                <div class="file-grid">
+                    
+                    <!-- 1. Projects Program -->
+                    <div class="file-item" onclick="openWindow('journalWin')">
+                        <svg class="file-icon folder" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        <span class="file-name">Projects.app</span>
+                    </div>
 
-            <article class="project" onclick="toggleProject(this)">
-              <div class="project-header">
-                <div class="header-left">
-                   <h3>Modded Minecraft Server</h3>
-                   <span class="project-meta">Java · Docker · Bash</span>
-                </div>
-                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-              </div>
-              <p class="desc">Forge/CurseForge deployment with reproducible mod resolution, backups, and stable upgrades.</p>
-              <div class="project-details">
-                <div class="details-inner">
-                  <div class="detail-content">
-                    <div class="links"><a href="#">Read Write-up &rarr;</a></div>
-                  </div>
-                </div>
-              </div>
-            </article>
+                    <!-- 2. About Me File -->
+                    <div class="file-item" onclick="openWindow('aboutWin')">
+                        <svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span class="file-name">profile.md</span>
+                    </div>
 
-          </div>
-        </section>
+                    <!-- 3. Skills File -->
+                    <div class="file-item" onclick="openWindow('stackWin')">
+                        <svg class="file-icon exec" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line><rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect></svg>
+                        <span class="file-name">skills.sh</span>
+                    </div>
 
-        <div class="fineprint">&copy; <span id="y"></span> Josue-Marie Nonguierma</div>
-      </div>
+                    <!-- 4. Contact File -->
+                    <div class="file-item" onclick="openWindow('contactWin')">
+                        <svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <span class="file-name">contact.json</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- JOURNAL WINDOW (Projects) -->
+        <div id="journalWin" class="window" style="top: 80px; left: 100px;">
+            <div class="window-header">
+                <div class="win-controls">
+                    <button class="win-btn close" onclick="closeWindow('journalWin')"></button>
+                    <button class="win-btn min"></button>
+                    <button class="win-btn max" onclick="toggleMaximize('journalWin')">↗</button>
+                </div>
+                <div class="win-title">Engineering Journal</div>
+            </div>
+            <div class="window-content content-inner">
+                <h2>Featured Case Studies</h2>
+                <ul class="menu-list">
+                    <li class="project-item" onclick="toggleMenu(this)">
+                        <div class="project-head">
+                            <span>Coronet Infrastructure</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                        </div>
+                        <div class="project-body">
+                            Secure, self-hosted infrastructure stack. Split-DNS via Cloudflare/AdGuard, mesh networking with Tailscale.
+                            <br>
+                            <a href="#" target="_blank" class="action-link">Read Breakdown &rarr;</a>
+                        </div>
+                    </li>
+                    <li class="project-item" onclick="toggleMenu(this)">
+                        <div class="project-head">
+                            <span>Pokémon Battle Engine</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                        </div>
+                        <div class="project-body">
+                            Generation II battle mechanics in C/Python. Bit-perfect accuracy for damage calculation.
+                            <br>
+                            <a href="#" target="_blank" class="action-link">View Repo &rarr;</a>
+                        </div>
+                    </li>
+                    <li class="project-item" onclick="toggleMenu(this)">
+                        <div class="project-head">
+                            <span>Minecraft DevOps</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                        </div>
+                        <div class="project-body">
+                            Containerized Fabric server (1.20.4). Automated backups via Restic and secure ingress tunnel.
+                            <br>
+                            <a href="#" target="_blank" class="action-link">View Config &rarr;</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- BIO WINDOW -->
+        <div id="aboutWin" class="window" style="top: 120px; left: 150px;">
+            <div class="window-header">
+                <div class="win-controls">
+                    <button class="win-btn close" onclick="closeWindow('aboutWin')"></button>
+                    <button class="win-btn min"></button>
+                    <button class="win-btn max" onclick="toggleMaximize('aboutWin')">↗</button>
+                </div>
+                <div class="win-title">profile.md</div>
+            </div>
+            <div class="window-content content-inner">
+                <p><strong>Josue-Marie Nonguierma</strong><br>Computer Science Student // Hamburg, DE</p>
+                <p>I am a self-taught technologist passionate about backend infrastructure, automation, and reliable systems. My work focuses on taking complex services and making them boringly stable through containerization and strict networking principles.</p>
+                <p style="color: var(--muted); font-size: 13px;">Currently exploring: Rust, Kubernetes, and Advanced Networking.</p>
+                
+                <!-- NEW BUTTON GROUP -->
+                <div class="bio-actions">
+                    <div class="btn-row">
+                        <a href="https://github.com/DarkLugia4000" target="_blank" class="btn-social btn-github">
+                            <!-- Simple GitHub Icon -->
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            GitHub
+                        </a>
+                        <a href="#" target="_blank" class="btn-social btn-cv">CV</a>
+                    </div>
+                    <a href="mailto:josuenonguierma3@gmail.com" class="btn-social btn-email">Email</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SKILLS WINDOW -->
+        <div id="stackWin" class="window" style="top: 150px; left: 200px;">
+            <div class="window-header">
+                <div class="win-controls">
+                    <button class="win-btn close" onclick="closeWindow('stackWin')"></button>
+                    <button class="win-btn min"></button>
+                    <button class="win-btn max" onclick="toggleMaximize('stackWin')">↗</button>
+                </div>
+                <div class="win-title">skills_matrix.sh</div>
+            </div>
+            <div class="window-content content-inner">
+                <div class="terminal-view">
+                    <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat languages</span></div>
+                    <span class="output">Python, C, C++, Java, Bash, SQL</span>
+                    
+                    <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat infrastructure</span></div>
+                    <span class="output">Docker, Nginx Proxy Mgr, Tailscale, Cloudflare</span>
+                    
+                    <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat tools</span></div>
+                    <span class="output">Git, Linux, Prometheus, Grafana, Ansible</span>
+                </div>
+                <a href="lab/index.html" class="action-link">View Infrastructure Doc &rarr;</a>
+            </div>
+        </div>
+
+        <!-- CONTACT WINDOW -->
+        <div id="contactWin" class="window" style="top: 180px; left: 250px;">
+            <div class="window-header">
+                <div class="win-controls">
+                    <button class="win-btn close" onclick="closeWindow('contactWin')"></button>
+                    <button class="win-btn min"></button>
+                    <button class="win-btn max" onclick="toggleMaximize('contactWin')">↗</button>
+                </div>
+                <div class="win-title">contact.json</div>
+            </div>
+            <div class="window-content content-inner">
+                <p>Open for collaboration on open-source projects or infrastructure discussions.</p>
+                <a href="mailto:josuenonguierma3@gmail.com" class="action-link" style="text-align:center;">josuenonguierma3@gmail.com</a>
+            </div>
+        </div>
+
     </div>
-  </div>
 
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-    function toggleProject(element) { element.classList.toggle('expanded'); }
-  </script>
+    <script>
+        // --- Init: Center Explorer ---
+        window.onload = () => {
+            const explorer = document.getElementById('explorerWin');
+            // Remove the centering transform after a moment to allow dragging to work properly
+            // The initial CSS transform centers it, but messes up 'left/top' calculations for drag
+            // so we calculate absolute positions and remove the transform.
+            
+            const rect = explorer.getBoundingClientRect();
+            explorer.style.left = rect.left + 'px';
+            explorer.style.top = rect.top + 'px';
+            explorer.style.transform = 'none'; 
+            explorer.classList.add('loaded');
+        };
+
+        let zIndexCounter = 10;
+
+        function openWindow(id) {
+            const win = document.getElementById(id);
+            win.style.display = 'flex';
+            bringToFront(win);
+        }
+
+        function closeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function bringToFront(element) {
+            zIndexCounter++;
+            element.style.zIndex = zIndexCounter;
+        }
+
+        function toggleMaximize(id) {
+            const win = document.getElementById(id);
+            const btn = win.querySelector('.win-btn.max');
+            
+            if (win.classList.contains('maximized')) {
+                win.classList.remove('maximized');
+                btn.innerText = "↗";
+            } else {
+                bringToFront(win);
+                win.classList.add('maximized');
+                btn.innerText = "-";
+            }
+        }
+
+        // --- Draggable Logic ---
+        document.querySelectorAll('.window').forEach(win => {
+            const header = win.querySelector('.window-header');
+            
+            win.addEventListener('mousedown', () => bringToFront(win));
+
+            header.onmousedown = function(e) {
+                e.preventDefault();
+                if (win.classList.contains('maximized')) return;
+
+                let startX = e.clientX;
+                let startY = e.clientY;
+                let startLeft = win.offsetLeft;
+                let startTop = win.offsetTop;
+
+                function onMouseMove(event) {
+                    let dx = event.clientX - startX;
+                    let dy = event.clientY - startY;
+                    win.style.left = (startLeft + dx) + 'px';
+                    win.style.top = (startTop + dy) + 'px';
+                }
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.onmouseup = function() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.onmouseup = null;
+                };
+            };
+            
+            header.ondragstart = function() { return false; };
+        });
+
+        function toggleMenu(element) {
+            document.querySelectorAll('.project-item').forEach(item => {
+                if(item !== element) item.classList.remove('active');
+            });
+            element.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
