@@ -21,8 +21,24 @@
       --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
       --shadow2: 0 10px 30px rgba(0, 0, 0, 0.35);
 
+      --radius: 18px;
+
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root{
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --text: #0c1222;
+        --muted: #4a556f;
+        --line: rgba(12,18,34,0.10);
+        --shadow: 0 18px 60px rgba(0,0,0,0.12);
+        --shadow2: 0 10px 28px rgba(0,0,0,0.10);
+        --accent: #6a34ff;
+        --accent2: #2f7cff;
+      }
     }
 
     * { box-sizing: border-box; }
@@ -42,52 +58,40 @@
     }
 
     a { color: inherit; text-decoration: none; }
-
-    /* Fixed back button */
-    .back-btn {
-      position: fixed;
-      top: 22px;
-      left: 22px;
-      z-index: 999;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 10px 14px;
-      border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-
-      font-family: var(--mono);
-      font-size: 14px;
-
-      box-shadow: var(--shadow2);
-      cursor: pointer;
-
-      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
-    }
-
-    .back-btn:hover {
-      transform: translateY(-1px);
-      border-color: color-mix(in oklab, var(--accent) 40%, var(--line));
-      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
-    }
+    a:hover { text-decoration: underline; }
 
     .page {
       max-width: 980px;
       margin: 0 auto;
-      padding: 60px 18px 90px;
+      padding: 44px 18px 80px;
     }
 
-    .shell {
+    /* One continuous, scroll-centric container */
+    .scroll-shell {
       border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 88%, transparent);
+      border-radius: calc(var(--radius) + 8px);
+      background: color-mix(in oklab, var(--panel) 86%, transparent);
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    /* Slight “floating” effect without motion */
+    .scroll-shell::before {
+      content: "";
+      display: block;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        color-mix(in oklab, var(--accent) 45%, transparent),
+        transparent
+      );
+      opacity: 0.65;
     }
 
     .inner {
-      padding: 28px;
+      padding: 26px;
     }
 
     .topline {
@@ -96,12 +100,14 @@
       align-items: baseline;
       justify-content: space-between;
       gap: 12px;
+      padding-bottom: 10px;
     }
 
     .brand {
       display: inline-flex;
       gap: 10px;
       align-items: center;
+      min-width: 0;
     }
 
     .dot {
@@ -110,12 +116,17 @@
       border-radius: 999px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
+      flex: 0 0 auto;
     }
 
     h1 {
       margin: 0;
       font-size: clamp(28px, 4vw, 40px);
       letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     .meta {
@@ -125,29 +136,154 @@
     }
 
     .tagline {
-      margin: 10px 0 0;
+      margin: 8px 0 0;
       color: var(--muted);
-      max-width: 78ch;
+      max-width: 70ch;
       font-size: 16px;
     }
 
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--panel) 92%, transparent);
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow2);
+      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
+    }
+
+    .btn.primary {
+      border-color: color-mix(in oklab, var(--accent) 55%, var(--line));
+      background: linear-gradient(
+        135deg,
+        color-mix(in oklab, var(--accent) 28%, var(--panel)),
+        color-mix(in oklab, var(--accent2) 12%, var(--panel))
+      );
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: color-mix(in oklab, var(--text) 82%, var(--muted));
+      background: color-mix(in oklab, var(--panel) 92%, transparent);
+    }
+
+    /* Scroll sections inside the single container */
+    .divider {
+      height: 1px;
+      margin: 22px -26px;
+      background: color-mix(in oklab, var(--line) 90%, transparent);
+    }
+
+    .block {
+      padding: 4px 0;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--text) 76%, var(--muted));
+    }
+
+    .desc {
+      margin: 0;
+      color: color-mix(in oklab, var(--text) 88%, var(--muted));
+    }
+
+    .project-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .project {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: color-mix(in oklab, var(--panel) 92%, transparent);
+      padding: 14px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .project:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow2);
+      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
+    }
+
+    .project-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .project h3 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
     .fineprint {
-      margin-top: 22px;
+      margin-top: 18px;
       color: var(--muted);
       font-size: 13px;
       text-align: center;
       padding-top: 10px;
+    }
+
+    /* Optional: slightly tighter mobile spacing */
+    @media (max-width: 520px) {
+      .inner { padding: 20px; }
+      .divider { margin: 18px -20px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Back button -->
-  <button class="back-btn" onclick="window.location.href='/'">← back</button>
-
+    <!-- Back button -->
+  <button class="back-btn" onclick="history.back()">← back</button>
+  
   <div class="page">
-    <div class="shell">
+    <div class="scroll-shell">
       <div class="inner">
         <div class="topline">
           <div class="brand">
@@ -158,11 +294,84 @@
         </div>
 
         <p class="tagline">
-          Welcome. This site is a map of the things I build: reliable systems, automation, and containerized stacks that stay boring to run.
+          I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.
         </p>
 
+        <div class="actions">
+          <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn" href="#" target="_blank" rel="noreferrer">CV</a>
+          <a class="btn" href="mailto:josuenonguierma3@gmail.com">Email</a>
+        </div>
+
+        <div class="chips" aria-label="skills">
+          <span class="chip">Linux</span>
+          <span class="chip">Docker Compose</span>
+          <span class="chip">Networking</span>
+          <span class="chip">Python</span>
+          <span class="chip">C++</span>
+          <span class="chip">C</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <section class="block" id="projects">
+          <h2>Projects</h2>
+
+          <p class="desc">
+            A few things I have built recently.
+          </p>
+
+          <div class="project-list">
+            <article class="project">
+              <div class="project-top">
+                <h3>Coronet Homelab</h3>
+                <div class="meta">Docker · Tailscale · Reverse Proxy</div>
+              </div>
+
+              <p class="desc">
+                Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.
+              </p>
+
+              <div class="links">
+                <a href="#" target="_blank" rel="noreferrer">Write-up</a>
+                <a href="#" target="https://github.com/DarkLugia4000/Pokemon-Battle-Sim rel="noreferrer">Config</a>
+              </div>
+            </article>
+
+            <article class="project">
+              <div class="project-top">
+                <h3>Pokémon Battle Engine (Gen II)</h3>
+                <div class="meta">C · Python</div>
+              </div>
+
+              <p class="desc">
+                Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.
+              </p>
+
+              <div class="links">
+                <a href="#" target="_blank" rel="noreferrer">Repo</a>
+              </div>
+            </article>
+
+            <article class="project">
+              <div class="project-top">
+                <h3>Modded Minecraft Server</h3>
+                <div class="meta">Docker · Java · Scripting</div>
+              </div>
+
+              <p class="desc">
+                Forge/CurseForge deployment with reproducible mod resolution and stable upgrades.
+              </p>
+
+              <div class="links">
+                <a href="#" target="_blank" rel="noreferrer">Write-up</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
         <div class="fineprint">
-          © <span id="y"></span> coronet.dev
+          © <span id="y"></span> Josue-Marie Nonguierma
         </div>
       </div>
     </div>
@@ -171,6 +380,5 @@
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
   </script>
-
 </body>
 </html>
