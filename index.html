@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coronet.dev</title>
+  <meta name="description" content="Portfolio" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b0d12;
+      --panel: #101522;
+      --text: #e8ecf3;
+      --muted: #a9b3c7;
+      --line: rgba(255,255,255,0.10);
+      --accent: #7aa2ff;
+      --accent2: #8bffc7;
+      --shadow: 0 12px 40px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root{
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --text: #0c1222;
+        --muted: #4a556f;
+        --line: rgba(12,18,34,0.10);
+        --shadow: 0 12px 40px rgba(0,0,0,0.12);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(122,162,255,0.18), transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, rgba(139,255,199,0.10), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 56px 20px 70px;
+    }
+
+    header {
+      display: grid;
+      gap: 18px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--panel) 86%, transparent);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .topline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 40px);
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      margin: 0;
+      color: var(--muted);
+      max-width: 70ch;
+      font-size: 16px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: color-mix(in oklab, var(--text) 82%, var(--muted));
+      background: color-mix(in oklab, var(--panel) 92%, transparent);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--panel) 92%, transparent);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .btn.primary {
+      border-color: color-mix(in oklab, var(--accent) 55%, var(--line));
+      background: linear-gradient(135deg,
+        color-mix(in oklab, var(--accent) 28%, var(--panel)),
+        color-mix(in oklab, var(--accent2) 10%, var(--panel))
+      );
+    }
+
+    main {
+      margin-top: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    section {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: color-mix(in oklab, var(--panel) 90%, transparent);
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--text) 76%, var(--muted));
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--panel) 92%, transparent);
+      display: grid;
+      gap: 8px;
+    }
+
+    .card .title {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .meta {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .desc {
+      margin: 0;
+      color: color-mix(in oklab, var(--text) 88%, var(--muted));
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .two-col {
+      display: grid;
+      gap: 14px;
+    }
+
+    @media (min-width: 820px) {
+      .two-col {
+        grid-template-columns: 1.2fr 0.8fr;
+      }
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="topline">
+        <div class="brand">
+          <span class="dot" aria-hidden="true"></span>
+          <h1>Josue-Marie Nonguierma</h1>
+        </div>
+        <div class="meta">Hamburg, DE · Computer Science</div>
+      </div>
+
+      <p class="tagline">
+        I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.
+      </p>
+
+      <div class="chips" aria-label="skills">
+        <span class="chip">Linux</span>
+        <span class="chip">Docker Compose</span>
+        <span class="chip">Networking</span>
+        <span class="chip">Python</span>
+        <span class="chip">C++</span>
+      </div>
+
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn" href="#" target="_blank" rel="noreferrer">CV</a>
+        <a class="btn" href="mailto:you@example.com">Email</a>
+      </div>
+    </header>
+
+    <main>
+      <div class="two-col">
+        <section>
+          <h2>Projects</h2>
+          <div class="grid">
+            <article class="card">
+              <div class="title">
+                <h3>Coronet Homelab</h3>
+                <div class="meta">Docker · Tailscale · Reverse Proxy</div>
+              </div>
+              <p class="desc">Multi-service media and monitoring stack with secure ingress, automation scripts, and sane backups.</p>
+              <div class="links">
+                <a href="#" target="_blank" rel="noreferrer">Write-up</a>
+                <a href="#" target="_blank" rel="noreferrer">Config</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="title">
+                <h3>Automation Scripts</h3>
+                <div class="meta">Bash · PowerShell</div>
+              </div>
+              <p class="desc">Practical scripts for backup rotation, health checks, and operator-quality CLI workflows.</p>
+              <div class="links">
+                <a href="#" target="_blank" rel="noreferrer">Repo</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="title">
+                <h3>Monitoring Dashboard</h3>
+                <div class="meta">Grafana · Prometheus</div>
+              </div>
+              <p class="desc">Service-level visibility for containers and host resources with alerting-ready metrics.</p>
+              <div class="links">
+                <a href="#" target="_blank" rel="noreferrer">Screenshots</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="title">
+                <h3>Modded Minecraft Server</h3>
+                <div class="meta">Docker · Java · Scripting</div>
+              </div>
+              <p class="desc">Forge/CurseForge deployment with reproducible mod resolution and stable upgrades.</p>
+              <div class="links">
+                <a href="#" target="_blank" rel="noreferrer">Write-up</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section>
+          <h2>About</h2>
+          <p class="desc">
+            I like systems that stay upright under routine chaos: power cycles, updates, flaky networks, and human error.
+            My current focus is building service stacks that are observable, recoverable, and easy to operate.
+          </p>
+          <div class="links" style="margin-top:12px;">
+            <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="#" target="_blank" rel="noreferrer">Blog</a>
+          </div>
+        </section>
+      </div>
+
+      <section>
+        <h2>Contact</h2>
+        <p class="desc">
+          Email is best. If you include a problem statement, expected constraints, and a deadline, I respond much faster.
+        </p>
+        <div class="links" style="margin-top:10px;">
+          <a class="btn" href="mailto:you@example.com">you@example.com</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="y"></span> coronet.dev
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
