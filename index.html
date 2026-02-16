@@ -3,389 +3,540 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>coronet.dev</title>
+  <title>Josue-Marie | Coronet.dev</title>
   <meta name="description" content="Computer science student building reliable systems, automation, and containerized service stacks." />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
-    :root{
+    :root {
       color-scheme: dark;
 
-      --bg: #0f0616;
-      --panel: #160a22;
+      /* -- DARKER PURPLE PALETTE -- */
+      --bg: #05010a; /* Almost black */
+      --panel: #0e0516;
       --text: #f1e9ff;
-      --muted: #b8a6d6;
-      --line: rgba(186, 150, 255, 0.15);
-      --accent: #b05cff;
-      --accent2: #7c2cff;
+      --muted: #a390c4;
+      --line: rgba(186, 150, 255, 0.08);
+      
+      --accent: #9d46ff;
+      --accent-glow: rgba(157, 70, 255, 0.25);
+      --accent2: #6b22e0;
 
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+      --shadow2: 0 10px 30px rgba(0, 0, 0, 0.4);
 
-      --shadowFloat: 0 24px 80px rgba(0,0,0,0.55);
-      --shadowSoft: 0 10px 28px rgba(0,0,0,0.28);
+      --radius: 20px;
+
+      /* Fonts */
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+      --sans: "Inter", system-ui, -apple-system, sans-serif;
     }
 
-    @media (prefers-color-scheme: light) {
-      :root{
-        --bg: #f7f8fb;
-        --panel: #ffffff;
-        --text: #0c1222;
-        --muted: #4a556f;
-        --line: rgba(12,18,34,0.10);
-        --accent: #6a34ff;
-        --accent2: #2f7cff;
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
 
-        --shadowFloat: 0 18px 60px rgba(0,0,0,0.12);
-        --shadowSoft: 0 10px 28px rgba(0,0,0,0.10);
-      }
-    }
-
-    *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
-
-    body{
+    body {
       margin: 0;
       font-family: var(--sans);
       color: var(--text);
-      line-height: 1.55;
-
-      background:
-        radial-gradient(1200px 900px at 15% 10%, rgba(130, 70, 255, 0.25), transparent 65%),
-        radial-gradient(1000px 800px at 85% 20%, rgba(90, 30, 180, 0.25), transparent 60%),
-        radial-gradient(1400px 1000px at 50% 100%, rgba(160, 90, 255, 0.15), transparent 70%),
-        linear-gradient(180deg, #0e0416 0%, #12061d 40%, #0c0314 100%);
+      line-height: 1.6;
+      background-color: var(--bg);
+      overflow-x: hidden;
+      
+      /* --- BACKGROUND EFFECTS --- */
+      /* 1. The moving nebula gradients */
+      background: 
+        radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
+        radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
+        radial-gradient(1400px 1000px at 50% 100%, rgba(120, 50, 220, 0.08), transparent 70%),
+        linear-gradient(180deg, #05010a 0%, #090212 40%, #030005 100%);
+      
+      background-size: 200% 200%;
+      animation: bgDrift 20s ease infinite alternate;
     }
 
-    a{ color: inherit; text-decoration: none; }
-    a:hover{ text-decoration: none; }
+    /* 2. The Tech Grid Overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        linear-gradient(rgba(180, 150, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180, 150, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: -1;
+    }
 
-    .page{
-      max-width: 980px;
+    @keyframes bgDrift {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 10% 10%; }
+    }
+
+    a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    a:hover { color: #fff; }
+
+    /* Layout */
+    .page {
+      max-width: 800px;
       margin: 0 auto;
-      padding: 48px 18px 90px;
-    }
-
-    /*
-      One continuous scroll container, centered, floating above background
-      No rounded corners anywhere in this page
-    */
-    .shell{
-      border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 88%, transparent);
-      box-shadow: var(--shadowFloat);
-      backdrop-filter: blur(10px);
-    }
-
-    .inner{
-      padding: 28px;
-    }
-
-    .topline{
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 10px;
-    }
-
-    .brand{
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
-      min-width: 0;
-    }
-
-    .dot{
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
-      flex: 0 0 auto;
-    }
-
-    h1{
-      margin: 0;
-      font-size: clamp(28px, 4vw, 40px);
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-
-    .meta{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .welcome{
-      margin: 8px 0 0;
-      color: var(--muted);
-      max-width: 76ch;
-      font-size: 16px;
-    }
-
-    .divider{
-      height: 1px;
-      margin: 22px -28px;
-      background: color-mix(in oklab, var(--line) 90%, transparent);
-    }
-
-    .section{
-      padding: 6px 0;
-    }
-
-    h2{
-      margin: 0 0 10px;
-      font-size: 14px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: color-mix(in oklab, var(--text) 76%, var(--muted));
-    }
-
-    .desc{
-      margin: 0;
-      color: color-mix(in oklab, var(--text) 88%, var(--muted));
-      max-width: 80ch;
-    }
-
-    /*
-      Interactive link buttons: square corners, animated "bubble" expansion on hover/focus
-      The bubble is inside the button, expands outward, but the button stays rectangular
-    */
-    .navgrid{
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    @media (min-width: 820px){
-      .navgrid{
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .bubblelink{
+      padding: 80px 20px 100px; /* Increased top padding since nav is gone */
       position: relative;
-      display: grid;
-      gap: 8px;
-      padding: 16px;
+    }
+
+    /* The Glass Panel */
+    .scroll-shell {
       border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-      box-shadow: var(--shadowSoft);
+      border-radius: var(--radius);
+      background: rgba(14, 5, 22, 0.65); /* Darker glass */
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       overflow: hidden;
-
-      transform: translateZ(0);
-      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+      position: relative;
     }
 
-    .bubblelink::before{
+    /* Top glow line */
+    .scroll-shell::before {
       content: "";
       position: absolute;
-      left: var(--bx, 50%);
-      top: var(--by, 50%);
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-
-      background: radial-gradient(
-        closest-side,
-        color-mix(in oklab, var(--accent) 40%, transparent),
-        transparent 70%
-      );
-
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 0.0;
-      filter: blur(0px);
-      transition: transform 420ms ease, opacity 240ms ease;
-      pointer-events: none;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.5;
     }
 
-    .bubblelink::after{
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        135deg,
-        color-mix(in oklab, var(--accent) 14%, transparent),
-        transparent 50%,
-        color-mix(in oklab, var(--accent2) 10%, transparent)
-      );
-      opacity: 0;
-      transition: opacity 240ms ease;
-      pointer-events: none;
-    }
+    .inner { padding: 40px; }
 
-    .bubblelink:hover{
-      transform: translateY(-1px);
-      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
-      box-shadow: 0 18px 55px rgba(0,0,0,0.32);
-    }
-
-    .bubblelink:hover::before{
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(34);
-    }
-
-    .bubblelink:hover::after{
-      opacity: 1;
-    }
-
-    .bubblelink:focus-visible{
-      outline: 2px solid color-mix(in oklab, var(--accent) 60%, transparent);
-      outline-offset: 4px;
-    }
-
-    .bubblelink .kicker{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .bubblelink .title{
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-    }
-
-    .bubblelink .hint{
-      margin: 0;
-      color: color-mix(in oklab, var(--text) 86%, var(--muted));
-      max-width: 70ch;
-    }
-
-    .actions{
+    /* Header Area */
+    .topline {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
+      flex-direction: column;
+      gap: 4px;
+      padding-bottom: 20px;
     }
 
-    .btn{
+    .brand {
       display: inline-flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* Pulsing Server Status Dot */
+    .dot-wrapper {
+      position: relative;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 14px;
-      border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-      font-weight: 600;
-      font-size: 14px;
-      box-shadow: var(--shadowSoft);
-      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    }
+    
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      z-index: 2;
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
-      box-shadow: 0 18px 55px rgba(0,0,0,0.30);
+    .ping {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+      animation: pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
     }
 
-    .btn.primary{
-      border-color: color-mix(in oklab, var(--accent) 55%, var(--line));
-      background: linear-gradient(
-        135deg,
-        color-mix(in oklab, var(--accent) 28%, var(--panel)),
-        color-mix(in oklab, var(--accent2) 12%, var(--panel))
-      );
+    @keyframes pulse {
+      75%, 100% { transform: scale(2.5); opacity: 0; }
     }
 
-    .fineprint{
-      margin-top: 18px;
-      color: var(--muted);
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 5vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #fff;
+    }
+
+    .meta {
+      font-family: var(--mono);
       font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tagline {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 60ch;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Buttons */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.08);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .btn.primary:hover {
+      background: var(--accent2);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* Chips */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(0,0,0,0.2);
+      transition: border-color 0.2s;
+      cursor: default;
+    }
+
+    .chip:hover {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      margin: 32px 0;
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
+    }
+
+    /* Projects */
+    h2 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .project-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    /* --- EXPANDABLE PROJECT CARDS --- */
+    .project {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 100%);
+      padding: 20px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      cursor: pointer; /* Indicates clickability */
+      overflow: hidden;
+    }
+
+    .project:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    }
+
+    /* Active state for expansion */
+    .project.expanded {
+      border-color: var(--accent);
+      background: rgba(22, 10, 34, 0.8);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; /* Center arrow */
+      flex-wrap: nowrap;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .project-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    /* The Chevron Icon */
+    .chevron {
+      color: var(--muted);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .project.expanded .chevron {
+      transform: rotate(180deg);
+      color: var(--accent);
+    }
+
+    .project .desc {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 8px 0 0 0;
+      line-height: 1.5;
+    }
+
+    /* Expandable Area Logic */
+    .project-details {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease-out;
+      opacity: 0.5;
+    }
+
+    .project.expanded .project-details {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .details-inner {
+      overflow: hidden;
+    }
+
+    .detail-content {
+      padding-top: 16px;
+      border-top: 1px dashed var(--line);
+      margin-top: 16px;
+    }
+
+    .links {
+      display: flex;
+      gap: 16px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .links a {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text);
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .links a:hover {
+      color: #fff;
+      background: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 600px) {
+      .page { padding-top: 40px; }
+      .inner { padding: 24px; }
+    }
+
+    .fineprint {
+      margin-top: 40px;
+      color: var(--muted);
+      font-size: 12px;
       text-align: center;
-      padding-top: 10px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .bubblelink,
-      .bubblelink::before,
-      .bubblelink::after,
-      .btn{
-        transition: none;
-      }
-    }
-
-    @media (max-width: 520px){
-      .inner{ padding: 22px; }
-      .divider{ margin: 18px -22px; }
+      opacity: 0.5;
+      font-family: var(--mono);
     }
   </style>
 </head>
 
 <body>
+
   <div class="page">
-    <div class="shell">
+    <div class="scroll-shell">
       <div class="inner">
-        <div class="topline">
+        
+        <header class="topline">
           <div class="brand">
-            <span class="dot" aria-hidden="true"></span>
+            <div class="dot-wrapper">
+              <span class="ping"></span>
+              <span class="dot"></span>
+            </div>
             <h1>Josue-Marie Nonguierma</h1>
           </div>
-          <div class="meta">Hamburg, DE · Computer Science Student</div>
-        </div>
+          <div class="meta">
+             Hamburg, DE <span aria-hidden="true">/</span> Computer Science Student
+          </div>
+        </header>
 
-        <p class="welcome">
-          Welcome. This site is a map of the things I build: reliable systems, automation, and containerized stacks that stay boring to run.
-          Use the sections below to jump into the details.
+        <p class="tagline">
+          I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.
         </p>
 
         <div class="actions">
-          <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">GitHub</a>
-          <a class="btn" href="#" target="_blank" rel="noreferrer">CV</a>
-          <a class="btn" href="mailto:josuenonguierma3@gmail.com">Email</a>
+          <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            GitHub
+          </a>
+          <a class="btn" href="#" target="_blank" rel="noreferrer">
+            CV
+          </a>
+          <a class="btn" href="mailto:josuenonguierma3@gmail.com">
+            Email
+          </a>
+        </div>
+
+        <div class="chips">
+          <span class="chip">Linux</span>
+          <span class="chip">Docker</span>
+          <span class="chip">Networking</span>
+          <span class="chip">Python</span>
+          <span class="chip">C++</span>
+          <span class="chip">C</span>
         </div>
 
         <div class="divider"></div>
 
-        <section class="section" aria-label="site navigation">
-          <h2>Explore</h2>
-          <p class="desc">
-            These are separate pages within the same site. Each one is designed to be scannable first, then deep if you feel like digging.
-          </p>
+        <section id="projects">
+          <h2>Projects (Click to Expand)</h2>
+          <div class="project-list">
+            
+            <article class="project" onclick="toggleProject(this)">
+              <div class="project-header">
+                <div class="header-left">
+                  <h3>Coronet Homelab</h3>
+                  <span class="project-meta">Docker · Tailscale · Traefik</span>
+                </div>
+                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+              
+              <p class="desc">
+                Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.
+              </p>
 
-          <div class="navgrid">
-            <a class="bubblelink" href="/portfolio/" data-bubble>
-              <div class="kicker">Primary</div>
-              <h3 class="title">Portfolio</h3>
-              <p class="hint">Projects, writeups, and the “why” behind design decisions.</p>
-            </a>
+              <div class="project-details">
+                <div class="details-inner">
+                  <div class="detail-content">
+                    <div class="links">
+                      <a href="#" target="_blank">Read Write-up &rarr;</a>
+                      <a href="https://coronet.dev/lab target="_blank">Config &rarr;</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
 
-            <a class="bubblelink" href="/lab/" data-bubble>
-              <div class="kicker">Systems</div>
-              <h3 class="title">Homelab</h3>
-              <p class="hint">Infrastructure notes, service topology, and operational tooling.</p>
-            </a>
+            <article class="project" onclick="toggleProject(this)">
+              <div class="project-header">
+                <div class="header-left">
+                   <h3>Pokémon Battle Engine</h3>
+                   <span class="project-meta">C · Python · Unit Testing</span>
+                </div>
+                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
 
-            <a class="bubblelink" href="/projects/" data-bubble>
-              <div class="kicker">Builds</div>
-              <h3 class="title">Projects Index</h3>
-              <p class="hint">A fast list of repos and demos, organized for quick scanning.</p>
-            </a>
+              <p class="desc">
+                Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.
+              </p>
 
-            <a class="bubblelink" href="/contact/" data-bubble>
-              <div class="kicker">Direct</div>
-              <h3 class="title">Contact</h3>
-              <p class="hint">How to reach me, plus external profiles.</p>
-            </a>
+              <div class="project-details">
+                <div class="details-inner">
+                  <div class="detail-content">
+                    <div class="links">
+                      <a href="#" target="_blank">View Repo &rarr;</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="project" onclick="toggleProject(this)">
+              <div class="project-header">
+                <div class="header-left">
+                   <h3>Modded Minecraft Server</h3>
+                   <span class="project-meta">Java · Docker · Bash</span>
+                </div>
+                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+
+              <p class="desc">
+                Forge/CurseForge deployment with reproducible mod resolution, backups, and stable upgrades.
+              </p>
+
+              <div class="project-details">
+                <div class="details-inner">
+                  <div class="detail-content">
+                    <div class="links">
+                      <a href="#" target="_blank">Read Write-up &rarr;</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
           </div>
         </section>
 
-        <div class="divider"></div>
-
-        <section class="section" aria-label="about summary">
-          <h2>About</h2>
-          <p class="desc">
-            I focus on systems that tolerate routine chaos: updates, flaky networks, power cycles, and human error.
-            I care about observability, recoverability, and making services easy to operate.
-          </p>
-        </section>
-
         <div class="fineprint">
-          © <span id="y"></span> coronet.dev
+          &copy; <span id="y"></span> Josue-Marie Nonguierma
         </div>
       </div>
     </div>
@@ -394,18 +545,10 @@
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
 
-    (function () {
-      const links = document.querySelectorAll("[data-bubble]");
-      for (const el of links) {
-        el.addEventListener("pointermove", (e) => {
-          const r = el.getBoundingClientRect();
-          const x = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
-          const y = Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100));
-          el.style.setProperty("--bx", x + "%");
-          el.style.setProperty("--by", y + "%");
-        });
-      }
-    })();
+    function toggleProject(element) {
+      // Toggle the 'expanded' class on the clicked element
+      element.classList.toggle('expanded');
+    }
   </script>
 </body>
 </html>
