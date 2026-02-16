@@ -192,13 +192,8 @@
         #explorerWin {
             width: 600px;
             height: 400px;
-            
-            /* Center initially via CSS, then locked by JS */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            
-            display: flex;
+            /* Initially hidden to allow JS calculation */
+            display: none;
         }
 
         .explorer-sidebar {
@@ -500,12 +495,28 @@
 
         function centerExplorer() {
             const explorer = document.getElementById('explorerWin');
+            // Remove the previous centering logic that calculated rects
+            // Instead, set display to flex to make it visible
+            explorer.style.display = 'flex';
+            // The CSS 'top: 50%; left: 50%; transform: translate(-50%, -50%);' handles the visual centering
+            // However, dragging logic usually relies on explicit left/top values.
+            // So we calculate the centered position once and set it explicitly to remove the transform.
+            
+            // Get viewport dimensions
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+            
+            // Get element dimensions (it needs to be visible first to have dimensions)
             const rect = explorer.getBoundingClientRect();
-            // Convert viewport centering to absolute positioning for drag compatibility
-            explorer.style.left = rect.left + 'px';
-            explorer.style.top = rect.top + 'px';
-            // Remove the CSS translate that forces centering so drag works
-            explorer.style.transform = 'none'; 
+            
+            // Calculate centered position
+            const left = (vw - rect.width) / 2;
+            const top = (vh - rect.height) / 2;
+            
+            // Apply absolute position and remove transform
+            explorer.style.left = left + 'px';
+            explorer.style.top = top + 'px';
+            explorer.style.transform = 'none';
         }
 
         // Generate File Grid items based on Config
