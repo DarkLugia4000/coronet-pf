@@ -1,19 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!--
-    ============================
-    Document Metadata + Setup
-    ============================
-  -->
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>coronet.dev</title>
   <meta name="description" content="Computer science student building reliable systems, automation, and containerized service stacks." />
 
   <style>
-    :root {
+    :root{
       color-scheme: dark;
 
       --bg: #0f0616;
@@ -23,14 +17,33 @@
       --line: rgba(186, 150, 255, 0.15);
       --accent: #b05cff;
       --accent2: #7c2cff;
-      --shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
-      --radius: 18px;
 
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+
+      --shadowFloat: 0 24px 80px rgba(0,0,0,0.55);
+      --shadowSoft: 0 10px 28px rgba(0,0,0,0.28);
     }
 
-    body {
+    @media (prefers-color-scheme: light) {
+      :root{
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --text: #0c1222;
+        --muted: #4a556f;
+        --line: rgba(12,18,34,0.10);
+        --accent: #6a34ff;
+        --accent2: #2f7cff;
+
+        --shadowFloat: 0 18px 60px rgba(0,0,0,0.12);
+        --shadowSoft: 0 10px 28px rgba(0,0,0,0.10);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+
+    body{
       margin: 0;
       font-family: var(--sans);
       color: var(--text);
@@ -43,130 +56,234 @@
         linear-gradient(180deg, #0e0416 0%, #12061d 40%, #0c0314 100%);
     }
 
-    @media (prefers-color-scheme: light) {
-      :root{
-        --bg: #f7f8fb;
-        --panel: #ffffff;
-        --text: #0c1222;
-        --muted: #4a556f;
-        --line: rgba(12,18,34,0.10);
-        --shadow: 0 12px 40px rgba(0,0,0,0.12);
-        --accent: #6a34ff;
-        --accent2: #2f7cff;
-      }
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: none; }
 
-      body {
-        background:
-          radial-gradient(1200px 900px at 15% 10%, rgba(106, 52, 255, 0.18), transparent 65%),
-          radial-gradient(1000px 800px at 85% 20%, rgba(47, 124, 255, 0.12), transparent 60%),
-          radial-gradient(1400px 1000px at 50% 100%, rgba(106, 52, 255, 0.10), transparent 70%),
-          linear-gradient(180deg, #f6f7fb 0%, #f2f4fb 40%, #eef1f9 100%);
-      }
-    }
-
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-
-    a { color: inherit; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    .wrap {
+    .page{
       max-width: 980px;
       margin: 0 auto;
-      padding: 56px 20px 70px;
+      padding: 48px 18px 90px;
     }
 
-    header {
-      display: grid;
-      gap: 18px;
-      padding: 26px;
+    /*
+      One continuous scroll container, centered, floating above background
+      No rounded corners anywhere in this page
+    */
+    .shell{
       border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 86%, transparent);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
+      background: color-mix(in oklab, var(--panel) 88%, transparent);
+      box-shadow: var(--shadowFloat);
+      backdrop-filter: blur(10px);
     }
 
-    .topline {
+    .inner{
+      padding: 28px;
+    }
+
+    .topline{
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
       justify-content: space-between;
       gap: 12px;
+      padding-bottom: 10px;
     }
 
-    .brand {
+    .brand{
       display: inline-flex;
       gap: 10px;
       align-items: center;
+      min-width: 0;
     }
 
-    .dot {
+    .dot{
       width: 12px;
       height: 12px;
       border-radius: 999px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
+      flex: 0 0 auto;
     }
 
-    h1 {
+    h1{
       margin: 0;
       font-size: clamp(28px, 4vw, 40px);
       letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
-    .tagline {
-      margin: 0;
+    .meta{
+      font-family: var(--mono);
+      font-size: 12px;
       color: var(--muted);
-      max-width: 70ch;
+    }
+
+    .welcome{
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 76ch;
       font-size: 16px;
     }
 
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 6px;
+    .divider{
+      height: 1px;
+      margin: 22px -28px;
+      background: color-mix(in oklab, var(--line) 90%, transparent);
     }
 
-    .chip {
+    .section{
+      padding: 6px 0;
+    }
+
+    h2{
+      margin: 0 0 10px;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--text) 76%, var(--muted));
+    }
+
+    .desc{
+      margin: 0;
+      color: color-mix(in oklab, var(--text) 88%, var(--muted));
+      max-width: 80ch;
+    }
+
+    /*
+      Interactive link buttons: square corners, animated "bubble" expansion on hover/focus
+      The bubble is inside the button, expands outward, but the button stays rectangular
+    */
+    .navgrid{
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    @media (min-width: 820px){
+      .navgrid{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .bubblelink{
+      position: relative;
+      display: grid;
+      gap: 8px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--panel) 92%, transparent);
+      box-shadow: var(--shadowSoft);
+      overflow: hidden;
+
+      transform: translateZ(0);
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    .bubblelink::before{
+      content: "";
+      position: absolute;
+      left: var(--bx, 50%);
+      top: var(--by, 50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+
+      background: radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--accent) 40%, transparent),
+        transparent 70%
+      );
+
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.0;
+      filter: blur(0px);
+      transition: transform 420ms ease, opacity 240ms ease;
+      pointer-events: none;
+    }
+
+    .bubblelink::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        color-mix(in oklab, var(--accent) 14%, transparent),
+        transparent 50%,
+        color-mix(in oklab, var(--accent2) 10%, transparent)
+      );
+      opacity: 0;
+      transition: opacity 240ms ease;
+      pointer-events: none;
+    }
+
+    .bubblelink:hover{
+      transform: translateY(-1px);
+      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
+      box-shadow: 0 18px 55px rgba(0,0,0,0.32);
+    }
+
+    .bubblelink:hover::before{
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(34);
+    }
+
+    .bubblelink:hover::after{
+      opacity: 1;
+    }
+
+    .bubblelink:focus-visible{
+      outline: 2px solid color-mix(in oklab, var(--accent) 60%, transparent);
+      outline-offset: 4px;
+    }
+
+    .bubblelink .kicker{
       font-family: var(--mono);
       font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      color: color-mix(in oklab, var(--text) 82%, var(--muted));
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
+      color: var(--muted);
     }
 
-    .actions {
+    .bubblelink .title{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .bubblelink .hint{
+      margin: 0;
+      color: color-mix(in oklab, var(--text) 86%, var(--muted));
+      max-width: 70ch;
+    }
+
+    .actions{
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 8px;
+      margin-top: 14px;
     }
 
-    .btn {
+    .btn{
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
       padding: 10px 14px;
-      border-radius: 12px;
       border: 1px solid var(--line);
       background: color-mix(in oklab, var(--panel) 92%, transparent);
       font-weight: 600;
       font-size: 14px;
-      text-decoration: none;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      box-shadow: var(--shadowSoft);
+      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
     }
 
-    .btn:hover {
+    .btn:hover{
       transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
+      box-shadow: 0 18px 55px rgba(0,0,0,0.30);
     }
 
-    .btn.primary {
+    .btn.primary{
       border-color: color-mix(in oklab, var(--accent) 55%, var(--line));
       background: linear-gradient(
         135deg,
@@ -175,292 +292,119 @@
       );
     }
 
-    main {
-      margin-top: 22px;
-      display: grid;
-      gap: 18px;
-    }
-
-    section {
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: color-mix(in oklab, var(--panel) 90%, transparent);
-      box-shadow: var(--shadow);
-    }
-
-    h2 {
-      margin: 0 0 12px;
-      font-size: 16px;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: color-mix(in oklab, var(--text) 76%, var(--muted));
-    }
-
-    .meta {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .desc {
-      margin: 0;
-      color: color-mix(in oklab, var(--text) 88%, var(--muted));
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    footer {
+    .fineprint{
       margin-top: 18px;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       text-align: center;
+      padding-top: 10px;
     }
 
-    .two-col {
-      display: grid;
-      gap: 14px;
-    }
-
-    @media (min-width: 820px) {
-      .two-col {
-        grid-template-columns: 1.2fr 0.8fr;
+    @media (prefers-reduced-motion: reduce) {
+      .bubblelink,
+      .bubblelink::before,
+      .bubblelink::after,
+      .btn{
+        transition: none;
       }
     }
 
-    /* Projects Accordion (Expanding Tabs) */
-    .accordion {
-      display: grid;
-      gap: 12px;
-    }
-
-    details.acc {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-      overflow: clip;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-    }
-
-    details.acc:hover {
-      transform: translateY(-1px);
-      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
-      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
-    }
-
-    summary.acc-head {
-      list-style: none;
-      cursor: pointer;
-      padding: 14px 16px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-      align-items: center;
-      user-select: none;
-    }
-
-    summary.acc-head::-webkit-details-marker { display: none; }
-
-    summary.acc-head:focus-visible {
-      outline: 2px solid color-mix(in oklab, var(--accent) 60%, transparent);
-      outline-offset: 3px;
-      border-radius: 12px;
-    }
-
-    .acc-title {
-      display: grid;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .acc-title h3 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-    }
-
-    .chev {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 88%, transparent);
-      display: grid;
-      place-items: center;
-      transition: transform 0.18s ease, border-color 0.18s ease;
-      font-family: var(--mono);
-      font-size: 14px;
-      line-height: 1;
-    }
-
-    details[open] .chev {
-      transform: rotate(90deg);
-      border-color: color-mix(in oklab, var(--accent) 35%, var(--line));
-    }
-
-    .acc-body {
-      padding: 0 16px 16px;
-      border-top: 1px solid color-mix(in oklab, var(--line) 80%, transparent);
-    }
-
-    .acc-body .desc {
-      margin-top: 12px;
+    @media (max-width: 520px){
+      .inner{ padding: 22px; }
+      .divider{ margin: 18px -22px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="topline">
-        <div class="brand">
-          <span class="dot" aria-hidden="true"></span>
-          <h1>Josue-Marie Nonguierma</h1>
+  <div class="page">
+    <div class="shell">
+      <div class="inner">
+        <div class="topline">
+          <div class="brand">
+            <span class="dot" aria-hidden="true"></span>
+            <h1>Josue-Marie Nonguierma</h1>
+          </div>
+          <div class="meta">Hamburg, DE · Computer Science Student</div>
         </div>
 
-        <div class="meta">Hamburg, DE · Computer Science Student</div>
-      </div>
-
-      <p class="tagline">
-        I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.
-      </p>
-
-      <div class="chips" aria-label="skills">
-        <span class="chip">Linux</span>
-        <span class="chip">Docker Compose</span>
-        <span class="chip">Networking</span>
-        <span class="chip">Python</span>
-        <span class="chip">C++</span>
-        <span class="chip">C</span>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="btn" href="#" target="_blank" rel="noreferrer">CV</a>
-        <a class="btn" href="mailto:josuenonguierma3@gmail.com">Email</a>
-      </div>
-    </header>
-
-    <main>
-      <div class="two-col">
-        <section>
-          <h2>Projects</h2>
-
-          <div class="accordion" id="projects-acc">
-            <details class="acc" open>
-              <summary class="acc-head">
-                <div class="acc-title">
-                  <h3>Coronet Homelab</h3>
-                  <div class="meta">Docker · Tailscale · Reverse Proxy</div>
-                </div>
-                <span class="chev" aria-hidden="true">▶</span>
-              </summary>
-
-              <div class="acc-body">
-                <p class="desc">
-                  Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.
-                </p>
-                <div class="links">
-                  <a href="#" target="_blank" rel="noreferrer">Write-up</a>
-                  <a href="#" target="_blank" rel="noreferrer">Config</a>
-                </div>
-              </div>
-            </details>
-
-            <details class="acc">
-              <summary class="acc-head">
-                <div class="acc-title">
-                  <h3>Pokémon Battle Engine (Gen II)</h3>
-                  <div class="meta">C · Python</div>
-                </div>
-                <span class="chev" aria-hidden="true">▶</span>
-              </summary>
-
-              <div class="acc-body">
-                <p class="desc">
-                  Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.
-                </p>
-                <div class="links">
-                  <a href="#" target="_blank" rel="noreferrer">Repo</a>
-                </div>
-              </div>
-            </details>
-
-            <details class="acc">
-              <summary class="acc-head">
-                <div class="acc-title">
-                  <h3>Modded Minecraft Server</h3>
-                  <div class="meta">Docker · Java · Scripting</div>
-                </div>
-                <span class="chev" aria-hidden="true">▶</span>
-              </summary>
-
-              <div class="acc-body">
-                <p class="desc">
-                  Forge/CurseForge deployment with reproducible mod resolution and stable upgrades.
-                </p>
-                <div class="links">
-                  <a href="#" target="_blank" rel="noreferrer">Write-up</a>
-                </div>
-              </div>
-            </details>
-          </div>
-        </section>
-
-        <section>
-          <h2>About Me</h2>
-
-          <p class="desc">
-            I like systems that stay upright under routine chaos: power cycles, updates, flaky networks, and human error.
-            My current focus is building service stacks that are observable, recoverable, and easy to operate.
-          </p>
-
-          <div class="links" style="margin-top:12px;">
-            <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="#" target="_blank" rel="noreferrer">Blog</a>
-          </div>
-        </section>
-      </div>
-
-      <section>
-        <h2>Contact</h2>
-
-        <p class="desc">
-          Email is the best way to reach me.
+        <p class="welcome">
+          Welcome. This site is a map of the things I build: reliable systems, automation, and containerized stacks that stay boring to run.
+          Use the sections below to jump into the details.
         </p>
 
-        <div class="links" style="margin-top:10px;">
-          <a class="btn" href="mailto:josuenonguierma3@gmail.com">josuenonguierma3@gmail.com</a>
+        <div class="actions">
+          <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn" href="#" target="_blank" rel="noreferrer">CV</a>
+          <a class="btn" href="mailto:josuenonguierma3@gmail.com">Email</a>
         </div>
-      </section>
-    </main>
 
-    <footer>
-      © <span id="y"></span> coronet.dev
-    </footer>
+        <div class="divider"></div>
+
+        <section class="section" aria-label="site navigation">
+          <h2>Explore</h2>
+          <p class="desc">
+            These are separate pages within the same site. Each one is designed to be scannable first, then deep if you feel like digging.
+          </p>
+
+          <div class="navgrid">
+            <a class="bubblelink" href="/portfolio/" data-bubble>
+              <div class="kicker">Primary</div>
+              <h3 class="title">Portfolio</h3>
+              <p class="hint">Projects, writeups, and the “why” behind design decisions.</p>
+            </a>
+
+            <a class="bubblelink" href="/lab/" data-bubble>
+              <div class="kicker">Systems</div>
+              <h3 class="title">Homelab</h3>
+              <p class="hint">Infrastructure notes, service topology, and operational tooling.</p>
+            </a>
+
+            <a class="bubblelink" href="/projects/" data-bubble>
+              <div class="kicker">Builds</div>
+              <h3 class="title">Projects Index</h3>
+              <p class="hint">A fast list of repos and demos, organized for quick scanning.</p>
+            </a>
+
+            <a class="bubblelink" href="/contact/" data-bubble>
+              <div class="kicker">Direct</div>
+              <h3 class="title">Contact</h3>
+              <p class="hint">How to reach me, plus external profiles.</p>
+            </a>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="section" aria-label="about summary">
+          <h2>About</h2>
+          <p class="desc">
+            I focus on systems that tolerate routine chaos: updates, flaky networks, power cycles, and human error.
+            I care about observability, recoverability, and making services easy to operate.
+          </p>
+        </section>
+
+        <div class="fineprint">
+          © <span id="y"></span> coronet.dev
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
 
     (function () {
-      const root = document.getElementById("projects-acc");
-      if (!root) return;
-
-      root.addEventListener("toggle", (e) => {
-        const opened = e.target;
-        if (!(opened instanceof HTMLDetailsElement)) return;
-        if (!opened.open) return;
-
-        for (const d of root.querySelectorAll("details.acc")) {
-          if (d !== opened) d.open = false;
-        }
-      });
+      const links = document.querySelectorAll("[data-bubble]");
+      for (const el of links) {
+        el.addEventListener("pointermove", (e) => {
+          const r = el.getBoundingClientRect();
+          const x = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
+          const y = Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100));
+          el.style.setProperty("--bx", x + "%");
+          el.style.setProperty("--by", y + "%");
+        });
+      }
     })();
   </script>
 </body>
