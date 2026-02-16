@@ -368,6 +368,76 @@
         .btn-email { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--text); width: 100%; justify-content: center; }
         .btn-email:hover { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.2); }
 
+        /* --- UPDATED HOBBY LIST STYLES (Clean Text + Sprite) --- */
+        .hobby-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .hobby-entry {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .hobby-entry:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+        }
+        
+        .hobby-sprite {
+            width: 48px; 
+            height: 48px; 
+            image-rendering: pixelated; /* Makes the sprite crisp */
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        
+        /* Placeholder styling if no image */
+        .hobby-icon-box {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+
+        .hobby-details h4 {
+            margin: 0 0 4px 0;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .hobby-details p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        /* --- DESKTOP FOOTER --- */
+        .desktop-footer {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+            font-family: var(--mono);
+            opacity: 0.5;
+            z-index: 0; /* Behind windows */
+            pointer-events: none;
+        }
+
     </style>
 </head>
 <body>
@@ -406,6 +476,11 @@
             OTHER WINDOWS 
             These are injected by JS based on SYSTEM_CONFIG.
         -->
+        
+        <!-- Desktop Footer -->
+        <div class="desktop-footer">
+            &copy; <span id="currentYear"></span> Josue-Marie Nonguierma
+        </div>
     </div>
 
     <script>
@@ -510,6 +585,16 @@
                                     <div style="font-size: 12px; color: var(--accent);">2022 - Present</div>
                                     <p style="font-size: 13px; margin-top: 5px;">Managing a hybrid cloud/local infrastructure servicing media, DNS, and game servers for family & friends.</p>
                                 </div>
+                                <div style="margin-bottom: 20px;">
+                                    <strong>Service Agent</strong>
+                                    <div style="font-size: 12px; color: var(--accent);">Telefónica Germany (O2) &bull; October 2022 – April 2025</div>
+                                    <ul style="font-size: 13px; margin-top: 5px; padding-left: 20px; color: var(--muted);">
+                                        <li>Tariff Consulting & Sales</li>
+                                        <li>GDPR-compliant Data Management</li>
+                                        <li>Onboarding & Training of New Agents</li>
+                                        <li>Initial Implementation of New Telephony Systems</li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="tab-content" id="tab-education">
@@ -521,12 +606,42 @@
                                 </div>
                             </div>
 
-                            <div class="tab-content" id="tab-personal">
-                                <h3>Interests</h3>
-                                <div style="margin-bottom: 20px;">
-                                    <strong>Personal Interests</strong>
-                                    <p style="font-size: 13px; margin-top: 5px;">Pokemon (& Competitive), Writing, Worldbuilding, Homelabbing</p>
-                                    <p style="font-size: 13px; margin-top: 5px;">Pokemon: Lugia </p>
+                            <div class="tab-content" id="tab-hobbies">
+                                <h3>Interests & Collections</h3>
+                                <p style="color: var(--muted); font-size: 13px;">When I'm not managing servers, I'm usually deep into one of these.</p>
+                                
+                                <div class="hobby-list">
+                                    <!-- Pokemon Entry with Sprite -->
+                                    <div class="hobby-entry">
+                                        <!-- Replace 'src' with the actual Shadow Lugia sprite URL -->
+                                        <img src="https://placehold.co/64x64/222/9d46ff?text=SL" alt="Shadow Lugia" class="hobby-sprite">
+                                        <div class="hobby-details">
+                                            <h4>Pokémon</h4>
+                                            <p>Competitive Gen 3 & XD: Gale of Darkness. Favorite mon: Shadow Lugia.</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Homelab Entry -->
+                                    <div class="hobby-entry">
+                                        <div class="hobby-icon-box" style="color:#38bdf8;">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                                        </div>
+                                        <div class="hobby-details">
+                                            <h4>Homelab</h4>
+                                            <p>Self-hosting services, network security, and making things overly complicated for fun.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Writing Entry -->
+                                    <div class="hobby-entry">
+                                         <div class="hobby-icon-box" style="color:#ffbd2e;">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path></svg>
+                                        </div>
+                                        <div class="hobby-details">
+                                            <h4>Writing</h4>
+                                            <p>Worldbuilding and sci-fi narratives.</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -587,6 +702,7 @@
             renderWindows();
             initDraggables();
             centerExplorer();
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
         };
 
         function centerExplorer() {
