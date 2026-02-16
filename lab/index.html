@@ -3,42 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>coronet.dev</title>
-  <meta name="description" content="Computer science student building reliable systems, automation, and containerized service stacks." />
+  <title>Coronet Lab | Infrastructure</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
+    /* --- THEME CONFIG --- */
     :root {
       color-scheme: dark;
-
-      --bg: #0f0616;
-      --panel: #160a22;
+      --bg: #05010a;
+      --panel: #0e0516;
       --text: #f1e9ff;
-      --muted: #b8a6d6;
-      --line: rgba(186, 150, 255, 0.15);
-      --accent: #b05cff;
-      --accent2: #7c2cff;
-
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
-      --shadow2: 0 10px 30px rgba(0, 0, 0, 0.35);
-
-      --radius: 18px;
-
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-    }
-
-    @media (prefers-color-scheme: light) {
-      :root{
-        --bg: #f7f8fb;
-        --panel: #ffffff;
-        --text: #0c1222;
-        --muted: #4a556f;
-        --line: rgba(12,18,34,0.10);
-        --shadow: 0 18px 60px rgba(0,0,0,0.12);
-        --shadow2: 0 10px 28px rgba(0,0,0,0.10);
-        --accent: #6a34ff;
-        --accent2: #2f7cff;
-      }
+      --muted: #a390c4;
+      --line: rgba(186, 150, 255, 0.08);
+      --accent: #9d46ff;
+      --accent-glow: rgba(157, 70, 255, 0.25);
+      --success: #00ff9d; 
+      --warning: #ffb800;
+      --danger: #ff4757;
+      --radius: 16px;
+      --mono: "JetBrains Mono", monospace;
+      --sans: "Inter", sans-serif;
     }
 
     * { box-sizing: border-box; }
@@ -48,370 +35,493 @@
       margin: 0;
       font-family: var(--sans);
       color: var(--text);
-      line-height: 1.55;
+      line-height: 1.6;
+      background-color: var(--bg);
+      
+      /* Deep Void Gradient */
+      background: 
+        radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
+        radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
+        linear-gradient(180deg, #05010a 0%, #090212 40%, #030005 100%);
+      background-size: 200% 200%;
+      animation: bgDrift 30s ease infinite alternate;
+      background-attachment: fixed;
+    }
 
-      background:
-        radial-gradient(1200px 900px at 15% 10%, rgba(130, 70, 255, 0.25), transparent 65%),
-        radial-gradient(1000px 800px at 85% 20%, rgba(90, 30, 180, 0.25), transparent 60%),
-        radial-gradient(1400px 1000px at 50% 100%, rgba(160, 90, 255, 0.15), transparent 70%),
-        linear-gradient(180deg, #0e0416 0%, #12061d 40%, #0c0314 100%);
+    @keyframes bgDrift {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 20% 20%; }
+    }
+
+    /* Tech Grid Overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        linear-gradient(rgba(180, 150, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180, 150, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: -1;
     }
 
     a { color: inherit; text-decoration: none; }
-    a:hover { text-decoration: underline; }
 
     .page {
-      max-width: 980px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 44px 18px 80px;
+      padding: 40px 20px 80px;
     }
 
-    /* One continuous, scroll-centric container */
+    /* Glass Panels */
     .scroll-shell {
       border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 8px);
-      background: color-mix(in oklab, var(--panel) 86%, transparent);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      background: rgba(14, 5, 22, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       overflow: hidden;
     }
 
-    /* Slight “floating” effect without motion */
-    .scroll-shell::before {
-      content: "";
-      display: block;
-      height: 1px;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        color-mix(in oklab, var(--accent) 45%, transparent),
-        transparent
-      );
-      opacity: 0.65;
+    .inner { padding: 40px; }
+
+    /* Headers */
+    h1 { margin: 0; font-size: 28px; font-weight: 700; color: #fff; }
+    
+    h2 { 
+      font-size: 13px; font-weight: 600; letter-spacing: 0.1em; 
+      text-transform: uppercase; color: var(--muted); margin: 60px 0 20px; 
+      border-bottom: 1px solid var(--line); padding-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: flex-end;
     }
 
-    .inner {
-      padding: 26px;
-    }
-
-    .topline {
+    /* 1. Header & Status Bar */
+    .lab-header {
       display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
       justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 10px;
-    }
-
-    .brand {
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
-      min-width: 0;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
-      flex: 0 0 auto;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 40px);
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-
-    .meta {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .tagline {
-      margin: 8px 0 0;
-      color: var(--muted);
-      max-width: 70ch;
-      font-size: 16px;
-    }
-
-    .actions {
-      display: flex;
+      align-items: flex-start;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
+      gap: 20px;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .status-group {
+      display: flex;
       gap: 8px;
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-      font-weight: 600;
-      font-size: 14px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow2);
-      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
-    }
-
-    .btn.primary {
-      border-color: color-mix(in oklab, var(--accent) 55%, var(--line));
-      background: linear-gradient(
-        135deg,
-        color-mix(in oklab, var(--accent) 28%, var(--panel)),
-        color-mix(in oklab, var(--accent2) 12%, var(--panel))
-      );
-    }
-
-    .chips {
-      display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
     }
 
-    .chip {
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--line);
+      color: var(--text);
       font-family: var(--mono);
-      font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      color: color-mix(in oklab, var(--text) 82%, var(--muted));
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
+      font-size: 11px;
+    }
+    
+    .status-badge.active { color: var(--success); border-color: rgba(0, 255, 157, 0.2); background: rgba(0, 255, 157, 0.05); }
+    .status-badge.warn { color: var(--warning); border-color: rgba(255, 184, 0, 0.2); background: rgba(255, 184, 0, 0.05); }
+    
+    .status-dot {
+      width: 6px; height: 6px; background: currentColor; border-radius: 50%;
+      box-shadow: 0 0 8px currentColor;
     }
 
-    /* Scroll sections inside the single container */
-    .divider {
-      height: 1px;
-      margin: 22px -26px;
-      background: color-mix(in oklab, var(--line) 90%, transparent);
-    }
-
-    .block {
-      padding: 4px 0;
-    }
-
-    h2 {
-      margin: 0 0 10px;
-      font-size: 14px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: color-mix(in oklab, var(--text) 76%, var(--muted));
-    }
-
-    .desc {
-      margin: 0;
-      color: color-mix(in oklab, var(--text) 88%, var(--muted));
-    }
-
-    .project-list {
+    /* 2. Hardware Specs */
+    .specs-grid {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 12px;
-      margin-top: 10px;
     }
 
-    .project {
+    .spec-card {
+      background: rgba(255,255,255,0.02);
       border: 1px solid var(--line);
-      border-radius: 14px;
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
-      padding: 14px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      padding: 16px;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .spec-card::after {
+      content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+      background: var(--line);
+    }
+    
+    .spec-card.cpu::after { background: #ff4757; }
+    .spec-card.gpu::after { background: #7bed9f; }
+    .spec-card.ram::after { background: #ffa502; }
+    .spec-card.hdd::after { background: #5352ed; }
+
+    .spec-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .spec-value { font-family: var(--mono); font-size: 14px; color: #fff; font-weight: 500;}
+    .spec-sub { font-size: 11px; color: var(--muted); margin-top: 2px; opacity: 0.7;}
+
+    /* 3. Service Categories */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
     }
 
-    .project:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow2);
-      border-color: color-mix(in oklab, var(--accent) 30%, var(--line));
-    }
-
-    .project-top {
+    .service-card {
       display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      transition: all 0.2s;
+    }
+
+    .service-card:hover {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-2px);
+    }
+
+    .icon-box {
+      width: 40px; height: 40px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(157, 70, 255, 0.1);
+      border-radius: 8px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    
+    .icon-box.sec { color: var(--warning); background: rgba(255, 184, 0, 0.1); }
+    .icon-box.net { color: #5352ed; background: rgba(83, 82, 237, 0.1); }
+    .icon-box.arr { color: #ff4757; background: rgba(255, 71, 87, 0.1); }
+
+    .service-info { min-width: 0; }
+    .service-info h3 { margin: 0; font-size: 14px; color: #fff; font-weight: 600; }
+    .service-info p { margin: 2px 0 0; font-size: 11px; color: var(--muted); display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+
+    /* --- NEW: Service Description Blocks --- */
+    .desc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .desc-block {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .desc-block h3 {
+      margin: 0 0 12px 0;
+      font-size: 16px;
+      color: #fff;
+      display: flex;
+      align-items: center;
       gap: 10px;
-      margin-bottom: 6px;
     }
 
-    .project h3 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -0.01em;
+    .desc-block p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
     }
 
-    .links {
+    .tech-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 8px;
+      margin-top: auto;
     }
 
-    .fineprint {
-      margin-top: 18px;
-      color: var(--muted);
+    .personal-log {
+      border-left: 3px solid var(--accent);
+      background: rgba(255,255,255,0.02);
+      padding: 20px 24px;
+      border-radius: 0 8px 8px 0;
+      font-family: var(--mono);
       font-size: 13px;
-      text-align: center;
-      padding-top: 10px;
+      color: var(--muted);
+      line-height: 1.7;
     }
 
-  .back-btn {
-    position: fixed;
-    top: 26px;
-    left: 26px;
-    z-index: 999;
+    .personal-log strong { color: #fff; font-weight: 600; }
+    .log-date { opacity: 0.5; font-size: 11px; display: block; margin-bottom: 8px; }
 
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    .tech-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 4px 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--text);
+    }
+    
+    /* Highlight specific tags */
+    .tech-tag.highlight { border-color: var(--accent); color: var(--accent); background: rgba(157, 70, 255, 0.1); }
 
-    padding: 8px 14px;
-    border: 1px solid var(--line);
-    background: color-mix(in oklab, var(--panel) 88%, transparent);
+    /* Back Button */
+    .back-nav { margin-bottom: 20px; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 13px;
+      transition: color 0.2s; font-family: var(--mono);
+    }
+    .back-btn:hover { color: #fff; transform: translateX(-3px); }
 
-    font-family: var(--mono);
-    font-size: 13px;
-    letter-spacing: 0.02em;
-
-    box-shadow: var(--shadowSoft);
-    cursor: pointer;
-
-    transition: transform 140ms ease,
-                border-color 140ms ease,
-                box-shadow 140ms ease,
-                background 140ms ease;
-  }
-
-  .back-btn:hover {
-    transform: translateY(-1px);
-    border-color: color-mix(in oklab, var(--accent) 50%, var(--line));
-    box-shadow: 0 18px 60px rgba(0,0,0,0.38);
-    background: color-mix(in oklab, var(--panel) 82%, var(--accent) 8%);
-  }
-
-    /* Optional: slightly tighter mobile spacing */
-    @media (max-width: 520px) {
-      .inner { padding: 20px; }
-      .divider { margin: 18px -20px; }
+    @media (max-width: 700px) {
+      .inner { padding: 24px; }
     }
   </style>
 </head>
 
 <body>
 
-    <!-- Back button -->
   <div class="page">
+    
+    <nav class="back-nav">
+      <a href="index.html" class="back-btn">
+        <span>&larr; cd ..</span>
+      </a>
+    </nav>
+
     <div class="scroll-shell">
       <div class="inner">
-        <div class="topline">
-          <div class="brand">
-          <a href="/" class="back-btn">← back</a>
-            <span class="dot" aria-hidden="true"></span>
-            <h1>Josue-Marie Nonguierma</h1>
+        
+        <div class="lab-header">
+          <div>
+            <h1>The CORONET Project</h1>
+            <div style="font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px;">
+              <span style="color:var(--accent)">USER:</span> josue &nbsp;//&nbsp; <span style="color:var(--accent)">HOST:</span> coronet
+            </div>
           </div>
-          <div class="meta">Hamburg, DE · Computer Science Student</div>
+          <div class="status-group">
+            <div class="status-badge active">
+              <div class="status-dot"></div>
+              UBUNTU 24.04
+            </div>
+            <div class="status-badge active">
+              <div class="status-dot"></div>
+              PROTON VPN
+            </div>
+          </div>
         </div>
 
-        <p class="tagline">
-          I build reliable systems and automation: homelab infrastructure, Docker stacks, and tooling that makes services boring to run.
-        </p>
-
-        <div class="actions">
-          <a class="btn primary" href="https://github.com/DarkLugia4000" target="_blank" rel="noreferrer">GitHub</a>
-          <a class="btn" href="#" target="_blank" rel="noreferrer">CV</a>
-          <a class="btn" href="mailto:josuenonguierma3@gmail.com">Email</a>
-        </div>
-
-        <div class="chips" aria-label="skills">
-          <span class="chip">Linux</span>
-          <span class="chip">Docker Compose</span>
-          <span class="chip">Networking</span>
-          <span class="chip">Python</span>
-          <span class="chip">C++</span>
-          <span class="chip">C</span>
-        </div>
-
-        <div class="divider"></div>
-
-        <section class="block" id="projects">
-          <h2>Projects</h2>
-
-          <p class="desc">
-            A few things I have built recently.
+        <h2>00_Mission_Log</h2>
+        <div class="personal-log">
+          <span class="log-date">LAST UPDATED: 2025-05-14</span>
+          <p>
+            <strong>Current Focus:</strong> Stabilize book infrastructure as best as possible.
           </p>
-
-          <div class="project-list">
-            <article class="project">
-              <div class="project-top">
-                <h3>Coronet Homelab</h3>
-                <div class="meta">Docker · Tailscale · Reverse Proxy</div>
-              </div>
-
-              <p class="desc">
-                Multi-service media and monitoring stack with secure ingress, automation scripts, and personal cloud.
-              </p>
-
-              <div class="links">
-                <a href="#" target="_blank" rel="noreferrer">Write-up</a>
-                <a href="https://coronet.dev/lab" target="_blank" rel="noreferrer">Config</a>
-              </div>
-            </article>
-
-            <article class="project">
-              <div class="project-top">
-                <h3>Pokémon Battle Engine (Gen II)</h3>
-                <div class="meta">C · Python</div>
-              </div>
-
-              <p class="desc">
-                Battle simulation engine modeling Generation II mechanics with a focus on correctness and testability.
-              </p>
-
-              <div class="links">
-                <a href="https://github.com/DarkLugia4000/Pokemon-Battle-Sim" target="_blank" rel="noreferrer">Repo</a>
-              </div>
-            </article>
-
-            <article class="project">
-              <div class="project-top">
-                <h3>Modded Minecraft Server</h3>
-                <div class="meta">Docker · Java · Scripting</div>
-              </div>
-
-              <p class="desc">
-                Forge/CurseForge deployment with reproducible mod resolution and stable upgrades.
-              </p>
-
-              <div class="links">
-                <a href="#" target="_blank" rel="noreferrer">Write-up</a>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <div class="fineprint">
-          © <span id="y"></span> Josue-Marie Nonguierma
+          <p style="margin-top: 10px;">
+            > Note: Don't forget to renew ProtonVPN key next month.
+          <!-- > other stuff-->
+          </p>
         </div>
+        
+
+        <h2>01_Resources</h2>
+        <div class="specs-grid">
+          <div class="spec-card cpu">
+            <div class="spec-label">CPU (8C / 16T)</div>
+            <div class="spec-value">Ryzen 7 4800H</div>
+            <div class="spec-sub">AMD Renoir / 2.9GHz</div>
+          </div>
+          <div class="spec-card gpu">
+            <div class="spec-label">GPU (NVENC)</div>
+            <div class="spec-value">GTX 1650 Ti</div>
+            <div class="spec-sub">Driver: 535.183</div>
+          </div>
+          <div class="spec-card ram">
+            <div class="spec-label">Memory</div>
+            <div class="spec-value">16GB DDR4</div>
+            <div class="spec-sub">3200MHz SODIMM</div>
+          </div>
+          <div class="spec-card hdd">
+            <div class="spec-label">Storage</div>
+            <div class="spec-value">2TB + 500GB</div>
+            <div class="spec-sub">EXT4 / Docker Root</div>
+          </div>
+        </div>
+
+        <h2>02_Network & Ingress</h2>
+        <div class="stack-grid">
+          <div class="service-card">
+            <div class="icon-box net">TS</div>
+            <div class="service-info">
+              <h3>Tailscale + TSDProxy</h3>
+              <p>Temporary HTTPS Solution</p>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="icon-box net">NPM</div>
+            <div class="service-info">
+              <h3>Nginx Proxy Manager</h3>
+              <p>Local Reverse Proxy</p>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="icon-box sec">AGH</div>
+            <div class="service-info">
+              <h3>AdGuard Home</h3>
+              <p>DNS Sinkhole</p>
+            </div>
+          </div>
+           <div class="service-card">
+            <div class="icon-box sec">SOC</div>
+            <div class="service-info">
+              <h3>Socket Proxy</h3>
+              <p>Docker API Security</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>03_Automation Stack (The "Arrs")</h2>
+        <div class="stack-grid">
+          <div class="service-card">
+            <div class="icon-box arr">Son</div>
+            <div class="service-info">
+              <h3>Sonarr (Dual)</h3>
+              <p>TV & Anime Instances</p>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="icon-box arr">Rad</div>
+            <div class="service-info">
+              <h3>Radarr</h3>
+              <p>Movie Management</p>
+            </div>
+          </div>
+           <div class="service-card">
+            <div class="icon-box arr">Pro</div>
+            <div class="service-info">
+              <h3>Prowlarr</h3>
+              <p>Indexer Manager</p>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="icon-box arr">Baz</div>
+            <div class="service-info">
+              <h3>Bazarr</h3>
+              <p>Subtitle Sync</p>
+            </div>
+          </div>
+           <div class="service-card">
+            <div class="icon-box arr">Myl</div>
+            <div class="service-info">
+              <h3>Mylar3</h3>
+              <p>Comic Book Library</p>
+            </div>
+          </div>
+           <div class="service-card">
+            <div class="icon-box sec">VPN</div>
+            <div class="service-info">
+              <h3>Gluetun + qBit</h3>
+              <p>Tunneled Downloader</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>04_Observability</h2>
+        <div class="stack-grid">
+           <div class="service-card">
+            <div class="icon-box active">Gra</div>
+            <div class="service-info">
+              <h3>Grafana</h3>
+              <p>Data Visualization</p>
+            </div>
+          </div>
+           <div class="service-card">
+            <div class="icon-box active">Pro</div>
+            <div class="service-info">
+              <h3>Prometheus</h3>
+              <p>Metrics Database</p>
+            </div>
+          </div>
+           <div class="service-card">
+            <div class="icon-box active">GPU</div>
+            <div class="service-info">
+              <h3>DCGM Exporter</h3>
+              <p>NVIDIA Metrics</p>
+            </div>
+          </div>
+           <div class="service-card">
+            <div class="icon-box active">Kuma</div>
+            <div class="service-info">
+              <h3>Uptime Kuma</h3>
+              <p>Service Health</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>05_Service Manifest</h2>
+        <div class="desc-grid">
+          
+          <div class="desc-block">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Automatic Media
+            </h3>
+            <p>
+              A fully automated "request-to-screen" pipeline. Requests from <strong>Seerr</strong> trigger retrievals via Prowlarr indexers. 
+              <strong>Gluetun</strong> forces all torrent traffic through ProtonVPN, preventing leaks. 
+              Dual Sonarr instances separate standard TV from Anime to handle complex naming conventions.
+            </p>
+            <div class="tech-list">
+              <span class="tech-tag highlight">Gluetun VPN</span>
+              <span class="tech-tag">qBittorrent (qui UI)</span>
+              <span class="tech-tag">Jellyfin (NVENC)</span>
+              <span class="tech-tag">Seerr</span>
+              <span class="tech-tag">Calibre-Web</span>
+            </div>
+          </div>
+
+          <div class="desc-block">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4"></path><path d="M8 10v4"></path><path d="M15 13h2"></path><path d="M18 11h.01"></path></svg>
+              Gaming Infrastructure
+            </h3>
+            <p>
+               Host for a private Minecraft Fabric server (1.20.4). Optimized with Sodium, and Lithium for high TPS on consumer hardware. 
+               Was originally exposed via sidecars, but later streamlined into <strong>TSDProxy</strong> to avoid port forwarding, allowing friends to join the virtual LAN seamlessly.
+            </p>
+            <div class="tech-list">
+              <span class="tech-tag highlight">TSDProxy</span>
+              <span class="tech-tag">Fabric API</span>
+              <span class="tech-tag">CurseForge</span>
+            </div>
+          </div>
+
+          <div class="desc-block">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+              Knowledge Base
+            </h3>
+            <p>
+               Didn't feel like paying for for cloud sync. So I made my own! <strong>CouchDB</strong> acts as my backend for the obsidian-livesync plugin, ensuring encrypted, real-time replication of all of my vaults across all devices on the tailnet.
+            </p>
+            <div class="tech-list">
+              <span class="tech-tag highlight">CouchDB</span>
+              <span class="tech-tag">Obsidian LiveSync</span>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </div>
   </div>
 
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
