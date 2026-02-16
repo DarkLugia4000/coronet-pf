@@ -192,7 +192,12 @@
         #explorerWin {
             width: 600px;
             height: 400px;
-            /* Initial centering handled by JS */
+            
+            /* Center initially via CSS, then locked by JS */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            
             display: flex;
         }
 
@@ -386,7 +391,7 @@
                                 </div>
                                 <div class="project-body">
                                     Secure, self-hosted infrastructure stack. Split-DNS via Cloudflare/AdGuard, mesh networking with Tailscale.
-                                    <br><a href="https://coronet.dev/lab/index.html" target="_blank" class="action-link">Read Breakdown &rarr;</a>
+                                    <br><a href="https://coronet.io/lab/index.html" target="_blank" class="action-link">Read Breakdown &rarr;</a>
                                 </div>
                             </li>
                             <li class="project-item" onclick="toggleMenu(this)">
