@@ -1,26 +1,8 @@
  /* ========================================
-CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+CSS CUSTOM PROPERTIES
 ======================================== */
-:root {
-    color-scheme: dark;
-    
-    /* Color palette */
-    --bg: #05010a;              /* Deep space background */
-    --panel: #0e0516;           /* Panel/card background */
-    --text: #f1e9ff;            /* Primary text color */
-    --muted: #a390c4;           /* Dimmed text for secondary content */
-    --line: rgba(186, 150, 255, 0.08);  /* Subtle borders and dividers */
-    --accent: #9d46ff;          /* Purple accent for highlights */
-    --accent-glow: rgba(157, 70, 255, 0.25);  /* Glow effect for accent */
-    
-    /* Spacing and effects */
-    --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);  /* Depth shadow */
-    --radius: 16px;             /* Default border radius */
-    
-    /* Typography */
-    --mono: "JetBrains Mono", monospace;
-    --sans: "Inter", sans-serif;
-}
+
+@import url('core_styling.css');
 
 /* ========================================
 BASE STYLES

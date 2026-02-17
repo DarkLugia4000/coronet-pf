@@ -1,0 +1,150 @@
+@import url('core_styling.css');
+
+/* Layout */
+.page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 20px 100px;
+}
+
+/* Navigation / Header */
+.nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 60px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+}
+
+.back-btn {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.back-btn:hover {
+    color: #fff;
+    transform: translateX(-2px);
+}
+
+.brand {
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+}
+
+/* Mountain Icon Style */
+.brand-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+    filter: drop-shadow(0 0 5px var(--accent-glow));
+}
+
+/* Blog Section */
+.section-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Featured Post */
+.featured-post {
+    background: rgba(14, 5, 22, 0.6);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 30px;
+    margin-bottom: 40px;
+    transition: transform 0.2s, border-color 0.2s;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+.featured-post:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.post-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin: 0 0 15px 0;
+    font-size: 24px;
+    color: #fff;
+}
+
+.post-excerpt {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Recent Posts List */
+.post-list {
+    display: grid;
+    gap: 20px;
+}
+
+.post-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.2s;
+    cursor: pointer;
+}
+
+.post-item:hover {
+    padding-left: 10px;
+}
+
+.post-item:hover h3 { color: var(--accent); }
+
+.post-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: var(--text);
+    transition: color 0.2s;
+}
+
+.post-info p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.post-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-left: 20px;
+}

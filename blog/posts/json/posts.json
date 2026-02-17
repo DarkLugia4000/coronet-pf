@@ -1,0 +1,29 @@
+{
+  "featured": {
+    "title": "The \"Magic\" of Tailscale",
+    "date": "2025-05-14",
+    "category": "Infrastructure",
+    "excerpt": "How I architected a secure, split-DNS environment that allows me to access local services via valid HTTPS domains from anywhere in the world, without opening a single port on my router.",
+    "url": "/blog/posts/tailscale-magic.html"
+  },
+  "archive": [
+    {
+      "title": "Reverse Engineering Gen 2 Pokémon Mechanics",
+      "date": "2025-04-02",
+      "excerpt": "A deep dive into bit-perfect damage calculation in C.",
+      "url": "/blog/posts/pokemon-gen2-mechanics.html"
+    },
+    {
+      "title": "Automating Minecraft Backups with Restic",
+      "date": "2025-03-15",
+      "excerpt": "Ensuring world safety for my Fabric server using Docker sidecars.",
+      "url": "/blog/posts/minecraft-backups.html"
+    },
+    {
+      "title": "Why I switched from Traefik to Nginx Proxy Manager",
+      "date": "2025-02-28",
+      "excerpt": "Sometimes simplicity beats configuration-as-code.",
+      "url": "/blog/posts/traefik-to-npm.html"
+    }
+  ]
+}

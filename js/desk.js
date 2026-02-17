@@ -16,13 +16,13 @@ const fileSystem = {
                 type: "folder",
                 children: {
                     // Links to external project/site
-                    "coronet.exe": { name: "coronet.exe", type: "link", url: "https://coronet.dev/lab" }, 
+                    "coronet.exe": { name: "coronet.exe", type: "link", url: "/lab" }, 
                     "others.exe": { name: "others.exe", type: "app", appId: "others" }
                 }
             },
             "profile.html": { name: "profile.html", type: "app", appId: "profile" },
             // Link to blog
-            "blog.html": { name: "blog.html", type: "link", url: "https://coronet.dev/blog" }, 
+            "blog.html": { name: "blog.html", type: "link", url: "/blog" }, 
             "skills.sh": { name: "skills.sh", type: "app", appId: "skills" }
         }
     }
@@ -451,6 +451,7 @@ const app = {
                 </div>
                 <h3 style="margin:0; color:#fff;">Get in touch</h3>
                 <p style="color:var(--muted); font-size:13px; margin: 5px 0 15px 0;">Feel free to reach out for collaboration.</p>
+                <p style="color:var(--muted); font-size:13px; margin: 5px 0 15px 0;">(emails may be read. or not?) </p>
                 <a href="mailto:josuenonguierma3@gmail.com" style="color:var(--accent); font-family:var(--mono); text-decoration:none; border:1px solid var(--line); padding:8px 16px; border-radius:6px; background:rgba(255,255,255,0.05);">josuenonguierma3@gmail.com</a>
             </div>
         `);

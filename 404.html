@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - What ARE we even doing? | coronet.dev</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/404.css">
+</head>
+
+<body>
+  <div class="void">
+    <!-- Animated stars background -->
+    <div class="stars"></div>
+    <div class="stars-slow"></div>
+    
+    <div class="blackhole">
+      <!-- SVG blackhole with accretion disk -->
+      <svg class="hole-graphic" viewBox="0 0 200 200">
+        <defs>
+          <radialGradient id="eventHorizon">
+            <stop offset="0%" stop-color="#000000" />
+            <stop offset="70%" stop-color="#1a0030" />
+            <stop offset="100%" stop-color="#9d46ff" stop-opacity="0.3" />
+          </radialGradient>
+          <radialGradient id="disk">
+            <stop offset="0%" stop-color="#9d46ff" stop-opacity="0" />
+            <stop offset="40%" stop-color="#b366ff" stop-opacity="0.6" />
+            <stop offset="80%" stop-color="#7a2ecc" stop-opacity="0.8" />
+            <stop offset="100%" stop-color="#9d46ff" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        
+        <!-- Accretion disk (outer glow) -->
+        <ellipse cx="100" cy="100" rx="90" ry="30" fill="url(#disk)" class="disk-ring" />
+        
+        <!-- Event horizon (black center) -->
+        <circle cx="100" cy="100" r="45" fill="url(#eventHorizon)" class="event-horizon" />
+        
+        <!-- Singularity (tiny center dot) -->
+        <circle cx="100" cy="100" r="5" fill="#000000" />
+      </svg>
+    </div>
+
+    <div class="error-content">
+      <h1 class="error-code">404</h1>
+      <p class="error-message">but nobody came...</p>
+      <p class="error-hint">...and, still nothing. What are you still doing here?</p>
+      
+      <div class="nav-options">
+        <a href="/" class="nav-btn primary">
+          <span>Return to Base</span>
+        </a>
+        <a href="/desk" class="nav-btn">
+          <span>Open Desktop</span>
+        </a>
+        <a href="/blog" class="nav-btn">
+          <span>Read Archive</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
