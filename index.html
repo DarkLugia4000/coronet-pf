@@ -404,6 +404,59 @@
         .term-out { color: var(--text); display: block; margin-bottom: 15px; padding-left: 20px; opacity: 0.8; }
         .blink { animation: blink 1s step-end infinite; color: var(--accent); }
         @keyframes blink { 50% { opacity: 0; } }
+        /* --- SKILL BAR STYLES (for terminal) --- */
+        .skill-category {
+            margin-bottom: 15px;
+        }
+        .category-title {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .skill-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+
+        .skill-label {
+            width: 100px; /* Fixed width for alignment */
+            color: var(--text);
+            flex-shrink: 0;
+        }
+
+        .bar-track {
+            flex-grow: 1;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--line);
+            margin: 0 10px;
+            position: relative;
+            max-width: 300px; /* Keep bars from getting too wide */
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--accent);
+            /* Creates a "segmented" block look */
+            background-image: linear-gradient(90deg, transparent 0%, transparent 50%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.5) 100%);
+            background-size: 4px 100%; 
+            box-shadow: 0 0 8px var(--accent-glow);
+            display: block;
+            animation: loadBar 1s ease-out forwards;
+            width: 0; /* Starts at 0 for animation */
+        }
+
+@keyframes loadBar {
+    from { width: 0; }
+    /* 'to' is handled by the inline style percentage */
+}
 
         /* Details / Projects */
         details {
@@ -511,11 +564,15 @@
 
                     <div id="t2" class="tab-pane">
                         <h2 style="font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px;">Professional History</h2>
-                        
+
                         <div class="exp-item">
-                            <div class="exp-title">Homelab Administrator</div>
-                            <div class="exp-date">2022 - Present</div>
-                            <p class="exp-desc">Designed and operated a multi-service containerized infrastructure with reverse proxy ingress, DNS management, secure tunnel access, automated backups, and centralized monitoring.</p>
+                            <div class="exp-title">Service Agent</div>
+                            <div class="exp-date">Telefónica Germany (O2) • Oct 2022 – Apr 2025</div>
+                            <ul class="exp-desc" style="padding-left: 15px; margin-top: 5px;">
+                                <li>Handled GDPR-compliant customer data workflows</li>
+                                <li>Onboarded and trained new agents on internal systems</li>
+                                <li>Participated in deployment of updated telephony systems</li>
+                            </ul>
                         </div>
 
                         <div class="exp-item">
@@ -570,15 +627,53 @@
             `,
             "skills": `
                 <div class="terminal">
-                    <div class="term-line"><span class="term-prompt">user@cv:~$</span> cat languages</div>
-                    <span class="term-out">Python, C, C++, Java, Bash, SQL</span>
+                    <div class="term-line"><span class="term-prompt">user@cv:~$</span> ./show-skills.sh --verbose</div>
+                    <br>
                     
-                    <div class="term-line"><span class="term-prompt">user@cv:~$</span> cat infrastructure</div>
-                    <span class="term-out">Docker, Nginx, Tailscale, Cloudflare</span>
-                    
-                    <div class="term-line"><span class="term-prompt">user@cv:~$</span> cat tools</div>
-                    <span class="term-out">Git, Linux, Prometheus, Grafana</span>
-                    
+                    <div class="skill-category">
+                        <span class="category-title">Languages</span>
+                        <div class="skill-row">
+                            <span class="skill-label">Python</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-label">C / C++</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 80%;"></div></div>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-label">Java</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 65%;"></div></div>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-label">Bash</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 85%;"></div></div>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-label">SQL</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 70%;"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <span class="category-title">Infrastructure</span>
+                        <div class="skill-row">
+                            <span class="skill-label">Docker</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 95%;"></div></div>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-label">Nginx</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 80%;"></div></div>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-label">Tailscale</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 90%;"></div></div>
+                        </div>
+                         <div class="skill-row">
+                            <span class="skill-label">Cloudflare</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 75%;"></div></div>
+                        </div>
+                    </div>
+
                     <div class="term-line"><span class="term-prompt">user@cv:~$</span> <span class="blink">_</span></div>
                 </div>
             `
