@@ -194,6 +194,83 @@
             z-index: 9999;
         }
 
+        /* --- pokemon sprites! ---  */
+
+        .pixel-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap; /* Wraps if screen is small */
+        }
+
+        .pixel-sprite {
+            width: 64px; 
+            height: 64px; 
+            image-rendering: pixelated; /* CRISP PIXELS */
+            vertical-align: middle;
+            /* Optional: Slight glow to match the text */
+            filter: drop-shadow(0 0 4px rgba(224, 170, 255, 0.4)); 
+            transition: transform 0.2s;
+        }
+
+        .pixel-sprite:hover {
+            transform: scale(1.2); /* Pop effect on hover */
+        }
+
+        .inline-sprite {
+            height: 32px; /* Adjust size to fit text flow */
+            width: auto;
+            vertical-align: middle; /* Aligns image center with text center */
+            margin: 0 4px; /* Small spacing around the image */
+            image-rendering: auto; /* Crisp rendering */
+            transition: transform 0.2s;
+        }
+
+        .inline-sprite:hover {
+            transform: scale(1.5); /* Pop effect */
+            z-index: 10;
+            position: relative;
+        }
+
+        /* --- ANIMATED SPRITE CSS --- */
+
+        /* bouncing animation */
+        @keyframes poke-bounce {
+            from { background-position: 0 0; }
+            to { background-position: 0 -32px; } /* Shifts view down by 32px (1 frame) */
+        }
+
+        /* bouncing class */
+        .bouncy-icon {
+            width: 32px;          /* Width of one frame */
+            height: 32px;         /* Height of one frame */
+            display: inline-block;
+            vertical-align: middle;
+            
+            /* render prio */
+            image-rendering: pixelated; 
+            
+            /* Sprite image*/
+            background-image: url('Ani249MS.png'); 
+            background-repeat: no-repeat;
+            
+            /* Ensure the sprite sheet is sized correctly (32px width, 64px height) */
+            background-size: 32px 64px; 
+            
+            /* anim: 0.5s speed, ping-pong effect */
+            animation: poke-bounce 0.4s steps(1) infinite alternate;
+            
+            /* Interaction */
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .bouncy-icon:hover {
+            transform: scale(1.2);
+        }
+
+
         .task-item {
             padding: 6px 16px;
             background: rgba(255,255,255,0.03);
@@ -462,10 +539,12 @@
                     </div>
 
                     <div id="t4" class="tab-pane">
-                         <div class="pixel-mode">
-                            > Pokemon: Lugia, Typhlosion, Umbreon
-                        </div>
+                     <div class="pixel-mode" style="line-height: 2.5;">
+                        pokemon: lugia <img src="assets/lugia-ani.png" class="inline-sprite" title="Lugia">, 
+                        typhlosion <img src="assets/typh-ani.png" class="inline-sprite" title="Typhlosion">, 
+                        umbreon <img src="assets/umbr-ani.png" class="inline-sprite" title="Umbreon">
                     </div>
+                </div>
                 </div>
             `,
             "others": `
