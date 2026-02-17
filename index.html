@@ -3,251 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome | Coronet.dev</title>
+    <title>welcome @ coronet.dev</title>
     
     <!-- Google Fonts: Inter (sans-serif) and JetBrains Mono (monospace) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <style>
-        /* ========================================
-           CSS CUSTOM PROPERTIES (DESIGN TOKENS)
-           ======================================== */
-        :root {
-            color-scheme: dark;
-            
-            /* Color palette */
-            --bg: #05010a;              /* Deep space background */
-            --panel: #0e0516;           /* Panel/card background */
-            --text: #f1e9ff;            /* Primary text color */
-            --muted: #a390c4;           /* Dimmed text for secondary content */
-            --line: rgba(186, 150, 255, 0.08);  /* Subtle borders and dividers */
-            --accent: #9d46ff;          /* Purple accent for highlights */
-            --accent-glow: rgba(157, 70, 255, 0.25);  /* Glow effect for accent */
-            
-            /* Spacing and effects */
-            --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);  /* Depth shadow */
-            --radius: 16px;             /* Default border radius */
-            
-            /* Typography */
-            --mono: "JetBrains Mono", monospace;
-            --sans: "Inter", sans-serif;
-        }
-
-        /* ========================================
-           BASE STYLES
-           ======================================== */
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: var(--sans);
-            color: var(--text);
-            background-color: var(--bg);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            
-            /* Layered gradient background with radial highlights */
-            background: 
-                radial-gradient(1200px 900px at 50% 0%, rgba(100, 40, 200, 0.15), transparent 60%),
-                linear-gradient(180deg, #05010a 0%, #090212 100%);
-        }
-
-        /* Subtle grid pattern overlay for tech aesthetic */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(180, 150, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(180, 150, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        /* ========================================
-           LAYOUT CONTAINER
-           ======================================== */
-        .container {
-            width: 100%;
-            max-width: 700px;
-            padding: 20px;
-            text-align: center;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-        }
-
-        /* ========================================
-           BRAND ICON & GREETING
-           ======================================== */
-        /* Floating mountain icon with gentle animation */
-        .brand-icon {
-            width: 80px;
-            height: 80px;
-            color: var(--accent);
-            filter: drop-shadow(0 0 30px var(--accent-glow));
-            animation: float 6s ease-in-out infinite;
-        }
-
-        /* Subtle floating animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Welcome message text */
-        .greeting {
-            font-size: 24px;
-            font-weight: 500;
-            line-height: 1.5;
-            color: #fff;
-            max-width: 600px;
-            margin: 0 auto;
-            animation: fadeInDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        /* ========================================
-           ACTION BUTTONS
-           ======================================== */
-        /* Button container with flex layout */
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards;
-        }
-
-        /* Base button styles */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 28px;
-            border-radius: 50px;
-            font-size: 15px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: 1px solid transparent;
-            font-family: var(--sans);
-            line-height: 1;  /* Ensures proper vertical alignment of icons + text */
-        }
-
-        /* Main Portfolio button - purple filled with prominent shadow */
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(157, 70, 255, 0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(157, 70, 255, 0.5);
-            background: #b05cff;
-        }
-
-        /* Secondary buttons*/
-        .btn-sec {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--line);
-            color: var(--text);
-        }
-        .btn-sec:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #fff;
-            transform: translateY(-2px);
-        }
-
-        /* expandable info box (coronet info) */
-        /* Collapsible info panel - toggled by "Why Coronet?" button */
-        .info-box {
-            height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            max-width: 500px;
-            text-align: left;
-            background: rgba(14, 5, 22, 0.6);
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            margin-top: 10px;
-        }
-
-        /* Expanded state - revealed with smooth transition */
-        .info-box.visible {
-            height: auto;
-            opacity: 1;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .info-title {
-            font-family: var(--mono);
-            color: var(--accent);
-            font-size: 12px;
-            margin-bottom: 8px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .info-text {
-            font-size: 14px;
-            color: var(--muted);
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        /* ========================================
-           ENTRANCE ANIMATIONS
-           ======================================== */
-        /* Greeting fades in from above */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Buttons fade in from below with slight delay */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ========================================
-           FOOTER
-           ======================================== */
-        /* Copyright notice at bottom */
-        .fineprint {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            color: var(--muted);
-            font-size: 12px;
-            font-family: var(--mono);
-            opacity: 0.5;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/landing.css">
 </head>
 <body>
 
     <!-- Main content container - centered vertically and horizontally -->
     <div class="container">
         
-        <!-- Mt. Coronet SVG icon with floating animation -->
+        <!-- Mountain SVG icon with floating animation -->
         <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
         </svg>
@@ -260,7 +30,7 @@
         <!-- Navigation buttons -->
         <div class="actions">
             
-            <!-- Primary CTA: Navigate to portfolio desktop -->
+            <!-- Primary "draw to attention": Navigate to portfolio desktop -->
             <a href="desk" class="btn btn-primary">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 Go to Portfolio
@@ -287,7 +57,7 @@
             <p class="info-text">
                 The central mountain region of Sinnoh in the Generation 4 Pokémon games. <br><br>
                 Just as Mt. Coronet divides the region and connects every route, my homelab acts my the central hub connecting internal services, media stacks, and external networks.
-                I also just think the Sinnoh region's neat!
+                I also just think the Sinnoh region's neat! (sry johto)
             </p>
         </div>
 
@@ -299,15 +69,9 @@
     </div>
 
     <!-- Client-side scripts -->
+    <script defer src="/js/footer.js"></script>
     <script>
-        // Insert current year into copyright
-        document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Toggle visibility of info box explaining "Coronet" name
-        function toggleInfo() {
-            const box = document.getElementById('infoBox');
-            box.classList.toggle('visible');
-        }
     </script>
 
 </body>

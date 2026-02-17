@@ -3,287 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coronet Lab | Infrastructure</title>
+  <title>the lab @ coronet.dev </title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <style>
-    /* --- THEME CONFIG --- */
-    :root {
-      color-scheme: dark;
-      --bg: #05010a;
-      --panel: #0e0516;
-      --text: #f1e9ff;
-      --muted: #a390c4;
-      --line: rgba(186, 150, 255, 0.08);
-      --accent: #9d46ff;
-      --accent-glow: rgba(157, 70, 255, 0.25);
-      --success: #00ff9d; 
-      --warning: #ffb800;
-      --danger: #ff4757;
-      --radius: 16px;
-      --mono: "JetBrains Mono", monospace;
-      --sans: "Inter", sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-
-    body {
-      margin: 0;
-      font-family: var(--sans);
-      color: var(--text);
-      line-height: 1.6;
-      background-color: var(--bg);
-      
-      /* Deep Void Gradient */
-      background: 
-        radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
-        radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
-        linear-gradient(180deg, #05010a 0%, #090212 40%, #030005 100%);
-      background-size: 200% 200%;
-      animation: bgDrift 30s ease infinite alternate;
-      background-attachment: fixed;
-    }
-
-    @keyframes bgDrift {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 20% 20%; }
-    }
-
-    /* Tech Grid Overlay */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-image: 
-        linear-gradient(rgba(180, 150, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(180, 150, 255, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 20px 80px;
-    }
-
-    /* Glass Panels */
-    .scroll-shell {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(14, 5, 22, 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      overflow: hidden;
-    }
-
-    .inner { padding: 40px; }
-
-    /* Headers */
-    h1 { margin: 0; font-size: 28px; font-weight: 700; color: #fff; }
-    
-    h2 { 
-      font-size: 13px; font-weight: 600; letter-spacing: 0.1em; 
-      text-transform: uppercase; color: var(--muted); margin: 60px 0 20px; 
-      border-bottom: 1px solid var(--line); padding-bottom: 10px;
-      display: flex; justify-content: space-between; align-items: flex-end;
-    }
-
-    /* 1. Header & Status Bar */
-    .lab-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .status-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--line);
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 11px;
-    }
-    
-    .status-badge.active { color: var(--success); border-color: rgba(0, 255, 157, 0.2); background: rgba(0, 255, 157, 0.05); }
-    .status-badge.warn { color: var(--warning); border-color: rgba(255, 184, 0, 0.2); background: rgba(255, 184, 0, 0.05); }
-    
-    .status-dot {
-      width: 6px; height: 6px; background: currentColor; border-radius: 50%;
-      box-shadow: 0 0 8px currentColor;
-    }
-
-    /* 2. Hardware Specs */
-    .specs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-    }
-
-    .spec-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--line);
-      padding: 16px;
-      border-radius: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .spec-card::after {
-      content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-      background: var(--line);
-    }
-    
-    .spec-card.cpu::after { background: #ff4757; }
-    .spec-card.gpu::after { background: #7bed9f; }
-    .spec-card.ram::after { background: #ffa502; }
-    .spec-card.hdd::after { background: #5352ed; }
-
-    .spec-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-    .spec-value { font-family: var(--mono); font-size: 14px; color: #fff; font-weight: 500;}
-    .spec-sub { font-size: 11px; color: var(--muted); margin-top: 2px; opacity: 0.7;}
-
-    /* 3. Service Categories */
-    .stack-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-    }
-
-    .service-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      transition: all 0.2s;
-    }
-
-    .service-card:hover {
-      border-color: var(--accent);
-      background: rgba(255,255,255,0.05);
-      transform: translateY(-2px);
-    }
-
-    .icon-box {
-      width: 40px; height: 40px;
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(157, 70, 255, 0.1);
-      border-radius: 8px;
-      color: var(--accent);
-      font-family: var(--mono);
-      font-weight: 700;
-      font-size: 12px;
-    }
-    
-    .icon-box.sec { color: var(--warning); background: rgba(255, 184, 0, 0.1); }
-    .icon-box.net { color: #5352ed; background: rgba(83, 82, 237, 0.1); }
-    .icon-box.arr { color: #ff4757; background: rgba(255, 71, 87, 0.1); }
-
-    .service-info { min-width: 0; }
-    .service-info h3 { margin: 0; font-size: 14px; color: #fff; font-weight: 600; }
-    .service-info p { margin: 2px 0 0; font-size: 11px; color: var(--muted); display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-
-
-    /* --- NEW: Service Description Blocks --- */
-    .desc-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .desc-block {
-      background: rgba(0,0,0,0.2);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 24px;
-    }
-
-    .desc-block h3 {
-      margin: 0 0 12px 0;
-      font-size: 16px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .desc-block p {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 16px;
-      line-height: 1.6;
-    }
-
-    .tech-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: auto;
-    }
-
-    .personal-log {
-      border-left: 3px solid var(--accent);
-      background: rgba(255,255,255,0.02);
-      padding: 20px 24px;
-      border-radius: 0 8px 8px 0;
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .personal-log strong { color: #fff; font-weight: 600; }
-    .log-date { opacity: 0.5; font-size: 11px; display: block; margin-bottom: 8px; }
-
-    .tech-tag {
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 4px 8px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      color: var(--text);
-    }
-    
-    /* Highlight specific tags */
-    .tech-tag.highlight { border-color: var(--accent); color: var(--accent); background: rgba(157, 70, 255, 0.1); }
-
-    /* Back Button */
-    .back-nav { margin-bottom: 20px; }
-    .back-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: var(--muted); font-size: 13px;
-      transition: color 0.2s; font-family: var(--mono);
-    }
-    .back-btn:hover { color: #fff; transform: translateX(-3px); }
-
-    @media (max-width: 700px) {
-      .inner { padding: 24px; }
-    }
-  </style>
+  <link rel="stylesheet" href="../css/lab.css">
 </head>
 
 <body>
@@ -309,18 +35,20 @@
           <div class="status-group">
             <div class="status-badge active">
               <div class="status-dot"></div>
-              UBUNTU 24.04
+              Ubuntu 24.04
             </div>
             <div class="status-badge active">
               <div class="status-dot"></div>
-              PROTON VPN
+              ProtonVPN
             </div>
           </div>
         </div>
 
+        
+
         <h2>00_Mission_Log</h2>
         <div class="personal-log">
-          <span class="log-date">LAST UPDATED: 2025-05-14</span>
+          <span class="log-date">Last Update: 2025-05-14</span>
           <p>
             <strong>Current Focus:</strong> Stabilize book infrastructure as best as possible.
           </p>
@@ -353,6 +81,59 @@
             <div class="spec-value">2TB + 500GB</div>
             <div class="spec-sub">EXT4 / Docker Root</div>
           </div>
+        </div>
+
+        <h2>02_Service Manifest</h2>
+        <div class="desc-grid">
+          <div class="desc-block">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Automatic Media
+            </h3>
+            <p>
+              A fully automated "request-to-screen" pipeline. Requests from <strong>Seerr</strong> trigger retrievals via Prowlarr indexers. 
+              <strong>Gluetun</strong> forces all torrent traffic through ProtonVPN, preventing leaks. 
+              Dual Sonarr instances separate standard TV from Anime to handle complex naming conventions.
+            </p>
+            <div class="tech-list">
+              <span class="tech-tag">Gluetun </span>
+              <span class="tech-tag">qBittorrent</span>
+              <span class="tech-tag">Jellyfin (NVENC)</span>
+              <span class="tech-tag">Seerr</span>
+              <span class="tech-tag">Calibre-Web</span>
+          </div>
+        </div>
+
+          <div class="desc-block">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4"></path><path d="M8 10v4"></path><path d="M15 13h2"></path><path d="M18 11h.01"></path></svg>
+              Gaming Infrastructure
+            </h3>
+            <p>
+               Host for a private Minecraft Fabric server (1.20.4). Optimized with Sodium, and Lithium for high TPS on consumer hardware. 
+               Was originally exposed via sidecars, but later streamlined into <strong>TSDProxy</strong> to avoid port forwarding, allowing friends to join the virtual LAN seamlessly.
+            </p>
+            <div class="tech-list">
+              <span class="tech-tag">TSDProxy</span>
+              <span class="tech-tag">Fabric API</span>
+              <span class="tech-tag">CurseForge</span>
+            </div>
+          </div>
+
+          <div class="desc-block">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+              Knowledge Base
+            </h3>
+            <p>
+               Didn't feel like paying for for cloud sync. So I made my own! <strong>CouchDB</strong> acts as my backend for the obsidian-livesync plugin, ensuring encrypted, real-time replication of all of my vaults across all devices on the tailnet.
+            </p>
+            <div class="tech-list">
+              <span class="tech-tag">CouchDB</span>
+              <span class="tech-tag highlight">Obsidian LiveSync</span>
+            </div>
+          </div>
+
         </div>
 
         <h2>02_Network & Ingress</h2>
@@ -446,7 +227,7 @@
             <div class="icon-box active">Pro</div>
             <div class="service-info">
               <h3>Prometheus</h3>
-              <p>Metrics Database</p>
+              <p>Metrics Grabber</p>
             </div>
           </div>
            <div class="service-card">
@@ -463,60 +244,6 @@
               <p>Service Health</p>
             </div>
           </div>
-        </div>
-
-        <h2>05_Service Manifest</h2>
-        <div class="desc-grid">
-          
-          <div class="desc-block">
-            <h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              Automatic Media
-            </h3>
-            <p>
-              A fully automated "request-to-screen" pipeline. Requests from <strong>Seerr</strong> trigger retrievals via Prowlarr indexers. 
-              <strong>Gluetun</strong> forces all torrent traffic through ProtonVPN, preventing leaks. 
-              Dual Sonarr instances separate standard TV from Anime to handle complex naming conventions.
-            </p>
-            <div class="tech-list">
-              <span class="tech-tag highlight">Gluetun VPN</span>
-              <span class="tech-tag">qBittorrent (qui UI)</span>
-              <span class="tech-tag">Jellyfin (NVENC)</span>
-              <span class="tech-tag">Seerr</span>
-              <span class="tech-tag">Calibre-Web</span>
-            </div>
-          </div>
-
-          <div class="desc-block">
-            <h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4"></path><path d="M8 10v4"></path><path d="M15 13h2"></path><path d="M18 11h.01"></path></svg>
-              Gaming Infrastructure
-            </h3>
-            <p>
-               Host for a private Minecraft Fabric server (1.20.4). Optimized with Sodium, and Lithium for high TPS on consumer hardware. 
-               Was originally exposed via sidecars, but later streamlined into <strong>TSDProxy</strong> to avoid port forwarding, allowing friends to join the virtual LAN seamlessly.
-            </p>
-            <div class="tech-list">
-              <span class="tech-tag highlight">TSDProxy</span>
-              <span class="tech-tag">Fabric API</span>
-              <span class="tech-tag">CurseForge</span>
-            </div>
-          </div>
-
-          <div class="desc-block">
-            <h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-              Knowledge Base
-            </h3>
-            <p>
-               Didn't feel like paying for for cloud sync. So I made my own! <strong>CouchDB</strong> acts as my backend for the obsidian-livesync plugin, ensuring encrypted, real-time replication of all of my vaults across all devices on the tailnet.
-            </p>
-            <div class="tech-list">
-              <span class="tech-tag highlight">CouchDB</span>
-              <span class="tech-tag">Obsidian LiveSync</span>
-            </div>
-          </div>
-
         </div>
 
       </div>

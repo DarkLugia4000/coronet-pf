@@ -1,0 +1,228 @@
+ /* ========================================
+CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+======================================== */
+:root {
+    color-scheme: dark;
+    
+    /* Color palette */
+    --bg: #05010a;              /* Deep space background */
+    --panel: #0e0516;           /* Panel/card background */
+    --text: #f1e9ff;            /* Primary text color */
+    --muted: #a390c4;           /* Dimmed text for secondary content */
+    --line: rgba(186, 150, 255, 0.08);  /* Subtle borders and dividers */
+    --accent: #9d46ff;          /* Purple accent for highlights */
+    --accent-glow: rgba(157, 70, 255, 0.25);  /* Glow effect for accent */
+    
+    /* Spacing and effects */
+    --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);  /* Depth shadow */
+    --radius: 16px;             /* Default border radius */
+    
+    /* Typography */
+    --mono: "JetBrains Mono", monospace;
+    --sans: "Inter", sans-serif;
+}
+
+/* ========================================
+BASE STYLES
+======================================== */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--sans);
+    color: var(--text);
+    background-color: var(--bg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    
+    /* Layered gradient background with radial highlights */
+    background: 
+        radial-gradient(1200px 900px at 50% 0%, rgba(100, 40, 200, 0.15), transparent 60%),
+        linear-gradient(180deg, #05010a 0%, #090212 100%);
+}
+
+/* Subtle grid pattern overlay for tech aesthetic */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(180, 150, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180, 150, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ========================================
+LAYOUT CONTAINER
+======================================== */
+.container {
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    text-align: center;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+/* ========================================
+BRAND ICON & GREETING
+======================================== */
+/* Floating mountain icon with gentle animation */
+.brand-icon {
+    width: 80px;
+    height: 80px;
+    color: var(--accent);
+    filter: drop-shadow(0 0 30px var(--accent-glow));
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Subtle floating animation */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Welcome message text */
+.greeting {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #fff;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeInDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ========================================
+ACTION BUTTONS
+======================================== */
+/* Button container with flex layout */
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards;
+}
+
+/* Base button styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: 1px solid transparent;
+    font-family: var(--sans);
+    line-height: 1;  /* Ensures proper vertical alignment of icons + text */
+}
+
+/* Main Portfolio button - purple filled with prominent shadow */
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(157, 70, 255, 0.3);
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(157, 70, 255, 0.5);
+    background: #b05cff;
+}
+
+/* Secondary buttons*/
+.btn-sec {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--line);
+    color: var(--text);
+}
+.btn-sec:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    transform: translateY(-2px);
+}
+
+/* expandable info box (coronet info) */
+/* Collapsible info panel - toggled by "Why Coronet?" button */
+.info-box {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    max-width: 500px;
+    text-align: left;
+    background: rgba(14, 5, 22, 0.6);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    margin-top: 10px;
+}
+
+/* Expanded state - revealed with smooth transition */
+.info-box.visible {
+    height: auto;
+    opacity: 1;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.info-title {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 12px;
+    margin-bottom: 8px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.info-text {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ========================================
+ENTRANCE ANIMATIONS
+======================================== */
+/* Greeting fades in from above */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Buttons fade in from below with slight delay */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================
+FOOTER
+======================================== */
+/* Copyright notice at bottom */
+.fineprint {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: var(--mono);
+    opacity: 0.5;
+}
