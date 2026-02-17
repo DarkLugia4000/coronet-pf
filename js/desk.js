@@ -457,7 +457,7 @@ const app = {
     }
 };
 
-//-- Back Function --
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.getElementById('backBtn');
