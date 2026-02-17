@@ -918,7 +918,7 @@
                 } else if (target.type === 'app') {
                     ui.createWindow(null, target.name, appContent[target.appId]);
                 } else if (target.type === 'link') {
-                    window.open(target.url, '_blank');
+                    window.location.assign(target.url);
                 }
             },
 
