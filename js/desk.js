@@ -45,7 +45,7 @@ const appContent = {
                 </div>
                 <div style="height: 1px; background: var(--line); margin: 20px 0;"></div>
                 
-                <p style="color: var(--text); line-height: 1.6;">I am a systems-oriented problem-solver in building reliable, automated solutions that create tangible value for others. I focus on designing infrastructure and workflows that are stable, scalable, and efficient.</p>
+                <p style="color: var(--text); line-height: 1.6;">I am a systems-oriented problem-solver with a strong interest for building reliable, automated solutions that create tangible value for others. I focus on designing infrastructure and workflows that are stable, scalable, and reproducible.</p>
                 <p style="color: var(--muted); font-size: 13px;">My working style is precise, analytical, and detail-driven. I pay close attention to system behavior at the margins and take personal enjoyment of pushing their limits, just as much as my own..</p>
                 
                 <div class="pill-container">
@@ -456,3 +456,20 @@ const app = {
         `);
     }
 };
+
+//-- Back Function --
+
+document.addEventListener('DOMContentLoaded', () => {
+    const backBtn = document.getElementById('backBtn');
+    if (!backBtn) return;
+
+    backBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        if (history.length > 1) {
+            history.back();
+        } else {
+            location.href = '/';
+        }
+    });
+});
