@@ -195,11 +195,16 @@ h2 {
 .service-info p { margin: 2px 0 0; font-size: 11px; color: var(--muted); display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 
 
-/* --- NEW: Service Description Blocks --- */
+/* --- Service Description Blocks --- */
 .desc-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+}
+
+/* First child takes up an entire row*/
+.desc-block:first-child {
+    grid-column: 1 / -1;
 }
 
 .desc-block {
@@ -267,6 +272,18 @@ h2 {
     transition: color 0.2s; font-family: var(--mono);
 }
 .back-btn:hover { color: #fff; transform: translateX(-3px); }
+
+
+/* Big (wide) first block */
+@media (max-width: 900px) {
+    .desc-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .desc-block:first-child {
+        grid-column: 1;
+    }
+}
 
 @media (max-width: 700px) {
     .inner { padding: 24px; }
