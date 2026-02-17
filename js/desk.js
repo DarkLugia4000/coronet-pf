@@ -1,11 +1,11 @@
-// --- 1. ICON DEFINITIONS (SVG PATHS) ---
+// icon polylines ---
 const ICONS = {
     folder: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>',
     file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
     exec: '<polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line><rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>'
 };
 
-// --- 2. DATA ---
+// --- the stuff (file system, "foldering") ---
 const fileSystem = {
     "root": {
         name: "root",
@@ -15,13 +15,13 @@ const fileSystem = {
                 name: "Projects",
                 type: "folder",
                 children: {
-                    // [EDITABLE] Link to external project/site
+                    // Links to external project/site
                     "coronet.exe": { name: "coronet.exe", type: "link", url: "https://coronet.dev/lab" }, 
                     "others.exe": { name: "others.exe", type: "app", appId: "others" }
                 }
             },
             "profile.html": { name: "profile.html", type: "app", appId: "profile" },
-            // [EDITABLE] Link to blog
+            // Link to blog
             "blog.html": { name: "blog.html", type: "link", url: "https://coronet.dev/blog" }, 
             "skills.sh": { name: "skills.sh", type: "app", appId: "skills" }
         }
@@ -128,7 +128,7 @@ const appContent = {
             </div>
 
             <div class="term-line">
-                <span class="term-out">loading competency map...</span>
+                <span class="term-out">getting skills...</span>
             </div>
 
             <div class="skill-category">
@@ -137,28 +137,21 @@ const appContent = {
                 <div class="skill-row">
                     <span class="skill-label">Linux</span>
                     <span class="bar-track">
-                        <span class="bar-fill" style="--level: 84%;"></span>
+                        <span class="bar-fill" style="--level: 55%;"></span>
                     </span>
                 </div>
 
                 <div class="skill-row">
                     <span class="skill-label">Docker</span>
                     <span class="bar-track">
-                        <span class="bar-fill" style="--level: 82%;"></span>
+                        <span class="bar-fill" style="--level: 35%;"></span>
                     </span>
                 </div>
 
                 <div class="skill-row">
                     <span class="skill-label">Networking</span>
                     <span class="bar-track">
-                        <span class="bar-fill" style="--level: 70%;"></span>
-                    </span>
-                </div>
-
-                <div class="skill-row">
-                    <span class="skill-label">Monitoring</span>
-                    <span class="bar-track">
-                        <span class="bar-fill" style="--level: 66%;"></span>
+                        <span class="bar-fill" style="--level: 25%;"></span>
                     </span>
                 </div>
             </div>
@@ -169,28 +162,28 @@ const appContent = {
                 <div class="skill-row">
                     <span class="skill-label">C</span>
                     <span class="bar-track">
-                        <span class="bar-fill" style="--level: 68%;"></span>
+                        <span class="bar-fill" style="--level: 60%;"></span>
                     </span>
                 </div>
 
                 <div class="skill-row">
                     <span class="skill-label">C++</span>
                     <span class="bar-track">
-                        <span class="bar-fill" style="--level: 62%;"></span>
+                        <span class="bar-fill" style="--level: 30%;"></span>
                     </span>
                 </div>
 
                 <div class="skill-row">
                     <span class="skill-label">Python</span>
                     <span class="bar-track">
-                        <span class="bar-fill" style="--level: 74%;"></span>
+                        <span class="bar-fill" style="--level: 21%;"></span>
                     </span>
                 </div>
 
                 <div class="skill-row">
                     <span class="skill-label">JS</span>
                     <span class="bar-track">
-                        <span class="bar-fill" style="--level: 60%;"></span>
+                        <span class="bar-fill" style="--level: 5%;"></span>
                     </span>
                 </div>
             </div>
@@ -208,21 +201,14 @@ const appContent = {
                 <div class="skill-row">
                     <span class="skill-label">Docs</span>
                     <span class="bar-track">
-                        <span class="bar-fill" style="--level: 69%;"></span>
-                    </span>
-                </div>
-
-                <div class="skill-row">
-                    <span class="skill-label">Automation</span>
-                    <span class="bar-track">
-                        <span class="bar-fill" style="--level: 78%;"></span>
+                        <span class="bar-fill" style="--level: 90%;"></span>
                     </span>
                 </div>
             </div>
 
             <div class="term-line" style="margin-top: 14px;">
             <span class="term-prompt">status:</span>
-            <span class="term-inline">ready</span>
+            <span class="term-inline">done</span>
             </div>
 
             <div class="term-line">
