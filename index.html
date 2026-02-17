@@ -3,70 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Josue-Marie | CV & Blog</title>
+    <title>Josue-Marie @ coronet.dev</title>
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
 
     <style>
-        /* ========================================
-           CSS VARIABLES (THEME CONFIGURATION)
-           ========================================
-           Edit these hex codes to change the global color scheme.
-        */
         :root {
+            /* --- THEME CONFIGURATION --- */
             color-scheme: dark;
-            
-            /* Backgrounds */
             --bg: #05010a;
-            --panel: #0e0516;
-            --glass: rgba(14, 5, 22, 0.75); /* Window transparency color */
-            
-            /* Typography */
+            --panel: #0e0516; 
+            --panel-glass: rgba(14, 5, 22, 0.85); 
             --text: #f1e9ff;
             --muted: #a390c4;
-            
-            /* Accents */
-            --line: rgba(186, 150, 255, 0.08); /* Border colors */
-            --accent: #9d46ff;                 /* Main Purple */
+            --line: rgba(186, 150, 255, 0.08);
+            --accent: #9d46ff;
             --accent-glow: rgba(157, 70, 255, 0.25);
-            
-            /* UI Elements */
             --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
-            --radius: 16px;
+            --radius: 12px; 
             
             /* Fonts */
             --mono: "JetBrains Mono", monospace;
             --sans: "Inter", sans-serif;
-            
-            /* Window Controls Colors */
-            --btn-close: #ff5f57;
-            --btn-max: #28c840;
-            --btn-min: #ffbd2e;
-            --btn-disabled: #3a3a3a;
+            --pixel: "Pixelify Sans", sans-serif; /* UPDATED FONT */
         }
 
         * { box-sizing: border-box; }
 
-        /* --- GLOBAL LAYOUT --- */
         body {
             margin: 0;
-            padding: 0;
+            height: 100vh;
+            overflow: hidden; 
             font-family: var(--sans);
             color: var(--text);
-            height: 100vh;
-            overflow: hidden;
             background-color: var(--bg);
             
-            /* Animated Background Gradient */
+            /* Drifting Background Animation */
             background: 
                 radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
                 radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
+                radial-gradient(1400px 1000px at 50% 100%, rgba(120, 50, 220, 0.08), transparent 70%),
                 linear-gradient(180deg, #05010a 0%, #090212 40%, #030005 100%);
             background-size: 200% 200%;
-            animation: bgDrift 30s ease infinite alternate;
+            animation: bgDrift 20s ease infinite alternate;
+            user-select: none;
         }
 
         /* Tech Grid Overlay Pattern */
@@ -84,800 +66,683 @@
 
         @keyframes bgDrift {
             0% { background-position: 0% 0%; }
-            100% { background-position: 15% 15%; }
+            100% { background-position: 10% 10%; }
         }
 
-        .desktop-container {
-            display: flex;
-            height: 100%;
+        /* --- DESKTOP ICONS --- */
+        #desktop {
             width: 100%;
+            height: 100%;
             position: relative;
-        }
-
-        /* --- WINDOW SYSTEM STYLES --- */
-        .window {
-            position: absolute;
-            background: #0e0516e6; /* High opacity for readability */
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-            backdrop-filter: blur(20px);
-            display: none; /* Hidden by default, toggled via JS */
-            flex-direction: column;
-            width: 500px;
-            min-height: 200px;
-            overflow: hidden;
-            /* Smooth transitions for maximizing */
-            transition: opacity 0.2s, width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Maximized State: Fills the screen */
-        .window.maximized {
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            border-radius: 0;
-            border: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .window-header {
-            background: rgba(255,255,255,0.03);
-            border-bottom: 1px solid var(--line);
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            cursor: grab;
-            user-select: none;
-            gap: 16px;
-            flex-shrink: 0;
-        }
-
-        .window-header:active { cursor: grabbing; }
-
-        /* Window Traffic Lights */
-        .win-controls { display: flex; gap: 8px; }
-
-        .win-btn {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: none;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8px;
-            color: rgba(0,0,0,0.5);
-            transition: transform 0.1s, opacity 0.2s;
-            cursor: pointer;
-        }
-        
-        .win-btn:hover { color: #000; opacity: 1; transform: scale(1.1); }
-        .win-btn.close { background: var(--btn-close); }
-        .win-btn.max { background: var(--btn-max); border-radius: 3px; width: 12px; height: 12px;}
-        .win-btn.min { background: var(--btn-min); }
-        .win-btn.disabled { background: var(--btn-disabled); cursor: default; pointer-events: none; }
-        .win-btn.disabled:hover { transform: none; }
-
-        .win-title {
-            font-family: var(--sans);
-            font-weight: 600;
-            font-size: 13px;
-            color: #fff;
-            text-align: center;
-            flex-grow: 1;
-            margin-right: 52px; /* Balance controls for center alignment */
-        }
-
-        .window-content {
-            padding: 0;
-            color: var(--text);
-            font-size: 14px;
-            line-height: 1.6;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .content-inner { 
-            padding: 24px; 
-            overflow-y: auto; 
-            height: 100%;
-        }
-
-        /* --- FILE EXPLORER STYLES --- */
-        #explorerWin {
-            width: 600px;
-            height: 400px;
-            /* Initially hidden to allow JS calculation */
-            display: none;
-        }
-
-        .explorer-sidebar {
-            width: 150px;
-            min-width: 150px;
-            border-right: 1px solid var(--line);
-            background: rgba(0,0,0,0.2);
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .side-link { 
-            font-size: 13px; 
-            color: var(--muted); 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-            padding: 6px 8px;
-            border-radius: 6px;
-            cursor: default;
-        }
-        .side-link:hover { color: #fff; background: rgba(255,255,255,0.03); }
-        .side-link.active { color: #fff; background: rgba(255,255,255,0.08); font-weight: 500; }
-
-        .file-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, 90px);
-            grid-auto-rows: 90px;
-            justify-content: start;
-            gap: 12px;
             padding: 20px;
-            align-content: start;
-            flex-grow: 1;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
         }
 
-        .file-item {
+        .desktop-icon {
+            width: 80px;
+            text-align: center;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.1s;
-            text-align: center;
-            height: 100%;
-            width: 100%;
-        }
-
-        .file-item:hover { background: rgba(255,255,255,0.08); }
-        .file-item:active { background: rgba(157, 70, 255, 0.2); }
-
-        .file-icon {
-            width: 40px;
-            height: 40px;
-            color: var(--muted);
-            transition: color 0.2s;
-        }
-        
-        .file-item:hover .file-icon { color: var(--text); }
-        .file-icon.folder { color: #5f8de5; fill: rgba(95, 141, 229, 0.2); }
-        .file-icon.exec { color: var(--accent); }
-
-        .file-name {
-            font-size: 11px;
-            color: var(--text);
-            font-weight: 500;
-            line-height: 1.2;
-            max-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        /* --- TAB SYSTEM STYLES --- */
-        .tabs-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden; /* Prevent container scroll, force child scroll */
-        }
-        
-        .tabs-header {
-            display: flex;
-            border-bottom: 1px solid var(--line);
-            background: rgba(0,0,0,0.2);
-            padding: 0 16px;
-            gap: 2px;
-            flex-shrink: 0; /* Keep header visible */
-        }
-        
-        .tab-btn {
-            padding: 10px 16px;
-            background: transparent;
-            border: none;
-            color: var(--muted);
-            font-family: var(--sans);
-            font-size: 12px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-        
-        .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.03); }
-        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
-        
-        /* Fix for scrollbar jumping: 
-           1. Use 'overflow-y: auto' here so scrollbar is inside content area.
-           2. 'scrollbar-gutter: stable' reserves space for the scrollbar so layout doesn't shift.
-        */
-        .tab-content {
-            display: none;
-            padding: 20px;
-            overflow-y: auto; 
-            flex-grow: 1;
-            scrollbar-gutter: stable; /* Crucial fix for layout shift */
-            height: 100%; /* Ensure it fills parent */
-        }
-        
-        .tab-content.active { 
-            display: block; 
-            animation: fadeIn 0.15s ease-out; /* Faster, smoother anim */
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-
-        /* --- CONTENT COMPONENT STYLES (Used inside config strings) --- */
-        /* Accordion Menu */
-        .menu-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-        .project-item { border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,0.02); overflow: hidden; transition: all 0.2s; }
-        .project-item:hover { border-color: var(--accent); background: rgba(255,255,255,0.04); }
-        .project-head { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; }
-        .project-head span { color: #fff; }
-        .chevron { color: var(--muted); transition: transform 0.3s; width: 16px; height: 16px;}
-        .project-body { height: 0; padding: 0 16px; opacity: 0; transition: all 0.3s ease; font-size: 13px; color: var(--muted); border-top: 1px dashed transparent; line-height: 1.5; }
-        .project-item.active .project-body { height: auto; padding: 12px 16px; opacity: 1; border-top-color: var(--line); }
-        .project-item.active .chevron { transform: rotate(180deg); color: var(--accent); }
-
-        /* Links & Buttons */
-        .action-link { display: inline-flex; align-items: center; margin-top: 12px; color: var(--accent); text-decoration: none; font-size: 12px; font-family: var(--mono); border: 1px solid var(--line); padding: 4px 10px; border-radius: 4px; transition: background 0.2s; }
-        .action-link:hover { background: rgba(157, 70, 255, 0.1); }
-
-        /* Tags */
-        .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-        .tag { font-family: var(--mono); font-size: 10px; padding: 4px 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 4px; color: var(--muted); }
-        .tag.highlight { border-color: var(--accent); color: var(--accent); background: rgba(157, 70, 255, 0.1); }
-
-        /* Terminal View */
-        .terminal-view { background: #00000044; padding: 12px; border-radius: 6px; font-family: var(--mono); font-size: 12px; border: 1px solid var(--line); }
-        .cmd-line { display: flex; gap: 8px; margin-bottom: 4px; }
-        .prompt { color: var(--btn-max); }
-        .cmd { color: #fff; }
-        .output { color: var(--muted); margin-bottom: 12px; display: block; padding-left: 20px;}
-
-        /* Bio Buttons */
-        .bio-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        .btn-row { display: flex; gap: 10px; }
-        .btn-social { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 12px; font-weight: 600; font-size: 13px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, filter 0.2s, background 0.2s; border: none; cursor: pointer; font-family: var(--sans); }
-        .btn-social:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .btn-github { background-color: var(--accent); color: #fff; flex: 2; }
-        .btn-github:hover { filter: brightness(1.15); }
-        .btn-cv { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--text); flex: 1; }
-        .btn-cv:hover { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.2); }
-        .btn-email { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--text); width: 100%; justify-content: center; }
-        .btn-email:hover { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.2); }
-
-        /* --- UPDATED HOBBY LIST STYLES (Clean Text + Sprite) --- */
-        .hobby-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .hobby-entry {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--line);
+            padding: 10px;
             border-radius: 8px;
-            transition: background 0.2s, border-color 0.2s;
+            transition: background 0.2s;
+            border: 1px solid transparent;
         }
-        .hobby-entry:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent);
-        }
-        
-        .hobby-sprite {
-            width: 48px; 
-            height: 48px; 
-            image-rendering: pixelated; /* Makes the sprite crisp */
-            object-fit: contain;
-            flex-shrink: 0;
+
+        .desktop-icon:hover { 
+            background: rgba(157, 70, 255, 0.1); 
+            border-color: var(--line);
         }
         
-        /* Placeholder styling if no image */
-        .hobby-icon-box {
+        .icon-img {
             width: 48px;
             height: 48px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .icon-img::after {
+            content: ''; position: absolute; top: 8px; left: 0; width: 100%; height: 50%;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .icon-label {
+            font-size: 13px;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            color: var(--text);
+        }
+
+        /* --- WINDOW STYLES --- */
+        .window {
+            position: absolute;
+            background: var(--panel-glass);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            min-width: 320px;
+            min-height: 200px;
+            top: 100px; left: 100px;
+            width: 700px; height: 500px;
+            transition: opacity 0.2s, transform 0.2s;
+            overflow: hidden;
+        }
+
+        .window::before {
+            /* Top accent line */
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.5; pointer-events: none;
+        }
+
+        .window.maximized {
+            top: 0 !important; left: 0 !important; right: 0 !important;
+            width: 100% !important; height: calc(100% - 45px) !important;
+            border-radius: 0; border: none;
+        }
+
+        .window.minimized {
+            opacity: 0; transform: scale(0.95) translateY(30px); pointer-events: none;
+        }
+
+        .title-bar {
+            height: 36px;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--line);
             display: flex;
             align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.3);
-            border-radius: 6px;
-            color: var(--muted);
-            flex-shrink: 0;
+            padding: 0 12px;
+            cursor: default;
         }
 
-        .hobby-details h4 {
-            margin: 0 0 4px 0;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
+        .traffic-lights { display: flex; gap: 8px; margin-right: 15px; }
+        .win-btn { width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; transition: transform 0.1s;}
+        .win-btn:hover { transform: scale(1.1); }
+        .btn-close { background: #ff5f56; }
+        .btn-min { background: #ffbd2e; }
+        .btn-max { background: #27c93f; }
+
+        .window-title {
+            flex-grow: 1; text-align: center; font-size: 13px; font-weight: 500;
+            color: var(--muted); margin-right: 50px; font-family: var(--sans);
         }
-        .hobby-details p {
-            margin: 0;
+
+        .window-body { flex-grow: 1; overflow: auto; position: relative; color: var(--text); }
+
+        /* --- TASKBAR --- */
+        #taskbar {
+            height: 45px;
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(5, 1, 10, 0.7);
+            border-top: 1px solid var(--line);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 6px;
+            z-index: 9999;
+        }
+
+        .task-item {
+            padding: 6px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+            border-radius: 6px;
             font-size: 12px;
             color: var(--muted);
-            line-height: 1.4;
+            cursor: pointer;
+            transition: all 0.2s;
+            max-width: 160px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: flex; align-items: center; gap: 6px;
+        }
+        
+        .task-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        
+        .task-item.active { 
+            background: rgba(157, 70, 255, 0.1); 
+            border-color: rgba(157, 70, 255, 0.3);
+            color: #fff; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        /* --- DESKTOP FOOTER --- */
+        /* --- EXPLORER STYLES --- */
+        .explorer-layout { display: flex; height: 100%; flex-direction: column; }
+        
+        .explorer-nav {
+            padding: 10px 15px; border-bottom: 1px solid var(--line);
+            display: flex; gap: 12px; align-items: center; background: rgba(0,0,0,0.1);
+        }
+        .nav-btn { background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 4px; cursor: pointer; padding: 2px 8px; transition: 0.2s; }
+        .nav-btn:hover { border-color: var(--accent); color: #fff; }
+        
+        .path-bar {
+            background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: 6px;
+            padding: 6px 12px; font-size: 12px; flex-grow: 1; font-family: var(--mono); color: var(--muted);
+        }
+
+        .explorer-content { display: flex; flex-grow: 1; overflow: hidden; }
+        
+        .sidebar {
+            width: 160px; background: rgba(0,0,0,0.15); border-right: 1px solid var(--line);
+            padding: 15px; display: flex; flex-direction: column; gap: 4px;
+        }
+        .sidebar-item {
+            padding: 8px 12px; font-size: 13px; color: var(--muted); cursor: pointer; border-radius: 6px; transition: 0.2s;
+        }
+        .sidebar-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        
+        /* Grid with SVG Icons */
+        .file-grid {
+            flex-grow: 1; padding: 20px; display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            grid-auto-rows: 110px; gap: 10px;
+        }
+        .file-item {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;
+            border: 1px solid transparent;
+        }
+        .file-item:hover { background: rgba(255,255,255,0.03); border-color: var(--line); }
+        
+        .file-icon {
+            width: 42px; height: 42px; margin-bottom: 10px;
+            color: var(--muted); transition: color 0.2s;
+        }
+        .file-item:hover .file-icon { color: var(--text); }
+        .file-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        
+        /* Icon Colors */
+        .file-icon.folder { color: var(--accent); fill: rgba(157, 70, 255, 0.1); }
+        .file-icon.exec { color: #facc15; }
+        .file-icon.code { color: #60a5fa; }
+
+        .file-name { font-size: 12px; color: var(--text); word-break: break-all; }
+
+        /* --- APP CONTENT --- */
+        .browser-tabs { display: flex; background: rgba(0,0,0,0.2); padding: 8px 8px 0 8px; gap: 4px; border-bottom: 1px solid var(--line); }
+        .tab {
+            padding: 8px 16px; background: transparent; color: var(--muted); font-size: 12px;
+            border-radius: 6px 6px 0 0; cursor: pointer; border: 1px solid transparent; border-bottom: none;
+            font-family: var(--sans);
+        }
+        .tab:hover { color: #fff; background: rgba(255,255,255,0.02); }
+        .tab.active {
+            background: var(--panel-glass); color: var(--accent); border: 1px solid var(--line); border-bottom: 1px solid var(--panel);
+            margin-bottom: -1px; font-weight: 500;
+        }
+        
+        .tab-content-container { padding: 30px; overflow-y: auto; height: calc(100% - 40px); }
+        .tab-pane { display: none; animation: fadeIn 0.3s ease; }
+        .tab-pane.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Profile Styles */
+        .profile-header h1 { margin: 0; font-size: 28px; color: #fff; letter-spacing: -0.02em; }
+        .profile-meta { color: var(--accent); font-family: var(--mono); font-size: 12px; margin-top: 5px; display: block; }
+        
+        .pill-container { margin: 25px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+        .tech-pill {
+            font-family: var(--mono); font-size: 11px; padding: 4px 10px; border-radius: 4px;
+            border: 1px solid var(--line); color: var(--muted); background: rgba(0,0,0,0.2); cursor: default;
+        }
+        .tech-pill:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+        .social-btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px;
+            border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text);
+            font-size: 13px; text-decoration: none; margin-right: 10px; transition: 0.2s;
+        }
+        .social-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 4px 12px var(--accent-glow); }
+
+        .exp-item { margin-bottom: 25px; border-left: 2px solid var(--line); padding-left: 15px; }
+        .exp-title { font-weight: 600; color: #fff; font-size: 15px; }
+        .exp-date { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-bottom: 5px; }
+        .exp-desc { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+        
+        /* UPDATED: Pixel Mode with Pinkish-Purple Undertone */
+        .pixel-mode { 
+            font-family: var(--pixel); 
+            font-size: 18px; 
+            line-height: 1.8;
+            color: #e0aaff;  /* Soft Pinkish-Purple */
+            text-shadow: 0 0 5px rgba(224, 170, 255, 0.6); 
+        }
+
+        /* Terminal */
+        .terminal { background: #05010a; padding: 20px; height: 100%; font-family: var(--mono); font-size: 13px; color: #ccc; }
+        .term-line { margin-bottom: 8px; }
+        .term-prompt { color: var(--accent); margin-right: 8px; }
+        .term-out { color: var(--text); display: block; margin-bottom: 15px; padding-left: 20px; opacity: 0.8; }
+        .blink { animation: blink 1s step-end infinite; color: var(--accent); }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Details / Projects */
+        details {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 8px;
+            margin-bottom: 12px; overflow: hidden; transition: 0.2s;
+        }
+        details[open] { background: rgba(157, 70, 255, 0.05); border-color: var(--accent); }
+        summary {
+            padding: 12px 16px; cursor: pointer; font-weight: 500; color: #fff;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+        }
+        summary::after { content: '+'; color: var(--muted); font-family: var(--mono); }
+        details[open] summary::after { content: '-'; color: var(--accent); }
+        .details-content { padding: 0 16px 16px 16px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+        .action-link {
+            display: inline-block; margin-top: 10px; color: var(--accent); font-family: var(--mono); font-size: 11px;
+            text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none; border-bottom: 1px dashed var(--accent);
+        }
+
         .desktop-footer {
-            position: absolute;
-            bottom: 15px;
-            width: 100%;
-            text-align: center;
-            color: var(--muted);
-            font-size: 11px;
-            font-family: var(--mono);
-            opacity: 0.5;
-            z-index: 0; /* Behind windows */
-            pointer-events: none;
+            position: absolute; bottom: 55px; width: 100%; text-align: center;
+            color: var(--muted); opacity: 0.4; font-size: 11px; font-family: var(--mono); pointer-events: none;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="desktop-container" id="desktop">
-        <!-- 
-            FILE EXPLORER (The "Root" Window) 
-            This is the only hardcoded window because it acts as the system root.
-            Content inside .file-grid is generated via JS.
-        -->
-        <div id="explorerWin" class="window" style="z-index: 5;">
-            <div class="window-header">
-                <div class="win-controls">
-                    <button class="win-btn disabled" title="System Root"></button>
-                    <button class="win-btn min"></button> 
-                    <button class="win-btn max" onclick="toggleMaximize('explorerWin')">↗</button>
-                </div>
-                <div class="win-title">File System</div>
-            </div>
-            
-            <div class="window-content" style="flex-direction: row;">
-                <!-- Decorative Sidebar -->
-                <div class="explorer-sidebar">
-                    <div class="side-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg> Network</div>
-                    <div class="side-link active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Home</div>
-                    <div class="side-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> Documents</div>
-                    <div class="side-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Downloads</div>
-                </div>
-
-                <!-- Icons will be injected here by JS -->
-                <div class="file-grid" id="fileGrid"></div>
-            </div>
+    <div id="desktop">
+        <div class="desktop-icon" ondblclick="app.openExplorer()">
+            <div class="icon-img"></div>
+            <div class="icon-label">Explorer</div>
         </div>
 
-        <!-- 
-            OTHER WINDOWS 
-            These are injected by JS based on SYSTEM_CONFIG.
-        -->
-        
-        <!-- Desktop Footer -->
-        <div class="desktop-footer">
-            &copy; <span id="currentYear"></span> Josue-Marie Nonguierma
-        </div>
+        <div id="window-area"></div>
+
+        <div class="desktop-footer">© 2026 Josue-Marie Nonguierma</div>
+
+        <div id="taskbar"></div>
     </div>
 
     <script>
-        /*
-         ===================================================================
-         USER CONFIGURATION
-         ===================================================================
-         Edit the SYSTEM_CONFIG object below to change your files and windows.
-         
-         - 'apps' is an object where the key (e.g., 'journal') is a unique ID.
-         - 'title': Text shown in the window header.
-         - 'icon':  SVG path data or class for the file icon. 
-                    (Use 'folder' or 'exec' for predefined colors, or remove for default).
-         - 'fileLabel': The text shown under the icon in Explorer.
-         - 'initX/Y': Initial position of the window.
-         - 'content': The HTML content inside the window. Supports backticks `` for multi-line HTML.
-        */
-
-        const SYSTEM_CONFIG = {
-            apps: {
-                // 1. Projects / Journal
-                journal: {
-                    title: 'Engineering Journal',
-                    fileLabel: 'Projects.app',
-                    type: 'folder', // 'folder', 'exec', or empty for text file
-                    initX: 80, initY: 100,
-                    content: `
-                        <h2>Featured Case Studies</h2>
-                        <ul class="menu-list">
-                            <li class="project-item" onclick="toggleMenu(this)">
-                                <div class="project-head">
-                                    <span>Coronet Infrastructure</span>
-                                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                                </div>
-                                <div class="project-body">
-                                    Secure, self-hosted infrastructure stack. Split-DNS via Cloudflare/AdGuard, mesh networking with Tailscale.
-                                    <br><a href="https://coronet.dev/lab/index.html" target="_blank" class="action-link">Read Breakdown &rarr;</a>
-                                </div>
-                            </li>
-                            <li class="project-item" onclick="toggleMenu(this)">
-                                <div class="project-head">
-                                    <span>Pokémon Battle Engine</span>
-                                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                                </div>
-                                <div class="project-body">
-                                    Generation II battle mechanics in C/Python. Bit-perfect accuracy for damage calculation.
-                                    <br><a href="#" target="_blank" class="action-link">View Repo &rarr;</a>
-                                </div>
-                            </li>
-                            <li class="project-item" onclick="toggleMenu(this)">
-                                <div class="project-head">
-                                    <span>Minecraft DevOps</span>
-                                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                                </div>
-                                <div class="project-body">
-                                    Containerized Fabric server (1.20.4). Automated backups via Restic and secure ingress tunnel.
-                                    <br><a href="#" target="_blank" class="action-link">View Config &rarr;</a>
-                                </div>
-                            </li>
-                        </ul>
-                    `
-                },
-
-                // 2. Profile / Bio
-                profile: {
-                    title: 'profile.md',
-                    fileLabel: 'profile.md',
-                    type: 'file',
-                    initX: 120, initY: 150,
-                    content: `
-                        <div class="tabs-container">
-                            <div class="tabs-header">
-                                <button class="tab-btn" onclick="switchTab(this, 'tab-overview')">Overview</button>
-                                <button class="tab-btn active" onclick="switchTab(this, 'tab-experience')">Experience</button>
-                                <button class="tab-btn" onclick="switchTab(this, 'tab-education')">Education</button>
-                                <button class="tab-btn" onclick="switchTab(this, 'tab-hobbies')">Hobbies</button>
-                            </div>
-                            
-                            <div class="tab-content" id="tab-overview">
-                                <p><strong>Josue-Marie Nonguierma</strong><br>Computer Science Student // Hamburg, DE</p>
-                                <p>I am a self-taught technologist passionate about backend infrastructure, automation, and reliable systems. My work focuses on taking complex services and making them boringly stable through containerization and strict networking principles.</p>
-                                <p style="color: var(--muted); font-size: 13px;">Currently exploring: Rust, Kubernetes, and Advanced Networking.</p>
-                                
-                                <div class="bio-actions">
-                                    <div class="btn-row">
-                                        <a href="https://github.com/DarkLugia4000" target="_blank" class="btn-social btn-github">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                                            GitHub
-                                        </a>
-                                        <a href="#" target="_blank" class="btn-social btn-cv">CV</a>
-                                    </div>
-                                    <a href="mailto:josuenonguierma3@gmail.com" class="btn-social btn-email">Email</a>
-                                </div>
-                            </div>
-
-                            <div class="tab-content active" id="tab-experience">
-                                <h3>Professional Experience</h3>
-                                <p style="color: var(--muted); font-size: 13px;">Currently studying, but highly active in homelab management and open-source contributions.</p>
-                                <hr style="border-color: var(--line); margin: 15px 0;">
-                                <div style="margin-bottom: 20px;">
-                                    <strong>Homelab Administrator</strong>
-                                    <div style="font-size: 12px; color: var(--accent);">2022 - Present</div>
-                                    <p style="font-size: 13px; margin-top: 5px;">Designed and operated a multi-service containerized infrastructure with reverse proxy ingress, DNS management, secure tunnel access, automated backups, and centralized monitoring.</p>
-                                </div>
-                                <div style="margin-bottom: 20px;">
-                                    <strong>Service Agent</strong>
-                                    <div style="font-size: 12px; color: var(--accent);">Telefónica Germany (O2) &bull; October 2022 – April 2025</div>
-                                    <ul style="font-size: 13px; margin-top: 5px; padding-left: 20px; color: var(--muted);">
-                                        <li>Handled GDPR-compliant customer data workflows</li>
-                                        <li>Onboarded and trained new agents on internal systems</li>
-                                        <li>Participated in deployment of updated telephony systems</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="tab-content" id="tab-education">
-                                <h3>Education</h3>
-                                <div style="margin-bottom: 20px;">
-                                    <strong>Computer Science</strong>
-                                    <div style="font-size: 12px; color: var(--accent);">Hamburg, DE</div>
-                                    <p style="font-size: 13px; margin-top: 5px;">Focus on Systems Engineering, Network Security, and Distributed Systems.</p>
-                                </div>
-                            </div>
-
-                            <div class="tab-content" id="tab-hobbies">
-                                <h3>Interests & Collections</h3>
-                                <p style="color: var(--muted); font-size: 13px;">When I'm not managing servers, I'm usually deep into one of these.</p>
-                                
-                                <div class="hobby-list">
-                                    <!-- Pokemon Entry with Sprite -->
-                                    <div class="hobby-entry">
-                                        <!-- Replace 'src' with the actual Shadow Lugia sprite URL -->
-                                        <img src="https://placehold.co/64x64/222/9d46ff?text=SL" alt="Shadow Lugia" class="hobby-sprite">
-                                        <div class="hobby-details">
-                                            <h4>Pokémon</h4>
-                                            <p>Competitive Gen 3 & XD: Gale of Darkness. Favorite mon: Shadow Lugia.</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Homelab Entry -->
-                                    <div class="hobby-entry">
-                                        <div class="hobby-icon-box" style="color:#38bdf8;">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
-                                        </div>
-                                        <div class="hobby-details">
-                                            <h4>Homelab</h4>
-                                            <p>Self-hosting services, network security, and making things overly complicated for fun.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Writing Entry -->
-                                    <div class="hobby-entry">
-                                         <div class="hobby-icon-box" style="color:#ffbd2e;">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path></svg>
-                                        </div>
-                                        <div class="hobby-details">
-                                            <h4>Writing</h4>
-                                            <p>Worldbuilding and sci-fi narratives.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `
-                },
-
-                // 3. Skills / Stack
-                skills: {
-                    title: 'skills_matrix.sh',
-                    fileLabel: 'skills.sh',
-                    type: 'exec',
-                    initX: 150, initY: 200,
-                    content: `
-                        <div class="terminal-view">
-                            <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat languages</span></div>
-                            <span class="output">Python, C, C++, Java, Bash, SQL</span>
-                            
-                            <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat infrastructure</span></div>
-                            <span class="output">Docker, Nginx Proxy Mgr, Tailscale, Cloudflare</span>
-                            
-                            <div class="cmd-line"><span class="prompt">user@cv:~$</span><span class="cmd">cat tools</span></div>
-                            <span class="output">Git, Linux, Prometheus, Grafana, Ansible</span>
-                        </div>
-                        <a href="lab/index.html" class="action-link">View Infrastructure Doc &rarr;</a>
-                    `
-                },
-
-                // 4. Contact
-                contact: {
-                    title: 'contact.json',
-                    fileLabel: 'contact.json',
-                    type: 'file',
-                    initX: 180, initY: 250,
-                    content: `
-                        <p>Open for collaboration on open-source projects or infrastructure discussions.</p>
-                        <a href="mailto:josuenonguierma3@gmail.com" class="action-link" style="text-align:center;">josuenonguierma3@gmail.com</a>
-                    `
-                }
-            }
-        };
-
-        /*
-         ===================================================================
-         SYSTEM LOGIC (DO NOT EDIT UNLESS YOU KNOW WHAT YOU'RE DOING)
-         ===================================================================
-        */
-
+        // --- 1. ICON DEFINITIONS (SVG PATHS) ---
         const ICONS = {
             folder: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>',
             file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
             exec: '<polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line><rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>'
         };
 
-        let zIndexCounter = 10;
-
-        window.onload = () => {
-            initExplorer();
-            renderWindows();
-            initDraggables();
-            centerExplorer();
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        // --- 2. DATA ---
+        const fileSystem = {
+            "root": {
+                name: "root",
+                type: "folder",
+                children: {
+                    "Projects": {
+                        name: "Projects",
+                        type: "folder",
+                        children: {
+                            // [EDITABLE] Link to external project/site
+                            "coronet.exe": { name: "coronet.exe", type: "link", url: "#" }, 
+                            "others.exe": { name: "others.exe", type: "app", appId: "others" }
+                        }
+                    },
+                    "profile.html": { name: "profile.html", type: "app", appId: "profile" },
+                    // [EDITABLE] Link to blog
+                    "blog.html": { name: "blog.html", type: "link", url: "#" }, 
+                    "skills.sh": { name: "skills.sh", type: "app", appId: "skills" }
+                }
+            }
         };
 
-        function centerExplorer() {
-            const explorer = document.getElementById('explorerWin');
-            // Remove the previous centering logic that calculated rects
-            // Instead, set display to flex to make it visible
-            explorer.style.display = 'flex';
-            // The CSS 'top: 50%; left: 50%; transform: translate(-50%, -50%);' handles the visual centering
-            // However, dragging logic usually relies on explicit left/top values.
-            // So we calculate the centered position once and set it explicitly to remove the transform.
-            
-            // Get viewport dimensions
-            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-            
-            // Get element dimensions (it needs to be visible first to have dimensions)
-            const rect = explorer.getBoundingClientRect();
-            
-            // Calculate centered position
-            const left = (vw - rect.width) / 2;
-            const top = (vh - rect.height) / 2;
-            
-            // Apply absolute position and remove transform
-            explorer.style.left = left + 'px';
-            explorer.style.top = top + 'px';
-            explorer.style.transform = 'none';
-        }
-
-        // Generate File Grid items based on Config
-        function initExplorer() {
-            const grid = document.getElementById('fileGrid');
-            grid.innerHTML = ''; // Clear existing
-
-            for (const [key, app] of Object.entries(SYSTEM_CONFIG.apps)) {
-                // Determine icon SVG
-                let iconSvg = ICONS.file; // Default
-                if(app.type === 'folder') iconSvg = ICONS.folder;
-                if(app.type === 'exec') iconSvg = ICONS.exec;
-
-                const item = document.createElement('div');
-                item.className = 'file-item';
-                item.onclick = () => openWindow(key + 'Win');
-                
-                item.innerHTML = `
-                    <svg class="file-icon ${app.type || ''}" viewBox="0 0 24 24" fill="${app.type === 'folder' ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5">
-                        ${iconSvg}
-                    </svg>
-                    <span class="file-name">${app.fileLabel}</span>
-                `;
-                grid.appendChild(item);
-            }
-        }
-
-        // Generate Windows HTML based on Config
-        function renderWindows() {
-            const container = document.getElementById('desktop');
-            
-            for (const [key, app] of Object.entries(SYSTEM_CONFIG.apps)) {
-                const winId = key + 'Win';
-                const win = document.createElement('div');
-                win.id = winId;
-                win.className = 'window';
-                win.style.left = app.initX + 'px';
-                win.style.top = app.initY + 'px';
-                
-                // Add padding:0 to content for profile window to accommodate tabs layout
-                const contentStyle = key === 'profile' ? 'padding: 0;' : '';
-                
-                win.innerHTML = `
-                    <div class="window-header">
-                        <div class="win-controls">
-                            <button class="win-btn close" onclick="closeWindow('${winId}')"></button>
-                            <button class="win-btn min"></button>
-                            <button class="win-btn max" onclick="toggleMaximize('${winId}')">↗</button>
+        const appContent = {
+            "profile": `
+                <div class="browser-tabs">
+                    <div class="tab active" onclick="ui.switchTab(this, 't1')">Overview</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't2')">Experience</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't3')">Education</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't4')">Interests</div>
+                </div>
+                <div class="tab-content-container">
+                    <div id="t1" class="tab-pane active">
+                        <div class="profile-header">
+                            <h1>Josue-Marie Nonguierma</h1>
+                            <span class="profile-meta">Computer Science Student // Hamburg, DE</span>
                         </div>
-                        <div class="win-title">${app.title}</div>
+                        <div style="height: 1px; background: var(--line); margin: 20px 0;"></div>
+                        <p style="color: var(--text); line-height: 1.6;">I am a systems-oriented problem-solver in building reliable, automated solutions that create tangible value for others. I focus on designing infrastructure and workflows that are stable, scalable, and efficient.</p>
+                        <p style="color: var(--muted); font-size: 13px;">My working style is precise, analytical, and detail-driven. I pay close attention to system behavior at the margins and am not satisfied until constraints are understood and performance limits have been meaningfully explored.</p>
+                        
+                        <div class="pill-container">
+                            <span class="tech-pill">C</span>
+                            <span class="tech-pill">C++</span>
+                            <span class="tech-pill">Docker</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Linux</span>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <a href="#" class="social-btn">GitHub</a>
+                            <a href="#" class="social-btn">CV</a>
+                            <a href="mailto:josuenonguierma3@gmail.com" class="social-btn">Email</a>
+                        </div>
                     </div>
-                    <div class="window-content content-inner" style="${contentStyle}">
-                        ${app.content}
+
+                    <div id="t2" class="tab-pane">
+                        <h2 style="font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px;">Professional History</h2>
+                        
+                        <div class="exp-item">
+                            <div class="exp-title">Homelab Administrator</div>
+                            <div class="exp-date">2022 - Present</div>
+                            <p class="exp-desc">Designed and operated a multi-service containerized infrastructure with reverse proxy ingress, DNS management, secure tunnel access, automated backups, and centralized monitoring.</p>
+                        </div>
+
+                        <div class="exp-item">
+                            <div class="exp-title">Service Agent</div>
+                            <div class="exp-date">Telefónica Germany (O2) • Oct 2022 – Apr 2025</div>
+                            <ul class="exp-desc" style="padding-left: 15px; margin-top: 5px;">
+                                <li>Handled GDPR-compliant customer data workflows</li>
+                                <li>Onboarded and trained new agents on internal systems</li>
+                                <li>Participated in deployment of updated telephony systems</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="t3" class="tab-pane">
+                         <h2 style="font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px;">Academic Background</h2>
+                        <div class="exp-item">
+                            <div class="exp-title">Computer Science</div>
+                            <div class="exp-date">Hamburg, DE</div>
+                            <p class="exp-desc">Focus on Systems Engineering, Network Security, and Distributed Systems.</p>
+                        </div>
+                    </div>
+
+                    <div id="t4" class="tab-pane">
+                         <div class="pixel-mode">
+                            > Pokemon: Lugia, Typhlosion, Umbreon
+                        </div>
+                    </div>
+                </div>
+            `,
+            "others": `
+                <div style="padding: 25px;">
+                    <h2 style="margin-top:0; color:#fff;">My Other Projects</h2>
+                    <details>
+                        <summary>Minecraft DevOps</summary>
+                        <div class="details-content">
+                            Containerized Fabric server (1.20.4). Automated backups via Restic and secure ingress tunnel for remote management.
+                            <br>
+                            <a href="#" class="action-link">View Config →</a>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Pokemon Battle Engine</summary>
+                        <div class="details-content">
+                            Generation II battle mechanics in C/Python. Bit-perfect accuracy for damage calculation and state management.
+                            <br>
+                            <a href="#" class="action-link">View Repo →</a>
+                        </div>
+                    </details>
+                </div>
+            `,
+            "skills": `
+                <div class="terminal">
+                    <div class="term-line"><span class="term-prompt">user@cv:~$</span> cat languages</div>
+                    <span class="term-out">Python, C, C++, Java, Bash, SQL</span>
+                    
+                    <div class="term-line"><span class="term-prompt">user@cv:~$</span> cat infrastructure</div>
+                    <span class="term-out">Docker, Nginx, Tailscale, Cloudflare</span>
+                    
+                    <div class="term-line"><span class="term-prompt">user@cv:~$</span> cat tools</div>
+                    <span class="term-out">Git, Linux, Prometheus, Grafana</span>
+                    
+                    <div class="term-line"><span class="term-prompt">user@cv:~$</span> <span class="blink">_</span></div>
+                </div>
+            `
+        };
+
+        // --- 3. WINDOW MANAGER LOGIC ---
+        let zIndexCounter = 100;
+        let explorerHistory = {}; 
+
+        const ui = {
+            createWindow: (id, title, content, type = 'standard') => {
+                zIndexCounter++;
+                const winId = `win-${Date.now()}`;
+                
+                const winEl = document.createElement('div');
+                winEl.className = 'window';
+                winEl.id = winId;
+                winEl.style.zIndex = zIndexCounter;
+
+                winEl.innerHTML = `
+                    <div class="title-bar" onmousedown="wm.startDrag(event, '${winId}')">
+                        <div class="traffic-lights">
+                            <button class="win-btn btn-close" onclick="wm.close('${winId}')"></button>
+                            <button class="win-btn btn-min" onclick="wm.minimize('${winId}')"></button>
+                            <button class="win-btn btn-max" onclick="wm.maximize('${winId}')"></button>
+                        </div>
+                        <div class="window-title">${title}</div>
+                    </div>
+                    <div class="window-body">
+                        ${content}
                     </div>
                 `;
-                container.appendChild(win);
-            }
-        }
 
-        // --- Window Management Logic ---
+                document.getElementById('window-area').appendChild(winEl);
+                wm.addTaskbarItem(winId, title);
+                winEl.addEventListener('mousedown', () => wm.focus(winId));
 
-        function openWindow(id) {
-            const win = document.getElementById(id);
-            if(win) {
-                win.style.display = 'flex';
-                bringToFront(win);
-            }
-        }
+                const offset = Math.random() * 40;
+                winEl.style.top = (100 + offset) + 'px';
+                winEl.style.left = (100 + offset) + 'px';
 
-        function closeWindow(id) {
-            const win = document.getElementById(id);
-            if(win) win.style.display = 'none';
-        }
+                return { id: winId, el: winEl };
+            },
 
-        function bringToFront(element) {
-            zIndexCounter++;
-            element.style.zIndex = zIndexCounter;
-        }
-
-        function toggleMaximize(id) {
-            const win = document.getElementById(id);
-            const btn = win.querySelector('.win-btn.max');
-            
-            if (win.classList.contains('maximized')) {
-                win.classList.remove('maximized');
-                btn.innerText = "↗";
-            } else {
-                bringToFront(win);
-                win.classList.add('maximized');
-                btn.innerText = "-";
-            }
-        }
-
-        function toggleMenu(element) {
-            // Close others if single-expand is desired
-            document.querySelectorAll('.project-item').forEach(item => {
-                if(item !== element) item.classList.remove('active');
-            });
-            element.classList.toggle('active');
-        }
-        
-        // --- NEW: Tab Switching Logic ---
-        function switchTab(btn, contentId) {
-            // 1. Find the parent container (the specific window content)
-            const container = btn.closest('.tabs-container');
-            
-            // 2. Deactivate all buttons in this header
-            const header = btn.closest('.tabs-header');
-            header.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            
-            // 3. Hide all content panes in this container
-            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            // 4. Activate clicked button and target content
-            btn.classList.add('active');
-            container.querySelector('#' + contentId).classList.add('active');
-        }
-
-        // Initialize drag logic for ALL windows (static and dynamic)
-        function initDraggables() {
-            document.querySelectorAll('.window').forEach(win => {
-                const header = win.querySelector('.window-header');
+            switchTab: (tabEl, targetId) => {
+                const parent = tabEl.parentElement;
+                const container = parent.nextElementSibling;
                 
-                win.addEventListener('mousedown', () => bringToFront(win));
+                parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                container.querySelectorAll('.tab-pane').forEach(c => c.classList.remove('active'));
+                
+                tabEl.classList.add('active');
+                container.querySelector('#' + targetId).classList.add('active');
+            }
+        };
 
-                header.onmousedown = function(e) {
-                    e.preventDefault();
-                    if (win.classList.contains('maximized')) return;
+        const wm = {
+            startDrag: (e, id) => {
+                const win = document.getElementById(id);
+                if (win.classList.contains('maximized')) return;
 
-                    let startX = e.clientX;
-                    let startY = e.clientY;
-                    let startLeft = win.offsetLeft;
-                    let startTop = win.offsetTop;
+                wm.focus(id);
+                
+                let startX = e.clientX;
+                let startY = e.clientY;
+                let startLeft = win.offsetLeft;
+                let startTop = win.offsetTop;
 
-                    function onMouseMove(event) {
-                        let dx = event.clientX - startX;
-                        let dy = event.clientY - startY;
-                        win.style.left = (startLeft + dx) + 'px';
-                        win.style.top = (startTop + dy) + 'px';
+                win.style.transition = 'none';
+
+                function doDrag(e) {
+                    win.style.left = (startLeft + e.clientX - startX) + 'px';
+                    win.style.top = (startTop + e.clientY - startY) + 'px';
+                }
+
+                function stopDrag() {
+                    document.removeEventListener('mousemove', doDrag);
+                    document.removeEventListener('mouseup', stopDrag);
+                    win.style.transition = 'opacity 0.2s, transform 0.2s';
+                }
+
+                document.addEventListener('mousemove', doDrag);
+                document.addEventListener('mouseup', stopDrag);
+            },
+
+            focus: (id) => {
+                const win = document.getElementById(id);
+                if(win) {
+                    zIndexCounter++;
+                    win.style.zIndex = zIndexCounter;
+                    
+                    document.querySelectorAll('.task-item').forEach(t => t.classList.remove('active'));
+                    const taskItem = document.getElementById(`task-${id}`);
+                    if(taskItem) taskItem.classList.add('active');
+                    
+                    if(win.classList.contains('minimized')) {
+                        win.classList.remove('minimized');
                     }
+                }
+            },
 
-                    document.addEventListener('mousemove', onMouseMove);
-                    document.onmouseup = function() {
-                        document.removeEventListener('mousemove', onMouseMove);
-                        document.onmouseup = null;
-                    };
-                };
-                header.ondragstart = function() { return false; };
-            });
-        }
+            close: (id) => {
+                const win = document.getElementById(id);
+                if(win) {
+                    win.style.opacity = '0';
+                    win.style.transform = 'scale(0.9)';
+                    setTimeout(() => win.remove(), 200);
+                }
+                const task = document.getElementById(`task-${id}`);
+                if(task) task.remove();
+            },
+
+            minimize: (id) => {
+                const win = document.getElementById(id);
+                win.classList.add('minimized');
+                const task = document.getElementById(`task-${id}`);
+                if(task) task.classList.remove('active');
+            },
+
+            maximize: (id) => {
+                const win = document.getElementById(id);
+                win.classList.toggle('maximized');
+                wm.focus(id);
+            },
+
+            addTaskbarItem: (id, title) => {
+                const bar = document.getElementById('taskbar');
+                const item = document.createElement('div');
+                item.className = 'task-item active';
+                item.id = `task-${id}`;
+                item.innerHTML = `<span>${title}</span>`;
+                item.onclick = () => wm.focus(id);
+                bar.appendChild(item);
+                
+                document.querySelectorAll('.task-item').forEach(t => t.classList.remove('active'));
+            }
+        };
+
+        // --- 4. APP & EXPLORER LOGIC ---
+        const app = {
+            openExplorer: () => {
+                const winObj = ui.createWindow(null, 'Explorer', '', 'explorer');
+                app.renderExplorer(winObj.el, fileSystem.root);
+                explorerHistory[winObj.id] = { stack: [fileSystem.root], pointer: 0 };
+            },
+            
+            // Helper to get SVG icon based on type/name
+            getIconString: (item) => {
+                if (item.type === 'folder') return { svg: ICONS.folder, class: 'folder' };
+                if (item.name.endsWith('.exe') || item.name.endsWith('.sh')) return { svg: ICONS.exec, class: 'exec' };
+                return { svg: ICONS.file, class: 'code' }; 
+            },
+
+            renderExplorer: (winEl, dirData) => {
+                const body = winEl.querySelector('.window-body');
+                
+                body.innerHTML = `
+                    <div class="explorer-layout">
+                        <div class="explorer-nav">
+                            <button class="nav-btn" onclick="app.navBack('${winEl.id}')">←</button>
+                            <button class="nav-btn" onclick="app.navFwd('${winEl.id}')">→</button>
+                            <div class="path-bar">${app.getPath(dirData)}</div>
+                        </div>
+                        <div class="explorer-content">
+                            <div class="sidebar">
+                                <div class="sidebar-item" onclick="app.navTo('${winEl.id}', fileSystem.root)">Home</div>
+                                <div class="sidebar-item" onclick="app.navTo('${winEl.id}', fileSystem.root.children['Projects'])">Projects</div>
+                                <div class="sidebar-item" onclick="app.openContact()">Contact</div>
+                            </div>
+                            <div class="file-grid">
+                                ${Object.values(dirData.children || {}).map(item => {
+                                    const iconData = app.getIconString(item);
+                                    return `
+                                    <div class="file-item" onclick="app.handleFileClick('${winEl.id}', '${item.name}')">
+                                        <div class="file-icon ${iconData.class}">
+                                            <svg viewBox="0 0 24 24">${iconData.svg}</svg>
+                                        </div>
+                                        <div class="file-name">${item.name}</div>
+                                    </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            getPath: (obj) => { return obj.name === 'root' ? 'root/' : 'root/.../' + obj.name; },
+
+            handleFileClick: (winId, fileName) => {
+                const hist = explorerHistory[winId];
+                const currentDir = hist.stack[hist.pointer];
+                const target = currentDir.children[fileName];
+
+                if (target.type === 'folder') {
+                    app.navTo(winId, target);
+                } else if (target.type === 'app') {
+                    ui.createWindow(null, target.name, appContent[target.appId]);
+                } else if (target.type === 'link') {
+                    window.open(target.url, '_blank');
+                }
+            },
+
+            navTo: (winId, dirObj) => {
+                const hist = explorerHistory[winId];
+                hist.stack = hist.stack.slice(0, hist.pointer + 1);
+                hist.stack.push(dirObj);
+                hist.pointer++;
+                app.renderExplorer(document.getElementById(winId), dirObj);
+            },
+
+            navBack: (winId) => {
+                const hist = explorerHistory[winId];
+                if(hist.pointer > 0) {
+                    hist.pointer--;
+                    app.renderExplorer(document.getElementById(winId), hist.stack[hist.pointer]);
+                }
+            },
+
+            navFwd: (winId) => {
+                const hist = explorerHistory[winId];
+                if(hist.pointer < hist.stack.length - 1) {
+                    hist.pointer++;
+                    app.renderExplorer(document.getElementById(winId), hist.stack[hist.pointer]);
+                }
+            },
+
+            openContact: () => {
+                ui.createWindow(null, 'Contact', `
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; text-align:center;">
+                        <div style="width:64px; height:64px; color:var(--accent); margin-bottom:15px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <h3 style="margin:0; color:#fff;">Get in touch</h3>
+                        <p style="color:var(--muted); font-size:13px; margin: 5px 0 15px 0;">Feel free to reach out for collaboration.</p>
+                        <a href="mailto:josuenonguierma3@gmail.com" style="color:var(--accent); font-family:var(--mono); text-decoration:none; border:1px solid var(--line); padding:8px 16px; border-radius:6px; background:rgba(255,255,255,0.05);">josuenonguierma3@gmail.com</a>
+                    </div>
+                `);
+            }
+        };
     </script>
 </body>
 </html>
