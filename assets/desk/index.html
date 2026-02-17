@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Josue-Marie @ coronet.dev</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* --- THEME CONFIGURATION --- */
+            color-scheme: dark;
+            --bg: #05010a;
+            --panel: #0e0516; 
+            --panel-glass: rgba(14, 5, 22, 0.85); 
+            --text: #f1e9ff;
+            --muted: #a390c4;
+            --line: rgba(186, 150, 255, 0.08);
+            --accent: #9d46ff;
+            --accent-glow: rgba(157, 70, 255, 0.25);
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+            --radius: 12px; 
+            
+            /* Fonts */
+            --mono: "JetBrains Mono", monospace;
+            --sans: "Inter", sans-serif;
+            --pixel: "Pixelify Sans", sans-serif; /* UPDATED FONT */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden; 
+            font-family: var(--sans);
+            color: var(--text);
+            background-color: var(--bg);
+            
+            /* Drifting Background Animation */
+            background: 
+                radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
+                radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
+                radial-gradient(1400px 1000px at 50% 100%, rgba(120, 50, 220, 0.08), transparent 70%),
+                linear-gradient(180deg, #05010a 0%, #090212 40%, #030005 100%);
+            background-size: 200% 200%;
+            animation: bgDrift 20s ease infinite alternate;
+            user-select: none;
+        }
+
+        /* Tech Grid Overlay Pattern */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(180, 150, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 150, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes bgDrift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 10% 10%; }
+        }
+
+        /* --- DESKTOP ICONS --- */
+        #desktop {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+        }
+
+        .desktop-icon {
+            width: 80px;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .desktop-icon:hover { 
+            background: rgba(157, 70, 255, 0.1); 
+            border-color: var(--line);
+        }
+        
+        .icon-img {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .icon-img::after {
+            content: ''; position: absolute; top: 8px; left: 0; width: 100%; height: 50%;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .icon-label {
+            font-size: 13px;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            color: var(--text);
+        }
+
+        /* --- WINDOW STYLES --- */
+        .window {
+            position: absolute;
+            background: var(--panel-glass);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            min-width: 320px;
+            min-height: 200px;
+            top: 100px; left: 100px;
+            width: 700px; height: 500px;
+            transition: opacity 0.2s, transform 0.2s;
+            overflow: hidden;
+        }
+
+        .window::before {
+            /* Top accent line */
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.5; pointer-events: none;
+        }
+
+        .window.maximized {
+            top: 0 !important; left: 0 !important; right: 0 !important;
+            width: 100% !important; height: calc(100% - 45px) !important;
+            border-radius: 0; border: none;
+        }
+
+        .window.minimized {
+            opacity: 0; transform: scale(0.95) translateY(30px); pointer-events: none;
+        }
+
+        .title-bar {
+            height: 36px;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            cursor: default;
+        }
+
+        .traffic-lights { display: flex; gap: 8px; margin-right: 15px; }
+        .win-btn { width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer; transition: transform 0.1s;}
+        .win-btn:hover { transform: scale(1.1); }
+        .btn-close { background: #ff5f56; }
+        .btn-min { background: #ffbd2e; }
+        .btn-max { background: #27c93f; }
+
+        .window-title {
+            flex-grow: 1; text-align: center; font-size: 13px; font-weight: 500;
+            color: var(--muted); margin-right: 50px; font-family: var(--sans);
+        }
+
+        .window-body { flex-grow: 1; overflow: auto; position: relative; color: var(--text); }
+
+        /* --- TASKBAR --- */
+        #taskbar {
+            height: 45px;
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(5, 1, 10, 0.7);
+            border-top: 1px solid var(--line);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 6px;
+            z-index: 9999;
+        }
+
+        /* --- pokemon sprites! ---  */
+
+        .pixel-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap; /* Wraps if screen is small */
+        }
+
+        .pixel-sprite {
+            width: 64px; 
+            height: 64px; 
+            image-rendering: pixelated; /* CRISP PIXELS */
+            vertical-align: middle;
+            /* Optional: Slight glow to match the text */
+            filter: drop-shadow(0 0 4px rgba(224, 170, 255, 0.4)); 
+            transition: transform 0.2s;
+        }
+
+        .pixel-sprite:hover {
+            transform: scale(1.2); /* Pop effect on hover */
+        }
+
+        .inline-sprite {
+            height: 32px; /* Adjust size to fit text flow */
+            width: auto;
+            vertical-align: middle; /* Aligns image center with text center */
+            margin: 0 4px; /* Small spacing around the image */
+            image-rendering: auto; /* Crisp rendering */
+            transition: transform 0.2s;
+        }
+
+        .inline-sprite:hover {
+            transform: scale(1.5); /* Pop effect */
+            z-index: 10;
+            position: relative;
+        }
+
+        /* --- ANIMATED SPRITE CSS --- */
+
+        /* bouncing animation */
+        @keyframes poke-bounce {
+            from { background-position: 0 0; }
+            to { background-position: 0 -32px; } /* Shifts view down by 32px (1 frame) */
+        }
+
+        /* bouncing class */
+        .bouncy-icon {
+            width: 32px;          /* Width of one frame */
+            height: 32px;         /* Height of one frame */
+            display: inline-block;
+            vertical-align: middle;
+            
+            /* render prio */
+            image-rendering: pixelated; 
+            
+            /* Sprite image*/
+            background-image: url('Ani249MS.png'); 
+            background-repeat: no-repeat;
+            
+            /* Ensure the sprite sheet is sized correctly (32px width, 64px height) */
+            background-size: 32px 64px; 
+            
+            /* anim: 0.5s speed, ping-pong effect */
+            animation: poke-bounce 0.4s steps(1) infinite alternate;
+            
+            /* Interaction */
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .bouncy-icon:hover {
+            transform: scale(1.2);
+        }
+
+
+        .task-item {
+            padding: 6px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            max-width: 160px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: flex; align-items: center; gap: 6px;
+        }
+        
+        .task-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        
+        .task-item.active { 
+            background: rgba(157, 70, 255, 0.1); 
+            border-color: rgba(157, 70, 255, 0.3);
+            color: #fff; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* --- EXPLORER STYLES --- */
+        .explorer-layout { display: flex; height: 100%; flex-direction: column; }
+        
+        .explorer-nav {
+            padding: 10px 15px; border-bottom: 1px solid var(--line);
+            display: flex; gap: 12px; align-items: center; background: rgba(0,0,0,0.1);
+        }
+        .nav-btn { background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 4px; cursor: pointer; padding: 2px 8px; transition: 0.2s; }
+        .nav-btn:hover { border-color: var(--accent); color: #fff; }
+        
+        .path-bar {
+            background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: 6px;
+            padding: 6px 12px; font-size: 12px; flex-grow: 1; font-family: var(--mono); color: var(--muted);
+        }
+
+        .explorer-content { display: flex; flex-grow: 1; overflow: hidden; }
+        
+        .sidebar {
+            width: 160px; background: rgba(0,0,0,0.15); border-right: 1px solid var(--line);
+            padding: 15px; display: flex; flex-direction: column; gap: 4px;
+        }
+        .sidebar-item {
+            padding: 8px 12px; font-size: 13px; color: var(--muted); cursor: pointer; border-radius: 6px; transition: 0.2s;
+        }
+        .sidebar-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        
+        /* Grid with SVG Icons */
+        .file-grid {
+            flex-grow: 1; padding: 20px; display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            grid-auto-rows: 110px; gap: 10px;
+        }
+        .file-item {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;
+            border: 1px solid transparent;
+        }
+        .file-item:hover { background: rgba(255,255,255,0.03); border-color: var(--line); }
+        
+        .file-icon {
+            width: 42px; height: 42px; margin-bottom: 10px;
+            color: var(--muted); transition: color 0.2s;
+        }
+        .file-item:hover .file-icon { color: var(--text); }
+        .file-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        
+        /* Icon Colors */
+        .file-icon.folder { color: var(--accent); fill: rgba(157, 70, 255, 0.1); }
+        .file-icon.exec { color: #facc15; }
+        .file-icon.code { color: #60a5fa; }
+
+        .file-name { font-size: 12px; color: var(--text); word-break: break-all; }
+
+        /* --- APP CONTENT --- */
+        .browser-tabs { display: flex; background: rgba(0,0,0,0.2); padding: 8px 8px 0 8px; gap: 4px; border-bottom: 1px solid var(--line); }
+        .tab {
+            padding: 8px 16px; background: transparent; color: var(--muted); font-size: 12px;
+            border-radius: 6px 6px 0 0; cursor: pointer; border: 1px solid transparent; border-bottom: none;
+            font-family: var(--sans);
+        }
+        .tab:hover { color: #fff; background: rgba(255,255,255,0.02); }
+        .tab.active {
+            background: var(--panel-glass); color: var(--accent); border: 1px solid var(--line); border-bottom: 1px solid var(--panel);
+            margin-bottom: -1px; font-weight: 500;
+        }
+        
+        .tab-content-container { padding: 30px; overflow-y: auto; height: calc(100% - 40px); }
+        .tab-pane { display: none; animation: fadeIn 0.3s ease; }
+        .tab-pane.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Profile Styles */
+        .profile-header h1 { margin: 0; font-size: 28px; color: #fff; letter-spacing: -0.02em; }
+        .profile-meta { color: var(--accent); font-family: var(--mono); font-size: 12px; margin-top: 5px; display: block; }
+        
+        .pill-container { margin: 25px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+        .tech-pill {
+            font-family: var(--mono); font-size: 11px; padding: 4px 10px; border-radius: 4px;
+            border: 1px solid var(--line); color: var(--muted); background: rgba(0,0,0,0.2); cursor: default;
+        }
+        .tech-pill:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+        .social-btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px;
+            border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text);
+            font-size: 13px; text-decoration: none; margin-right: 10px; transition: 0.2s;
+        }
+        .social-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 4px 12px var(--accent-glow); }
+
+        .exp-item { margin-bottom: 25px; border-left: 2px solid var(--line); padding-left: 15px; }
+        .exp-title { font-weight: 600; color: #fff; font-size: 15px; }
+        .exp-date { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-bottom: 5px; }
+        .exp-desc { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+        
+        /* Pixel Mode with Pinkish-Purple Undertone */
+        .pixel-mode { 
+            font-family: var(--pixel); 
+            font-size: 18px; 
+            line-height: 1.2;
+            color: #e0aaff;  /* Soft Pinkish-Purple */
+            text-shadow: 0 0 5px rgba(224, 170, 255, 0.6); 
+        }
+
+        .pixel-list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;   /* equal spacing between items */
+        }
+
+        /* Terminal */
+        .terminal { background: #05010a; padding: 20px; height: 100%; font-family: var(--mono); font-size: 13px; color: #ccc; }
+        .term-line { margin-bottom: 8px; }
+        .term-prompt { color: var(--accent); margin-right: 8px; }
+        .term-out { color: var(--text); display: block; margin-bottom: 15px; padding-left: 20px; opacity: 0.8; }
+        .blink { animation: blink 1s step-end infinite; color: var(--accent); }
+        @keyframes blink { 50% { opacity: 0; } }
+        /* --- SKILL BAR STYLES (for terminal) --- */
+        .skill-category {
+            margin-bottom: 15px;
+        }
+        .category-title {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .skill-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+
+        .skill-label {
+            width: 100px; /* Fixed width for alignment */
+            color: var(--text);
+            flex-shrink: 0;
+        }
+
+        .bar-track {
+            flex-grow: 1;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--line);
+            margin: 0 10px;
+            position: relative;
+            max-width: 300px; /* Keep bars from getting too wide */
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--accent);
+            /* Creates a "segmented" block look */
+            background-image: linear-gradient(90deg, transparent 0%, transparent 50%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.5) 100%);
+            background-size: 4px 100%; 
+            box-shadow: 0 0 8px var(--accent-glow);
+            display: block;
+            animation: loadBar 1s ease-out forwards;
+            width: 0; /* Starts at 0 for animation */
+        }
+
+@keyframes loadBar {
+    from { width: 0; }
+    /* 'to' is handled by the inline style percentage */
+}
+
+        /* Details / Projects */
+        details {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 8px;
+            margin-bottom: 12px; overflow: hidden; transition: 0.2s;
+        }
+        details[open] { background: rgba(157, 70, 255, 0.05); border-color: var(--accent); }
+        summary {
+            padding: 12px 16px; cursor: pointer; font-weight: 500; color: #fff;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+        }
+        summary::after { content: '+'; color: var(--muted); font-family: var(--mono); }
+        details[open] summary::after { content: '-'; color: var(--accent); }
+        .details-content { padding: 0 16px 16px 16px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+        .action-link {
+            display: inline-block; margin-top: 10px; color: var(--accent); font-family: var(--mono); font-size: 11px;
+            text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none; border-bottom: 1px dashed var(--accent);
+        }
+
+        .desktop-footer {
+            position: absolute; bottom: 55px; width: 100%; text-align: center;
+            color: var(--muted); opacity: 0.4; font-size: 11px; font-family: var(--mono); pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- 
+    Hi! The code's probably a mess, since I'm kinda new to HTML & CSS in general, but it was my best attempt :3  
+-->
+
+    <div id="desktop">
+        <div class="desktop-icon" ondblclick="app.openExplorer()">
+            <div class="icon-img"></div>
+            <div class="icon-label">Explorer</div>
+        </div>
+
+        <div id="window-area"></div>
+
+        <div class="desktop-footer">© 2026 Josue-Marie Nonguierma</div>
+
+        <div id="taskbar"></div>
+    </div>
+
+    <script>
+        // --- 1. ICON DEFINITIONS (SVG PATHS) ---
+        const ICONS = {
+            folder: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>',
+            file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
+            exec: '<polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line><rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>'
+        };
+
+        // --- 2. DATA ---
+        const fileSystem = {
+            "root": {
+                name: "root",
+                type: "folder",
+                children: {
+                    "Projects": {
+                        name: "Projects",
+                        type: "folder",
+                        children: {
+                            // [EDITABLE] Link to external project/site
+                            "coronet.exe": { name: "coronet.exe", type: "link", url: "https://coronet.dev/lab" }, 
+                            "others.exe": { name: "others.exe", type: "app", appId: "others" }
+                        }
+                    },
+                    "profile.html": { name: "profile.html", type: "app", appId: "profile" },
+                    // [EDITABLE] Link to blog
+                    "blog.html": { name: "blog.html", type: "link", url: "https://coronet.dev/blog" }, 
+                    "skills.sh": { name: "skills.sh", type: "app", appId: "skills" }
+                }
+            }
+        };
+
+        const appContent = {
+            "profile": `
+                <div class="browser-tabs">
+                    <div class="tab active" onclick="ui.switchTab(this, 't1')">Overview</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't2')">Experience</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't3')">Education</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't4')">Interests</div>
+                </div>
+                
+                <div class="tab-content-container">
+                    <div id="t1" class="tab-pane active">
+                        <div class="profile-header">
+                            <h1>Josue-Marie Nonguierma</h1>
+                            <span class="profile-meta">Computer Science Student // Hamburg, DE</span>
+                        </div>
+                        <div style="height: 1px; background: var(--line); margin: 20px 0;"></div>
+                        
+                        <p style="color: var(--text); line-height: 1.6;">I am a systems-oriented problem-solver in building reliable, automated solutions that create tangible value for others. I focus on designing infrastructure and workflows that are stable, scalable, and efficient.</p>
+                        <p style="color: var(--muted); font-size: 13px;">My working style is precise, analytical, and detail-driven. I pay close attention to system behavior at the margins and take personal enjoyment of pushing their limits, just as much as my own..</p>
+                        
+                        <div class="pill-container">
+                            <span class="tech-pill">C</span>
+                            <span class="tech-pill">C++</span>
+                            <span class="tech-pill">Docker</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Linux</span>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <a href="https://github.com/DarkLugia4000" class="social-btn">GitHub</a>
+                            <a href="#" class="social-btn">CV</a>
+                            <a href="mailto:josuenonguierma3@gmail.com" class="social-btn">Email</a>
+                        </div>
+                    </div>
+
+                    <div id="t2" class="tab-pane">
+                        <h2 style="font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px;">Professional History</h2>
+                        
+                        <div class="exp-item">
+                            <div class="exp-title">Networking & Learning</div>
+                            <div class="exp-date">Homelab Admin • 2025-</div>
+                            <ul class="exp-desc" style="padding-left: 15px; margin-top: 5px;">
+                                <li>Managing containerized client-facing applications</li>
+                                <li>Overseeing media services for my family</li>
+                                <li>Reinforced home network safety via DNS filtering</li>
+                            </ul>
+                        </div>
+
+                        <div class="exp-item">
+                            <div class="exp-title">Service Agent</div>
+                            <div class="exp-date">Telefónica Germany (O2) • Oct 2022 – Apr 2025</div>
+                            <ul class="exp-desc" style="padding-left: 15px; margin-top: 5px;">
+                                <li>Handled GDPR-compliant customer data workflows</li>
+                                <li>Onboarded and trained new agents on internal systems</li>
+                                <li>Participated in deployment of updated telephony systems</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="t3" class="tab-pane">
+                        <h2 style="font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px;">Academic Background</h2>
+                        <div class="exp-item">
+                            <div class="exp-title">Computer Science</div>
+                            <div class="exp-date">Hamburg, DE</div>
+                            <p class="exp-desc">Focus on Systems Engineering, Containerized Networking, and Distributed Systems.</p>
+                        </div>
+                    </div>
+
+                    <div id="t4" class="tab-pane">
+                        <div class="pixel-mode" style="line-height: 2.5; margin-bottom: 15px;">
+                            hobbies: writing, worldbuilding, traveling, competitive pokemon, anime, gaming
+                        </div>
+                        
+                        <div class="pixel-mode" style="line-height: 2.5; margin-bottom: 15px;">
+                            favs: lugia <img src="assets/lugia-ani.png" class="inline-sprite" title="Lugia">, 
+                            typhlosion <img src="assets/typh-ani.png" class="inline-sprite" title="Typhlosion">, 
+                            umbreon <img src="assets/umbr-ani.png" class="inline-sprite" title="Umbreon"><br>
+                            reshiram <img src="assets/resh-ani.png" class="inline-sprite" title="Reshiram">
+                        </div>
+                        
+                        <div class="pixel-mode" style="line-height: 2.5; margin-bottom: 15px;">
+                            games: soulsilver (clearly) <img src="assets/lugia-ani.png" class="inline-sprite" title="Lugia">, 
+                            w2 <img src="assets/resh-ani.png" class="inline-sprite" title="Reshiram">, 
+                            z-a <img src="assets/zyg-sprite.png" class="inline-sprite" title="Zygarde">
+                        </div>
+                        
+                        <div class="pixel-mode" style="line-height: 2.5;">
+                            other games: satisfactory, elite dangerous, stellaris, rts (too many), monster hunter
+                        </div>
+                    </div>
+                </div>
+            `,
+            "profile": `
+                <div class="browser-tabs">
+                    <div class="tab active" onclick="ui.switchTab(this, 't1')">Overview</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't2')">Experience</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't3')">Education</div>
+                    <div class="tab" onclick="ui.switchTab(this, 't4')">Interests</div>
+                </div>
+                
+                <div class="tab-content-container">
+                    <div id="t1" class="tab-pane active">
+                        <div class="profile-header">
+                            <h1>Josue-Marie Nonguierma</h1>
+                            <span class="profile-meta">Computer Science Student // Hamburg, DE</span>
+                        </div>
+                        <div style="height: 1px; background: var(--line); margin: 20px 0;"></div>
+                        
+                        <p style="color: var(--text); line-height: 1.6;">I am a systems-oriented problem-solver in building reliable, automated solutions that create tangible value for others. I focus on designing infrastructure and workflows that are stable, scalable, and efficient.</p>
+                        <p style="color: var(--muted); font-size: 13px;">My working style is precise, analytical, and detail-driven. I pay close attention to system behavior at the margins and take personal enjoyment of pushing their limits, just as much as my own..</p>
+                        
+                        <div class="pill-container">
+                            <span class="tech-pill">C</span>
+                            <span class="tech-pill">C++</span>
+                            <span class="tech-pill">Docker</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Linux</span>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <a href="https://github.com/DarkLugia4000" class="social-btn">GitHub</a>
+                            <a href="#" class="social-btn">CV</a>
+                            <a href="mailto:josuenonguierma3@gmail.com" class="social-btn">Email</a>
+                        </div>
+                    </div>
+
+                    <div id="t2" class="tab-pane">
+                        <h2 style="font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px;">Professional History</h2>
+                        
+                        <div class="exp-item">
+                            <div class="exp-title">Networking & Learning</div>
+                            <div class="exp-date">Homelab Admin • 2025-</div>
+                            <ul class="exp-desc" style="padding-left: 15px; margin-top: 5px;">
+                                <li>Managing containerized client-facing applications</li>
+                                <li>Overseeing media services for my family</li>
+                                <li>Reinforced home network safety via DNS filtering</li>
+                            </ul>
+                        </div>
+
+                        <div class="exp-item">
+                            <div class="exp-title">Service Agent</div>
+                            <div class="exp-date">Telefónica Germany (O2) • Oct 2022 – Apr 2025</div>
+                            <ul class="exp-desc" style="padding-left: 15px; margin-top: 5px;">
+                                <li>Handled GDPR-compliant customer data workflows</li>
+                                <li>Onboarded and trained new agents on internal systems</li>
+                                <li>Participated in deployment of updated telephony systems</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="t3" class="tab-pane">
+                        <h2 style="font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px;">Academic Background</h2>
+                        <div class="exp-item">
+                            <div class="exp-title">Computer Science</div>
+                            <div class="exp-date">Hamburg, DE</div>
+                            <p class="exp-desc">Focus on Systems Engineering, Containerized Networking, and Distributed Systems.</p>
+                        </div>
+                    </div>
+
+                    <div id="t4" class="tab-pane">
+                        <div class="pixel-list">
+                            <div class="pixel-mode">
+                                hobbies: writing, worldbuilding, traveling, competitive pokemon, anime, gaming
+                            </div>
+                            <div class="pixel-mode">
+                                favs: lugia <img src="assets/lugia-ani.png" class="inline-sprite" title="Lugia">, 
+                                typhlosion <img src="assets/typh-ani.png" class="inline-sprite" title="Typhlosion">, 
+                                umbreon <img src="assets/umbr-ani.png" class="inline-sprite" title="Umbreon">,
+                                reshiram <img src="assets/resh-ani.png" class="inline-sprite" title="Reshiram">
+                            </div>
+                            <div class="pixel-mode">
+                                games: soulsilver (clearly) <img src="assets/lugia-ani.png" class="inline-sprite" title="Lugia">, w2 <img src="assets/resh-ani.png" class="inline-sprite" title="Reshiram"> , z-a <img src="assets/zyg-sprite.png" class="inline-sprite" title="Zygarde">
+                            </div>
+                            <div class="pixel-mode">
+                                other games: satisfactory, elite dangerous, stellaris, rts (too many), monster hunter
+                            </div>
+                            <div class="pixel-mode">
+                                anime favs: 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+        };
+
+        // --- 3. WINDOW MANAGER LOGIC ---
+        let zIndexCounter = 100;
+        let explorerHistory = {}; 
+
+        const ui = {
+            createWindow: (id, title, content, type = 'standard') => {
+                zIndexCounter++;
+                const winId = `win-${Date.now()}`;
+                
+                const winEl = document.createElement('div');
+                winEl.className = 'window';
+                winEl.id = winId;
+                winEl.style.zIndex = zIndexCounter;
+
+                winEl.innerHTML = `
+                    <div class="title-bar" onmousedown="wm.startDrag(event, '${winId}')">
+                        <div class="traffic-lights">
+                            <button class="win-btn btn-close" onclick="wm.close('${winId}')"></button>
+                            <button class="win-btn btn-min" onclick="wm.minimize('${winId}')"></button>
+                            <button class="win-btn btn-max" onclick="wm.maximize('${winId}')"></button>
+                        </div>
+                        <div class="window-title">${title}</div>
+                    </div>
+                    <div class="window-body">
+                        ${content}
+                    </div>
+                `;
+
+                document.getElementById('window-area').appendChild(winEl);
+                wm.addTaskbarItem(winId, title);
+                winEl.addEventListener('mousedown', () => wm.focus(winId));
+
+                const offset = Math.random() * 40;
+                winEl.style.top = (100 + offset) + 'px';
+                winEl.style.left = (100 + offset) + 'px';
+
+                return { id: winId, el: winEl };
+            },
+
+            switchTab: (tabEl, targetId) => {
+                const parent = tabEl.parentElement;
+                const container = parent.nextElementSibling;
+                
+                parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                container.querySelectorAll('.tab-pane').forEach(c => c.classList.remove('active'));
+                
+                tabEl.classList.add('active');
+                container.querySelector('#' + targetId).classList.add('active');
+            }
+        };
+
+        const wm = {
+            startDrag: (e, id) => {
+                const win = document.getElementById(id);
+                if (win.classList.contains('maximized')) return;
+
+                wm.focus(id);
+                
+                let startX = e.clientX;
+                let startY = e.clientY;
+                let startLeft = win.offsetLeft;
+                let startTop = win.offsetTop;
+
+                win.style.transition = 'none';
+
+                function doDrag(e) {
+                    win.style.left = (startLeft + e.clientX - startX) + 'px';
+                    win.style.top = (startTop + e.clientY - startY) + 'px';
+                }
+
+                function stopDrag() {
+                    document.removeEventListener('mousemove', doDrag);
+                    document.removeEventListener('mouseup', stopDrag);
+                    win.style.transition = 'opacity 0.2s, transform 0.2s';
+                }
+
+                document.addEventListener('mousemove', doDrag);
+                document.addEventListener('mouseup', stopDrag);
+            },
+
+            focus: (id) => {
+                const win = document.getElementById(id);
+                if(win) {
+                    zIndexCounter++;
+                    win.style.zIndex = zIndexCounter;
+                    
+                    document.querySelectorAll('.task-item').forEach(t => t.classList.remove('active'));
+                    const taskItem = document.getElementById(`task-${id}`);
+                    if(taskItem) taskItem.classList.add('active');
+                    
+                    if(win.classList.contains('minimized')) {
+                        win.classList.remove('minimized');
+                    }
+                }
+            },
+
+            close: (id) => {
+                const win = document.getElementById(id);
+                if(win) {
+                    win.style.opacity = '0';
+                    win.style.transform = 'scale(0.9)';
+                    setTimeout(() => win.remove(), 200);
+                }
+                const task = document.getElementById(`task-${id}`);
+                if(task) task.remove();
+            },
+
+            minimize: (id) => {
+                const win = document.getElementById(id);
+                win.classList.add('minimized');
+                const task = document.getElementById(`task-${id}`);
+                if(task) task.classList.remove('active');
+            },
+
+            maximize: (id) => {
+                const win = document.getElementById(id);
+                win.classList.toggle('maximized');
+                wm.focus(id);
+            },
+
+            addTaskbarItem: (id, title) => {
+                const bar = document.getElementById('taskbar');
+                const item = document.createElement('div');
+                item.className = 'task-item active';
+                item.id = `task-${id}`;
+                item.innerHTML = `<span>${title}</span>`;
+                item.onclick = () => wm.focus(id);
+                bar.appendChild(item);
+                
+                document.querySelectorAll('.task-item').forEach(t => t.classList.remove('active'));
+            }
+        };
+
+        // --- 4. APP & EXPLORER LOGIC ---
+        const app = {
+            openExplorer: () => {
+                const winObj = ui.createWindow(null, 'Explorer', '', 'explorer');
+                app.renderExplorer(winObj.el, fileSystem.root);
+                explorerHistory[winObj.id] = { stack: [fileSystem.root], pointer: 0 };
+            },
+            
+            // Helper to get SVG icon based on type/name
+            getIconString: (item) => {
+                if (item.type === 'folder') return { svg: ICONS.folder, class: 'folder' };
+                if (item.name.endsWith('.exe') || item.name.endsWith('.sh')) return { svg: ICONS.exec, class: 'exec' };
+                return { svg: ICONS.file, class: 'code' }; 
+            },
+
+            renderExplorer: (winEl, dirData) => {
+                const body = winEl.querySelector('.window-body');
+                
+                body.innerHTML = `
+                    <div class="explorer-layout">
+                        <div class="explorer-nav">
+                            <button class="nav-btn" onclick="app.navBack('${winEl.id}')">←</button>
+                            <button class="nav-btn" onclick="app.navFwd('${winEl.id}')">→</button>
+                            <div class="path-bar">${app.getPath(dirData)}</div>
+                        </div>
+                        <div class="explorer-content">
+                            <div class="sidebar">
+                                <div class="sidebar-item" onclick="app.navTo('${winEl.id}', fileSystem.root)">Home</div>
+                                <div class="sidebar-item" onclick="app.navTo('${winEl.id}', fileSystem.root.children['Projects'])">Projects</div>
+                                <div class="sidebar-item" onclick="app.openContact()">Contact</div>
+                            </div>
+                            <div class="file-grid">
+                                ${Object.values(dirData.children || {}).map(item => {
+                                    const iconData = app.getIconString(item);
+                                    return `
+                                    <div class="file-item" onclick="app.handleFileClick('${winEl.id}', '${item.name}')">
+                                        <div class="file-icon ${iconData.class}">
+                                            <svg viewBox="0 0 24 24">${iconData.svg}</svg>
+                                        </div>
+                                        <div class="file-name">${item.name}</div>
+                                    </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            getPath: (obj) => { return obj.name === 'root' ? 'root/' : 'root/.../' + obj.name; },
+
+            handleFileClick: (winId, fileName) => {
+                const hist = explorerHistory[winId];
+                const currentDir = hist.stack[hist.pointer];
+                const target = currentDir.children[fileName];
+
+                if (target.type === 'folder') {
+                    app.navTo(winId, target);
+                } else if (target.type === 'app') {
+                    ui.createWindow(null, target.name, appContent[target.appId]);
+                } else if (target.type === 'link') {
+                    window.open(target.url, '_blank');
+                }
+            },
+
+            navTo: (winId, dirObj) => {
+                const hist = explorerHistory[winId];
+                hist.stack = hist.stack.slice(0, hist.pointer + 1);
+                hist.stack.push(dirObj);
+                hist.pointer++;
+                app.renderExplorer(document.getElementById(winId), dirObj);
+            },
+
+            navBack: (winId) => {
+                const hist = explorerHistory[winId];
+                if(hist.pointer > 0) {
+                    hist.pointer--;
+                    app.renderExplorer(document.getElementById(winId), hist.stack[hist.pointer]);
+                }
+            },
+
+            navFwd: (winId) => {
+                const hist = explorerHistory[winId];
+                if(hist.pointer < hist.stack.length - 1) {
+                    hist.pointer++;
+                    app.renderExplorer(document.getElementById(winId), hist.stack[hist.pointer]);
+                }
+            },
+
+            openContact: () => {
+                ui.createWindow(null, 'Contact', `
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; text-align:center;">
+                        <div style="width:64px; height:64px; color:var(--accent); margin-bottom:15px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <h3 style="margin:0; color:#fff;">Get in touch</h3>
+                        <p style="color:var(--muted); font-size:13px; margin: 5px 0 15px 0;">Feel free to reach out for collaboration.</p>
+                        <a href="mailto:josuenonguierma3@gmail.com" style="color:var(--accent); font-family:var(--mono); text-decoration:none; border:1px solid var(--line); padding:8px 16px; border-radius:6px; background:rgba(255,255,255,0.05);">josuenonguierma3@gmail.com</a>
+                    </div>
+                `);
+            }
+        };
+    </script>
+</body>
+</html>
