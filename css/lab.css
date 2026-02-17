@@ -202,7 +202,7 @@ h2 {
     gap: 20px;
 }
 
-/* First child takes up an entire row*/
+/* First child takes up an entire row */
 .desc-block:first-child {
     grid-column: 1 / -1;
 }
