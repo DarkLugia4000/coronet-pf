@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vitae | Coronet.dev</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/post.css">
+    
+    <style>
+        /* Specific CV tweaks */
+        .cv-header { text-align: left; border-bottom: 2px solid var(--line); padding-bottom: 20px; margin-bottom: 30px; }
+        .cv-header h1 { margin-bottom: 5px; font-size: 36px; }
+        .cv-contact { font-family: var(--mono); color: var(--accent); font-size: 13px; display: flex; gap: 15px; flex-wrap: wrap; }
+        .cv-contact a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed transparent; transition: 0.2s; }
+        .cv-contact a:hover { border-bottom-color: var(--accent); }
+        .cv-section-title { font-family: var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-size: 14px; margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 5px; }
+        .cv-item { margin-bottom: 25px; }
+        .cv-item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; flex-wrap: wrap; gap: 10px; }
+        .cv-title { font-weight: 600; font-size: 18px; color: #fff; margin: 0; }
+        .cv-date { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+        .cv-subtitle { color: var(--accent); font-size: 14px; margin-bottom: 10px; }
+        
+        @media print {
+            body { background: #fff; color: #000; }
+            .nav-header, .post-footer, body::after { display: none; }
+            .cv-title { color: #000; }
+            .cv-subtitle, .cv-contact, .cv-contact a { color: #333; }
+            .cv-section-title { border-bottom-color: #ccc; color: #555; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <nav class="nav-header">
+            <a href="#" class="back-btn" id="backBtn">
+                <span>&larr; cd ..</span>
+            </a>
+            <div class="brand">
+                <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+                </svg>
+                coronet.dev
+            </div>
+        </nav>
+
+        <article class="content">
+            <header class="cv-header">
+                <h1>Josue-Marie Nonguierma</h1>
+                <div class="cv-contact">
+                    <a href="mailto:josuenonguierma3@gmail.com">josuenonguierma3@gmail.com</a>
+                    <span>Hamburg, DE</span>
+                    <a href="https://github.com/DarkLugia4000" target="_blank">github.com/DarkLugia4000</a>
+                </div>
+            </header>
+
+            <p>I am a systems-oriented problem-solver with a strong interest in building reliable, automated solutions that create tangible value for others. I focus on designing infrastructure and workflows that are stable, scalable, and reproducible.</p>
+
+            <h2 class="cv-section-title">Experience</h2>
+            
+            <div class="cv-item">
+                <div class="cv-item-header">
+                    <h3 class="cv-title">Homelab Administrator</h3>
+                    <span class="cv-date">2025 - Present</span>
+                </div>
+                <div class="cv-subtitle">Self-Hosted Infrastructure</div>
+                <ul>
+                    <li>Designed and deployed a secure, split-DNS environment utilizing Tailscale for remote access without opening router ports.</li>
+                    <li>Automated a media retrieval and delivery pipeline using Docker, the "Arr" stack, and custom shell scripting.</li>
+                    <li>Monitored system health and network traffic via custom Grafana dashboards and Prometheus metrics.</li>
+                </ul>
+            </div>
+
+            <div class="cv-item">
+                <div class="cv-item-header">
+                    <h3 class="cv-title">Service Agent</h3>
+                    <span class="cv-date">Oct 2022 – Apr 2025</span>
+                </div>
+                <div class="cv-subtitle">Telefónica Germany (O2)</div>
+                <ul>
+                    <li>Managed GDPR-compliant customer data workflows securely and efficiently.</li>
+                    <li>Onboarded and trained new agents on complex internal systems and standard operating procedures.</li>
+                    <li>Participated in the live deployment and testing phases of updated telephony systems.</li>
+                </ul>
+            </div>
+
+            <h2 class="cv-section-title">Education</h2>
+            
+            <div class="cv-item">
+                <div class="cv-item-header">
+                    <h3 class="cv-title">Computer Science</h3>
+                    <span class="cv-date">Hamburg, DE</span>
+                </div>
+                <p>Focusing on Systems Engineering, Containerized Networking, and Distributed Systems.</p>
+            </div>
+
+            <h2 class="cv-section-title">Technical Skills</h2>
+            <ul>
+                <li><strong>Languages:</strong> C, C++, Python, Bash</li>
+                <li><strong>Infrastructure & Tools:</strong> Linux (Ubuntu/Debian), Docker, Git, Nginx Proxy Manager, CouchDB</li>
+                <li><strong>Networking:</strong> Tailscale, DNS Filtering (AdGuard), Reverse Proxies, Split-DNS</li>
+            </ul>
+
+        </article>
+        
+        <footer class="post-footer">
+            &copy; <span id="year"></span> Josue-Marie Nonguierma
+        </footer>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

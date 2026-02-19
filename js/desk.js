@@ -216,6 +216,50 @@ const appContent = {
             <span class="blink">█</span>
         </div>
     `,
+    "others": `
+        <div style="padding: 25px; height: 100%; overflow-y: auto;">
+            <h2 style="font-size: 13px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 10px;">
+                Repositories & Projects
+            </h2>
+
+            <details>
+                <summary>The CORONET Project</summary>
+                <div class="details-content">
+                    My personal homelab infrastructure. Features a containerized media stack, DNS sinkholes, game servers, and a secure split-DNS VPN routing setup.
+                    <br>
+                    <a href="/lab" class="action-link">View Architecture &rarr;</a>
+                </div>
+            </details>
+
+            <details>
+                <summary>coronet-pf</summary>
+                <div class="details-content">
+                    You are looking at it! A custom-built, interactive personal portfolio utilizing vanilla HTML/CSS/JS with a custom web-based window manager.
+                    <br>
+                    <a href="https://github.com/DarkLugia4000/coronet-pf" target="_blank" class="action-link">Source Code &rarr;</a>
+                </div>
+            </details>
+
+            <details>
+                <summary>Gen 2 Mechanics</summary>
+                <div class="details-content">
+                    A bit-perfect recreation of the Generation 2 damage calculation mechanics written in C.
+                    <br>
+                    <a href="#" target="_blank" class="action-link">Source Code &rarr;</a>
+                </div>
+            </details>
+
+            <details>
+                <summary>Restic MC Backups</summary>
+                <div class="details-content">
+                    A set of Docker sidecars and scripts for securely managing automated snapshots of a live Fabric server.
+                    <br>
+                    <a href="#" target="_blank" class="action-link">Source Code &rarr;</a>
+                </div>
+            </details>
+            
+        </div>
+    `,
 };
 
 // --- 3. WINDOW MANAGER LOGIC ---
