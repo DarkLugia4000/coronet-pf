@@ -30,7 +30,7 @@ body {
     color: var(--text);
     background-color: var(--bg);
     
-    /* grifting background Animation */
+    /* drifting background animation */
     background: 
         radial-gradient(1200px 900px at 15% 10%, rgba(100, 40, 200, 0.12), transparent 65%),
         radial-gradient(1000px 800px at 85% 20%, rgba(70, 20, 140, 0.12), transparent 60%),
